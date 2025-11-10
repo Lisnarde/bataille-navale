@@ -35,7 +35,7 @@ Elles sont disponibles :
 
 Le jeu de société comporte pour chaque joueur :
 
-- **2 grilles de jeu de 10x10 cases**, une pour ses bâteaux et une pour ceux de l'adversaire,
+- **2 grilles de jeu de 10x10 cases**, une pour ses bateaux et une pour ceux de l'adversaire,
 - **5 navires** à placer sur sa grille dont :
   - 1 porte-avion (5 cases)
   - 1 croiseur (4 cases)
@@ -66,7 +66,7 @@ Par défaut, chaque joueur possède une bombe à usage unique.
 
 ### C2 - Arme : Le sonar
 
-Il permet de savoir combien de cases sont occupées par un bâteau sur la case ciblée (o) et ses 8 cases voisines (+).
+Il permet de savoir combien de cases sont occupées par un bateau sur la case ciblée (o) et ses 8 cases voisines (+).
 
 ```bash
 -------------
@@ -80,25 +80,25 @@ Il permet de savoir combien de cases sont occupées par un bâteau sur la case c
 
 À noter :
 
-- Il n'indique pas où sont les cases avec un bâteau parmi ces 9 cases.
+- Il n'indique pas où sont les cases avec un bateau parmi ces 9 cases.
 - Il ne peut pas être utilisé si le sous-marin est détruit (ou s'il n'y en a pas).
 
 Par défaut, chaque joueur possède un sonar à usage unique.
 
 ### C3 - Piège : Le trou noir
 
-Il se place comme un bâteau. Lorsqu'un joueur touche un trou noir, l'attaque a en réalité lieu sur sa propre grille, aux même coordonnées.
+Il se place comme un bateau. Lorsqu'un joueur touche un trou noir, l'attaque a en réalité lieu sur sa propre grille, aux même coordonnées.
 
 À noter :
 
-- le sonar considère que le trou noir est un bâteau
+- le sonar considère que le trou noir est un bateau
 - la bombe peut passer par le trou noir. Elle a alors l'effet de la bombe sur sa propre grille.
 
-Par défaut, chaque joueur possède un trou noir à placer en début de partie, après ses bâteaux.
+Par défaut, chaque joueur possède un trou noir à placer en début de partie, après ses bateaux.
 
 ### C4 - Piège : La tornade
 
-Elle se place comme un bâteau. Lorsque l'adversaire touche la tornade, ses 3 prochaines attaques auront leurs coordonnées modifiées, par exemple comme illustré ci-dessous :
+Elle se place comme un bateau. Lorsque l'adversaire touche la tornade, ses 3 prochaines attaques auront leurs coordonnées modifiées, par exemple comme illustré ci-dessous :
 
 ```bash
     6   7   8   9  10   1   2   3   4   5
@@ -131,11 +131,11 @@ Note :
 - le tir est consideré valide si la case initiale est valide, même si la nouvelle case de destination modifiée par la tornade a déjà été visée.
 - l'adversaire doit être informé de la case qu'il touche réellement, c'est-à-dire avec les coordonnées classiques.
 
-Par défaut, chaque joueur possède une tornade à placer en début de partie, après ses bâteaux.
+Par défaut, chaque joueur possède une tornade à placer en début de partie, après ses bateaux.
 
 ### C5 - Mode alternatif : L'île
 
-L'île est une zone de la grille de taille 4x4 (X) sur laquelle vont être cachées les armes spéciales décrites ci-dessus. Chaque joueur a donc le choix d'attaquer des bâteaux dans l'eau ou de fouiller l'île de l'adversaire pour trouver des armes.
+L'île est une zone de la grille de taille 4x4 (X) sur laquelle vont être cachées les armes spéciales décrites ci-dessus. Chaque joueur a donc le choix d'attaquer des bateaux dans l'eau ou de fouiller l'île de l'adversaire pour trouver des armes.
 
 ```bash
     1   2   3   4   5   6   7   8   9  10
@@ -164,8 +164,8 @@ J |   |   |   |   |   |   |   |   |   |   |
 
 À noter :
 
-- les bâteaux ne peuvent pas être placés sur l'île
-- on fouille l'île de la même manière que l'on lance un missile sur un bâteau
+- les bateaux ne peuvent pas être placés sur l'île
+- on fouille l'île de la même manière que l'on lance un missile sur un bateau
 - aucune des cases ciblées par la bombe ne doit se trouver sur l'île
 - le sonar ne peut pas être utilisé sur l'île
 - la tornade impacte aussi les fouilles sur l'île
@@ -183,19 +183,19 @@ Dans ce cadre, vous devez modéliser et implémenter les fonctionalités ci-dess
 - Niveau 1 : taille fixe de 10x10
 - Niveau 2 : taille paramétrable de 6x6 à 10x10
 
-### D2 - Le choix du nombre de bâteaux
+### D2 - Le choix du nombre de bateaux
 
-- Niveau 1 : nombre fixe de 1 bâteau de chaque type (comme dans les règles officielles)
-- Niveau 2 : possibilité de choisir 1 à 3 bâteaux de chaque type
-  - maximum de 35 cases bâteaux cumulées
+- Niveau 1 : nombre fixe de 1 bateau de chaque type (comme dans les règles officielles)
+- Niveau 2 : possibilité de choisir 1 à 3 bateaux de chaque type
+  - maximum de 35 cases bateaux cumulées
   - nombre qui impacte les 2 joueurs
 
-### D3 - Le placement des bâteaux de l'odinateur
+### D3 - Le placement des bateaux de l'ordinateur
 
 - Niveau 1 : de façon fixe
 - Niveau 2 : de façon aléatoire
 
-### D4 - Le placement des bâteaux du joueur humain
+### D4 - Le placement des bateaux du joueur humain
 
 - Niveau 1 : de façon fixe
 - Niveau 2 : de façon aléatoire
@@ -204,11 +204,11 @@ Dans ce cadre, vous devez modéliser et implémenter les fonctionalités ci-dess
 ### D5 - Les tirs de l'ordinateur
 
 - Niveau 1 : de façon aléatoire
-- Niveau 2 : en cherchant à couler un bâteau lorsqu'il le touche pour la première fois
+- Niveau 2 : en cherchant à couler un bateau lorsqu'il le touche pour la première fois
 
 ### D6 - La détection de la fin de partie
 
-Lorsqu'un joueur a coulé tous les bâteaux adverses
+Lorsqu'un joueur a coulé tous les bateaux adverses
 
 ### D7 - La possibilité de recommencer une partie après la fin d'une première partie
 
@@ -231,9 +231,9 @@ Missile, bombe, sonar.
 
 ### D10 - Le placement des pièges en début de partie
 
-- Niveau 1 : placés de façon fixe avant les bâteaux
-- Niveau 2 : placés de façon aléatoire après les bâteaux
-- Niveau 3 : placés manuellement par le joueur après les bâteaux
+- Niveau 1 : placés de façon fixe avant les bateaux
+- Niveau 2 : placés de façon aléatoire après les bateaux
+- Niveau 3 : placés manuellement par le joueur après les bateaux
 
 ### D11 - Le choix du mode île
 
@@ -243,7 +243,7 @@ Missile, bombe, sonar.
 ### D12 - Le placement des armes et pièges sur l'île
 
 - Niveau 1 : placement aléatoire
-- Niveau 2 : placement manuel après le placement des bâteaux
+- Niveau 2 : placement manuel après le placement des bateaux
 
 ### D13 - La visualisation de l'historique de tous les coups joués
 
@@ -258,7 +258,7 @@ E - L'interface graphique
 Votre application doit proposer 4 écrans :
 
 - un **écran de configuration** pour choisir les paramètres de la partie,
-- un **écran de placement** pour choisir l'emplacement des bâteaux et pièges du joueur humain,
+- un **écran de placement** pour choisir l'emplacement des bateaux et pièges du joueur humain,
 - un **écran principal** qui permet de jouer une partie,
 - un **écran de fin de partie**.
 
@@ -267,7 +267,7 @@ Votre application doit proposer 4 écrans :
 Il doit permettre de choisir :
 
 - la taille de la grille
-- le nombre de bâteaux de chaque type
+- le nombre de bateaux de chaque type
 - si le mode "Île" est activé
 
 Un bouton doit permettre de passer à l'écran de placement.
@@ -276,9 +276,9 @@ Un bouton doit permettre de passer à l'écran de placement.
 
 Il doit proposer au joueur humain :
 
-- un placement fixe intial (fonctionnalité [D4](#d4-le-placement-des-bâteaux-du-joueur-humain))
-- un bouton pour générer un nouveau placement aléatoire (si niveau 2 de la fonctionnalité [D4](#d4-le-placement-des-bâteaux-du-joueur-humain))
-- une façon ergonomique de placer ses différents bâteaux (si niveau 3 de la fonctionnalité [D4](#d4-le-placement-des-bâteaux-du-joueur-humain))
+- un placement fixe intial (fonctionnalité [D4](#d4-le-placement-des-bateaux-du-joueur-humain))
+- un bouton pour générer un nouveau placement aléatoire (si niveau 2 de la fonctionnalité [D4](#d4-le-placement-des-bateaux-du-joueur-humain))
+- une façon ergonomique de placer ses différents bateaux (si niveau 3 de la fonctionnalité [D4](#d4-le-placement-des-bateaux-du-joueur-humain))
 
 Un bouton doit permettre de démarrer la partie et passer à l'écran principal.
 
@@ -286,21 +286,21 @@ Un bouton doit permettre de démarrer la partie et passer à l'écran principal.
 
 L'écran principal doit afficher :
 
-- les grille du joueur humain avec ses bâteaux et la grille où le joueur humain va attaquer l'ordinateur
+- les grille du joueur humain avec ses bateaux et la grille où le joueur humain va attaquer l'ordinateur
 - le numéro du tour actuel (1 tour = 1 coup de chaque joueur)
 - Pour chaque joueur :
   - le dernier coup qu'il a joué
-  - le nombre de bâteaux intacts, touchés et coulés
+  - le nombre de bateaux intacts, touchés et coulés
   - le nombre de tirs effectués dans l'eau
-  - le nombre de cases de bâteaux qu'il a touché / le nombre de cases de bâteaux qu'il lui reste à toucher
+  - le nombre de cases de bateaux qu'il a touché / le nombre de cases de bateaux qu'il lui reste à toucher
   - la liste des armes et pièges qu'il a à sa disposition / qu'il a déjà utilisé
   - le nombre de cases de l'île qu'il lui reste à fouiller (si fonctionnalité [D11](#d11-le-choix-du-mode-île) implémentée)
 
 **La grille doit permettre de visualiser** s'il s'agit d'une case :
 
 - qui n'a pas encore été touchée
-- touchée d'un bâteau qui n'est pas coulé
-- touchée d'un bâteau qui est coulé
+- touchée d'un bateau qui n'est pas coulé
+- touchée d'un bateau qui est coulé
 - où les deux armes supplémentaires et les pièges ont été utilisé (si fonctionnalité [D8](#d8-lajout-des-armes-supplémentaires-et-pièges) implémentée)
 - de l'île non fouillée / fouillée mais vide / fouillée où il y avait une arme ou un piège (si fonctionnalité [D11](#d11-le-choix-du-mode-île) implémentée)
 

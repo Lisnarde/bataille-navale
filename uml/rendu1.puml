@@ -84,7 +84,7 @@ class Main {
 }
 
 Ship o--> "1\n- _rotation" Rotation : "> has for axis"
-Placeable o--> "1\n- #position" Position : "> has for coordinates"
+Placeable o--> "1\n- #_ position" Position : "> has for coordinates"
 Grid o--> "*\n- _placedObjects" Placeable : "> contains"
 Player o--> "1\n- _grid" Grid : "> has for grid"
 Player o--> "*\n- _weaponInventory" Weapon : "> can use theses weapons"

@@ -1,4 +1,4 @@
 package model.weapons;
 
-public class Weapon {
+public abstract class Weapon {
 }

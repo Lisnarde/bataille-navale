@@ -1,4 +1,4 @@
 package model;
 
-public class Impact {
+public class Impact extends Placeable{
 }

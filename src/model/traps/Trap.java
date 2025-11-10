@@ -1,4 +1,4 @@
 package model.traps;
 
-public class Trap {
+public abstract class Trap extends model.Placeable{
 }

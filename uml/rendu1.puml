@@ -1,0 +1,14 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+hide enum methods
+
+
+
+class Main {
+}
+
+
+
+@enduml

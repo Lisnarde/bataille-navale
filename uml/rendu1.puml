@@ -5,10 +5,89 @@ skinparam classFontStyle Bold
 hide enum methods
 
 
+package model {
+
+    class Game {
+    }
+
+    class Player {
+    }
+
+    class Grid {
+    }
+
+    package weapons #dfdf40 {
+    abstract Weapon <<abstract>> {
+    }
+    class Bomb extends Weapon {
+    }
+    class Missile extends Weapon {
+    }
+    class Sonar extends Weapon {
+    }
+    }
+
+
+    abstract Placeable <<abstract>> {
+        + getPosition() : Position
+        + setPosition(position : Position)
+    }
+
+    class Impact extends Placeable {
+    }
+
+    class Ship extends Placeable {
+        - _length : Integer
+        - _hitParts : Boolean[*]
+        + <<create>>Ship(position : Position, rotation : Rotation, length : Integer)
+        + getRotation() : Rotation
+        + getLength() : Integer
+        + getHitParts() : Boolean[*]
+        + isHitParts(position : Position) : Boolean
+        + isTheShipHere(position : Position) : Boolean
+        + isDead() : Boolean
+    }
+
+    package traps #ff4040 {
+    abstract Trap <<abstract>> extends model.Placeable {
+    }
+    class Tornado extends Trap {
+    }
+    class BlackHole extends Trap {
+    }
+    }
+
+    class Position {
+        - _x : Integer
+        - _y : Integer
+        + <<create>>Position(x : Integer, y : Integer)
+        + getX() : Integer
+        + getY() : Integer
+        + setX(x : Integer)
+        + setY(y : Integer)
+    }
+
+    enum Rotation <<enum>>{
+        HORIZONTAL_AXIS,
+        VERTICAL_AXIS
+    }
+}
+
+package controller {
+}
+
+package view {
+}
+
 
 class Main {
 }
 
-
+Ship o--> "1\n- _rotation" Rotation : "> has for axis"
+Placeable o--> "1\n- #position" Position : "> has for coordinates"
+Grid o--> "*\n- _placedObjects" Placeable : "> contains"
+Player o--> "1\n- _grid" Grid : "> has for grid"
+Player o--> "*\n- _weaponInventory" Weapon : "> can use theses weapons"
+Game o--> "2\n- _players" Player : "> has 2 players"
 
 @enduml

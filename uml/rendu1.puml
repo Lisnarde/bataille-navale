@@ -17,6 +17,8 @@ package model #eeaaff{
     class Player {
         - _name : String
         +<<create>>Player(name : String)
+        + getName() : String
+        + getGrid() : Grid
         + placeShip(ship : Ship)
         + shoot(cell : Cell, weapon : Weapon)
     }

@@ -199,7 +199,7 @@ Dans ce cadre, vous devez modéliser et implémenter les fonctionalités ci-dess
 
 - Niveau 1 : de façon fixe
 - Niveau 2 : de façon aléatoire
-- Niveau 3 : de façon personnalisée avec choix d'orientation et de position
+- Niveau 3 : de façon personnalisée avec choix d'orientation et de cell
 
 ### D5 - Les tirs de l'ordinateur
 

@@ -1,10 +1,10 @@
 package model;
 
-public class Position {
+public class Cell {
     private int _x;
     private int _y;
 
-    public Position(int x, int y) {
+    public Cell(int x, int y) {
         _x = x;
         _y = y;
     }

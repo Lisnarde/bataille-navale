@@ -5,8 +5,8 @@ public class Ship extends Placeable {
     private int _length;
     private Boolean[] _hitParts;
 
-    public Ship(Position position, Rotation rotation, int length) {
-        _position = position;
+    public Ship(Cell cell, Rotation rotation, int length) {
+        _cell = cell;
         _rotation = rotation;
         _length = length;
         _hitParts = new Boolean[_length];

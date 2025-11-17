@@ -1,13 +1,17 @@
 package model;
 
+import java.util.List;
+
 public abstract class Placeable{
-    protected Cell _cell;
-    public Cell getPosition(){
-        return _cell;
+    private PlaceableTypes _type;
+
+
+
+    public List<Cell> getCells() {
+        return null;
     }
 
-    public void setPosition(Cell cell){
-        _cell.setX(cell.getX());
-        _cell.setY(cell.getY());
+    public PlaceableTypes getType() {
+        return _type;
     }
 }

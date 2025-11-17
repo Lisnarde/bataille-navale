@@ -5,15 +5,31 @@ skinparam classFontStyle Bold
 hide enum methods
 
 
-package model {
+package model #eeaaff{
 
     class Game {
+        - turnNum : Integer
+        +<<create>>Game()
+        + setPlayerName(name : String)
+        + setGrid(width : Integer, height : Integer, islandMode : Boolean)
     }
 
     class Player {
+        - _name : String
+        +<<create>>Player(name : String)
+        + placeShip(ship : Ship)
+        + shoot(cell : Cell, weapon : Weapon)
     }
 
     class Grid {
+        - _width : Integer
+        - _height : Integer
+        +<<create>>Grid(width : Integer, height : Integer)
+        + isOccupied(cell : Cell) : Boolean
+        + isHit(cell : Cell) : Boolean
+        + placeObject(placeable : Placeable)
+        + placeImpact(cell : Cell)
+        + shoot(cell : Cell, weapon : Weapon)
     }
 
     package weapons #dfdf40 {
@@ -27,67 +43,79 @@ package model {
     }
     }
 
-
+    enum PlaceableTypes {
+        SHIP
+        TRAP
+        IMPACT
+    }
     abstract Placeable <<abstract>> {
-        + getPosition() : Position
-        + setPosition(position : Position)
+        + getCells() : Cell[*]
+        + getType() : PlaceableTypes
     }
 
     class Impact extends Placeable {
+        +<<create>>Impact(cell : Cell)
+        + getCells() : Cell[1]
     }
 
     class Ship extends Placeable {
-        - _length : Integer
-        - _hitParts : Boolean[*]
-        + <<create>>Ship(position : Position, rotation : Rotation, length : Integer)
-        + getRotation() : Rotation
+        + <<create>>Ship(positions : Cell[])
+        + getCells() : Cell[*]
         + getLength() : Integer
         + getHitParts() : Boolean[*]
-        + isHitParts(position : Position) : Boolean
-        + isTheShipHere(position : Position) : Boolean
+        + isHitParts(position : Cell) : Boolean
+        + isTheShipHere(position : Cell) : Boolean
         + isDead() : Boolean
     }
 
     package traps #ff4040 {
     abstract Trap <<abstract>> extends model.Placeable {
+        +<<create>>Trap(cell : Cell)
+        + getCells() : Cell[1]
     }
     class Tornado extends Trap {
+        +<<create>>Tornado(cell : Cell)
     }
     class BlackHole extends Trap {
+        +<<create>>BlackHole(cell : Cell)
     }
     }
 
-    class Position {
+    class Cell {
         - _x : Integer
         - _y : Integer
-        + <<create>>Position(x : Integer, y : Integer)
+        - _hit : Boolean
+        + <<create>>Cell(x : Integer, y : Integer)
         + getX() : Integer
         + getY() : Integer
         + setX(x : Integer)
         + setY(y : Integer)
+        + isHit() : Boolean
+        + setHit()
     }
 
-    enum Rotation <<enum>>{
-        HORIZONTAL_AXIS,
-        VERTICAL_AXIS
-    }
+
 }
 
-package controller {
+package controller #6999ff {
 }
 
-package view {
+package view #99ff99 {
 }
 
 
 class Main {
 }
 
-Ship o--> "1\n- _rotation" Rotation : "> has for axis"
-Placeable o--> "1\n- #_ position" Position : "> has for coordinates"
+Placeable *--> "1\n- _type" PlaceableTypes : "> has for type"
+
+Ship o--> "*\n- #_ positions" Cell : "> has for coordinates"
+Impact o--> "1\n- #_ position" Cell : "> has for coordinates"
+Trap o--> "1\n- #_ position" Cell : "> has for coordinates"
+
 Grid o--> "*\n- _placedObjects" Placeable : "> contains"
 Player o--> "1\n- _grid" Grid : "> has for grid"
 Player o--> "*\n- _weaponInventory" Weapon : "> can use theses weapons"
-Game o--> "2\n- _players" Player : "> has 2 players"
+Game *--> "2\n- _players" Player : "> has 2 players"
 
 @enduml

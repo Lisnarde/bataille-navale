@@ -38,10 +38,16 @@ package model #eeaaff{
     abstract Weapon <<abstract>> {
     }
     class Bomb extends Weapon {
+        +<<create>>Bomb()
+        + execShoot(grid : Grid)
     }
     class Missile extends Weapon {
+        +<<create>>Missile()
+        + execShoot(grid : Grid)
     }
     class Sonar extends Weapon {
+        +<<create>>Sonar()
+        + execShoot(grid : Grid)
     }
     }
 

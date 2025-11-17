@@ -1,24 +1,38 @@
 package model;
 
+import java.util.List;
+
 public class Ship extends Placeable {
-    private Rotation _rotation;
-    private int _length;
-    private Boolean[] _hitParts;
+    private List<Cell> _positions;
 
-    public Ship(Cell cell, Rotation rotation, int length) {
-        _cell = cell;
-        _rotation = rotation;
-        _length = length;
-        _hitParts = new Boolean[_length];
-        for (int i=0; i<_length; i++) {
-            _hitParts[i] = false;
-        }
+    public Ship(List<Cell> cells) {
+        _positions = cells;
     }
 
-    public Rotation getRotation() {
-        return _rotation;
+    @Override
+    public List<Cell> getCells() {
+        return _positions;
     }
+
     public int getLength() {
-        return _length;
+        return _positions.size();
+    }
+
+    public boolean isTheShipHere(Cell position) {
+        for (Cell cell : _positions) {
+            if (cell.equals(position)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isHitPart(Cell position) {
+        for (Cell cell : _positions) {
+            if (cell.equals(position) && cell.isHit()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -12,6 +12,7 @@ package model #eeaaff{
         +<<create>>Game()
         + setPlayerName(name : String)
         + setGrid(width : Integer, height : Integer, islandMode : Boolean)
+        + isTheGameFinished() : Boolean
     }
 
     class Player {
@@ -32,10 +33,14 @@ package model #eeaaff{
         + placeObject(placeable : Placeable)
         + placeImpact(cell : Cell)
         + shoot(cell : Cell, weapon : Weapon)
+        + isThereAliveShips() : Boolean
     }
 
     package weapons #dfdf40 {
-    abstract Weapon <<abstract>> {
+    abstract Weapon <<abstract>> extends model.Placeable {
+        + <<create>>Weapon()
+        + getCells() : Cell[1]
+        + setPosition(cell : Cell)
     }
     class Bomb extends Weapon {
         +<<create>>Bomb()
@@ -64,6 +69,14 @@ package model #eeaaff{
     class Impact extends Placeable {
         +<<create>>Impact(cell : Cell)
         + getCells() : Cell[1]
+    }
+
+    class IslandPart extends Placeable{
+        + <<create>>Island(cell : Cell)
+        + getCells() : Cell[1]
+        + isThereAnObject() : Boolean
+        + getPlacedObject() : Placeable
+        + setPlacedObject(placeable : Placeable)
     }
 
     class Ship extends Placeable {
@@ -105,20 +118,32 @@ package model #eeaaff{
 }
 
 package controller #6999ff {
+    class GameController {
+    }
 }
 
 package view #99ff99 {
+    class TerminalView {
+    }
+
+    class GraphicalView {
+    }
 }
 
 
 class Main {
 }
 
-Placeable *--> "1\n- _type" PlaceableTypes : "> has for type"
+Placeable *-l-> "1\n- _type" PlaceableTypes : "> has for type"
 
-Ship o--> "*\n- #_ positions" Cell : "> has for coordinates"
-Impact o--> "1\n- #_ position" Cell : "> has for coordinates"
-Trap o--> "1\n- #_ position" Cell : "> has for coordinates"
+Ship o--> "*\n- _positions" Cell : "> has for coordinates"
+Impact o--> "1\n- _position" Cell : "> has for coordinates"
+Trap o--> "1\n# _position" Cell : "> has for coordinates"
+IslandPart o--> "1\n- _position" Cell : "> has for coordinates"
+Weapon o--> "1\n# _position" Cell : "> has for coordinates"
+
+IslandPart o--> "1\n- _placedObject" Placeable : "> stock a placeable"
+
 
 Grid o--> "*\n- _placedObjects" Placeable : "> contains"
 Player o--> "1\n- _grid" Grid : "> has for grid"

@@ -2,6 +2,7 @@
 skinparam style strictuml
 skinparam classAttributeIconSize 0
 skinparam classFontStyle Bold
+skinparam linetype ortho
 hide enum methods
 
 
@@ -21,7 +22,7 @@ package model #eeaaff{
         + getName() : String
         + getGrid() : Grid
         + placeShip(ship : Ship)
-        + shoot(cell : Cell, weapon : Weapon)
+        + shoot(grid : Grid, cell : Cell, weapon : Weapon)
     }
 
     class Grid {
@@ -36,30 +37,13 @@ package model #eeaaff{
         + isThereAliveShips() : Boolean
     }
 
-    package weapons #dfdf40 {
-    abstract Weapon <<abstract>> extends model.Placeable {
-        + <<create>>Weapon()
-        + getCells() : Cell[1]
-        + setPosition(cell : Cell)
-    }
-    class Bomb extends Weapon {
-        +<<create>>Bomb()
-        + execShoot(grid : Grid)
-    }
-    class Missile extends Weapon {
-        +<<create>>Missile()
-        + execShoot(grid : Grid)
-    }
-    class Sonar extends Weapon {
-        +<<create>>Sonar()
-        + execShoot(grid : Grid)
-    }
-    }
 
     enum PlaceableTypes {
         SHIP
         TRAP
         IMPACT
+        ISLANDPART
+        WEAPON
     }
     abstract Placeable <<abstract>> {
         + getCells() : Cell[*]
@@ -100,6 +84,28 @@ package model #eeaaff{
         +<<create>>BlackHole(cell : Cell)
     }
     }
+
+    package weapons #dfdf40 {
+        abstract Weapon <<abstract>> extends model.Placeable {
+            + <<create>>Weapon()
+            + getCells() : Cell[1]
+            + setPosition(cell : Cell)
+            + execShoot(grid : Grid, cell : Cell)
+
+        }
+        class Bomb extends Weapon {
+            +<<create>>Bomb()
+            + execShoot(grid : Grid, cell : Cell)
+        }
+        class Missile extends Weapon {
+            +<<create>>Missile()
+            + execShoot(grid : Grid, cell : Cell)
+        }
+        class Sonar extends Weapon {
+            +<<create>>Sonar()
+            + execShoot(grid : Grid, cell : Cell)
+        }
+        }
 
     class Cell {
         - _x : Integer
@@ -148,6 +154,16 @@ IslandPart o--> "1\n- _placedObject" Placeable : "> stock a placeable"
 Grid o--> "*\n- _placedObjects" Placeable : "> contains"
 Player o--> "1\n- _grid" Grid : "> has for grid"
 Player o--> "*\n- _weaponInventory" Weapon : "> can use theses weapons"
+Player o--> "1\n- _equippedWeapon" Weapon : "> has this strategy of attack"
 Game *--> "2\n- _players" Player : "> has 2 players"
+
+GameController o--> "1\n- _model" Game : "> Manipulate"
+TerminalView o--> "1\n- _model" Game : "> Consult"
+TerminalView o--> "1\n- _controller" GameController : "> Transmit user's demands"
+
+Main ..> Game : "<<uses>>"
+Main ..> GameController : "<<uses>>"
+Main ..> TerminalView : "<<uses>>"
+
 
 @enduml

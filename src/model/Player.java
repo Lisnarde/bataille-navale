@@ -21,7 +21,7 @@ public class Player {
         _grid.placeObject(ship);
     }
 
-    public void shoot(Cell cell, Weapon weapon) {
-        Grid.shoot(cell,weapon);
+    public void shoot(Grid grid, Cell cell, Weapon weapon) {
+        grid.shoot(cell,weapon);
     }
 }

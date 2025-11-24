@@ -16,11 +16,23 @@ public class Grid {
         _placedObjects = new ArrayList<>();
     }
 
-    public Boolean isOccupied(Cell cell){
+    public boolean isOccupied(Cell cell){
         for (Placeable p : _placedObjects){
             for (Cell c : p.getCells()){
                 if (c.equals(cell)){
                     return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean isOccupiedBy(Cell cell, PlaceableTypes type) {
+        for (Placeable p : _placedObjects){
+            if (p.getType() == type) {
+                for (Cell c : p.getCells()) {
+                    if (c.equals(cell)) {
+                        return true;
+                    }
                 }
             }
         }

@@ -1,4 +1,6 @@
 package model.weapons;
 
-public abstract class Weapon {
+import model.Placeable;
+
+public abstract class Weapon extends Placeable {
 }

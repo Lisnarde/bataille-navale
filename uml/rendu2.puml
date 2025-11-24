@@ -9,7 +9,7 @@ hide enum methods
 package model #eeaaff{
 
     class Game {
-        - turnNum : Integer
+        - _turnNum : Integer
         +<<create>>Game()
         + setPlayerName(name : String)
         + setGrid(width : Integer, height : Integer, islandMode : Boolean)
@@ -46,7 +46,9 @@ package model #eeaaff{
         WEAPON
     }
     abstract Placeable <<abstract>> {
-        + getCells() : Cell[*]
+        + getSize() : Integer
+        + getCell(index : Integer) : Cell
+        + hasThisPosition(cell : Cell) : Boolean
         + getType() : PlaceableTypes
     }
     class PlaceableFactory {
@@ -63,12 +65,16 @@ package model #eeaaff{
 
     class Impact extends Placeable {
         +<<create>>Impact(cell : Cell)
-        + getCells() : Cell[1]
+        + getSize() : Integer
+        + getCell(index : Integer) : Cell
+        + hasThisPosition(cell : Cell) : Boolean
     }
 
     class IslandPart extends Placeable{
         + <<create>>Island(cell : Cell)
-        + getCells() : Cell[1]
+        + getSize() : Integer
+        + getCell(index : Integer) : Cell
+        + hasThisPosition(cell : Cell) : Boolean
         + isThereAnObject() : Boolean
         + getPlacedObject() : Placeable
         + setPlacedObject(placeable : Placeable)
@@ -76,9 +82,9 @@ package model #eeaaff{
 
     class Ship extends Placeable {
         + <<create>>Ship(positions : Cell[])
-        + getCells() : Cell[*]
-        + getLength() : Integer
-        + isTheShipHere(position : Cell) : Boolean
+        + getSize() : Integer
+        + getCell(index : Integer) : Cell
+        + hasThisPosition(cell : Cell) : Boolean
         + isHitPart(position : Cell) : Boolean
         + isDead() : Boolean
     }
@@ -86,7 +92,9 @@ package model #eeaaff{
     package traps #ff4040 {
     abstract Trap <<abstract>> extends model.Placeable {
         +<<create>>Trap(cell : Cell)
-        + getCells() : Cell[1]
+        + getSize() : Integer
+        + getCell(index : Integer) : Cell
+        + hasThisPosition(cell : Cell) : Boolean
     }
     class Tornado extends Trap {
         +<<create>>Tornado(cell : Cell)
@@ -99,7 +107,9 @@ package model #eeaaff{
     package weapons #dfdf40 {
         abstract Weapon <<abstract>> extends model.Placeable {
             + <<create>>Weapon()
-            + getCells() : Cell[1]
+            + getSize() : Integer
+            + getCell(index : Integer) : Cell
+            + hasThisPosition(cell : Cell) : Boolean
             + setPosition(cell : Cell)
             + execShoot(grid : Grid, cell : Cell)
 

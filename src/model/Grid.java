@@ -18,22 +18,16 @@ public class Grid {
 
     public boolean isOccupied(Cell cell){
         for (Placeable p : _placedObjects){
-            for (Cell c : p.getCells()){
-                if (c.equals(cell)){
-                    return true;
-                }
+            if (p.hasThisPosition(cell)){
+                return true;
             }
         }
         return false;
     }
     public boolean isOccupiedBy(Cell cell, PlaceableTypes type) {
         for (Placeable p : _placedObjects){
-            if (p.getType() == type) {
-                for (Cell c : p.getCells()) {
-                    if (c.equals(cell)) {
-                        return true;
-                    }
-                }
+            if (p.getType() == type && p.hasThisPosition(cell)) {
+                return true;
             }
         }
         return false;

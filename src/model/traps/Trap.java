@@ -1,13 +1,14 @@
 package model.traps;
 
 import model.Cell;
+import model.PlaceableTypes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
-public abstract class Trap extends model.Placeable{
+public abstract class Trap implements model.Placeable{
 
     private Cell _position;
 
@@ -16,7 +17,15 @@ public abstract class Trap extends model.Placeable{
     }
 
     @Override
-    public List<Cell> getCells(){
-        return new ArrayList<>(Arrays.asList(_position));
+    public int getSize() {return 1;}
+    @Override
+    public Cell getCell(int index) {return _position;}
+    @Override
+    public boolean hasThisPosition(Cell cell) {
+        return _position.equals(cell);
+    }
+    @Override
+    public PlaceableTypes getType() {
+        return PlaceableTypes.TRAP;
     }
 }

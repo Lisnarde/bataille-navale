@@ -49,6 +49,14 @@ package model #eeaaff{
         + getCells() : Cell[*]
         + getType() : PlaceableTypes
     }
+    class PlaceableFactory {
+        +<<create>>PlaceableFactory()
+        + createShip(positions : Cell[])
+        + createTrap(cell : Cell)
+        + createImpact(cell : Cell)
+        + createIslandPart(cell : Cell)
+        + createWeapon()
+    }
 
     class Impact extends Placeable {
         +<<create>>Impact(cell : Cell)
@@ -141,6 +149,12 @@ class Main {
 }
 
 Placeable *-l-> "1\n- _type" PlaceableTypes : "> has for type"
+PlaceableFactory ..> Placeable : "<<uses>>"
+PlaceableFactory ..> Weapon : "<<create>>"
+PlaceableFactory ..> Impact : "<<create>>"
+PlaceableFactory ..> IslandPart : "<<create>>"
+PlaceableFactory ..> Trap : "<<create>>"
+PlaceableFactory ..> Ship : "<<create>>"
 
 Ship o--> "*\n- _positions" Cell : "> has for coordinates"
 Impact o--> "1\n- _position" Cell : "> has for coordinates"

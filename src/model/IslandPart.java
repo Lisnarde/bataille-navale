@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class IslandPart extends Placeable{
-    protected Cell _position;
+    private Cell _position;
 
-    protected Placeable _placedObject;
+    private Placeable _placedObject;
 
     public IslandPart(Cell cell) {
         _position = new Cell(cell);

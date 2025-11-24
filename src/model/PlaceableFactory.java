@@ -26,7 +26,7 @@ public class PlaceableFactory {
     }
 
     public Placeable createIslandPart(Cell cell){
-        return new IslandPart();
+        return new IslandPart(cell);
     }
 
     public Placeable createWeaponBomb(){

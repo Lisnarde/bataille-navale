@@ -28,13 +28,4 @@ public class Ship implements Placeable {
     }
     @Override
     public PlaceableTypes getType() {return PlaceableTypes.SHIP;}
-
-    public boolean isHitPart(Cell position) {
-        for (Cell cell : _positions) {
-            if (cell.equals(position) && cell.isHit()) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

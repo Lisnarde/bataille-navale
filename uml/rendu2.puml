@@ -14,6 +14,7 @@ package model #eeaaff{
         + setPlayerName(name : String)
         + setGrid(width : Integer, height : Integer, islandMode : Boolean)
         + isTheGameFinished() : Boolean
+        + whoWon() : Player
     }
 
     class Player {
@@ -23,6 +24,7 @@ package model #eeaaff{
         + getGrid() : Grid
         + placeShip(ship : Ship)
         + shoot(grid : Grid, cell : Cell)
+        + hasNoMoreShips() : Boolean
     }
 
     class Grid {
@@ -35,6 +37,7 @@ package model #eeaaff{
         + placeImpact(cell : Cell)
         + shoot(cell : Cell, weapon : Weapon)
         + isThereAliveShips() : Boolean
+        + allShipsDead() : Boolean
     }
 
 
@@ -85,8 +88,6 @@ package model #eeaaff{
         + getSize() : Integer
         + getCell(index : Integer) : Cell
         + hasThisPosition(cell : Cell) : Boolean
-        + isHitPart(position : Cell) : Boolean
-        + isDead() : Boolean
     }
 
     package traps #ff4040 {
@@ -131,14 +132,11 @@ package model #eeaaff{
     class Cell {
         - _x : Integer
         - _y : Integer
-        - _hit : Boolean
         + <<create>>Cell(x : Integer, y : Integer)
         + getX() : Integer
         + getY() : Integer
         + setX(x : Integer)
         + setY(y : Integer)
-        + isHit() : Boolean
-        + setHit()
     }
 
 

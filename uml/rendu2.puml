@@ -22,7 +22,7 @@ package model #eeaaff{
         + getName() : String
         + getGrid() : Grid
         + placeShip(ship : Ship)
-        + shoot(grid : Grid, cell : Cell, weapon : Weapon)
+        + shoot(grid : Grid, cell : Cell)
     }
 
     class Grid {
@@ -52,10 +52,13 @@ package model #eeaaff{
     class PlaceableFactory {
         +<<create>>PlaceableFactory()
         + createShip(positions : Cell[])
-        + createTrap(cell : Cell)
         + createImpact(cell : Cell)
         + createIslandPart(cell : Cell)
-        + createWeapon()
+        + createWeaponBomb()
+        + createWeaponMissile()
+        + createWeaponSonar()
+        + createTrapTornado(cell : Cell)
+        + createTrapBlackHole(cell : Cell)
     }
 
     class Impact extends Placeable {
@@ -150,11 +153,14 @@ class Main {
 
 Placeable *-l-> "1\n- _type" PlaceableTypes : "> has for type"
 PlaceableFactory ..> Placeable : "<<uses>>"
-PlaceableFactory ..> Weapon : "<<create>>"
 PlaceableFactory ..> Impact : "<<create>>"
 PlaceableFactory ..> IslandPart : "<<create>>"
-PlaceableFactory ..> Trap : "<<create>>"
 PlaceableFactory ..> Ship : "<<create>>"
+PlaceableFactory ..> Bomb : "<<create>>"
+PlaceableFactory ..> Missile : "<<create>>"
+PlaceableFactory ..> Sonar : "<<create>>"
+PlaceableFactory ..> Tornado : "<<create>>"
+PlaceableFactory ..> BlackHole : "<<create>>"
 
 Ship o--> "*\n- _positions" Cell : "> has for coordinates"
 Impact o--> "1\n- _position" Cell : "> has for coordinates"

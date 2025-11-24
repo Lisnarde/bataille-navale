@@ -176,7 +176,6 @@ Ship o--> "*\n- _positions" Cell : "> has for coordinates"
 Impact o--> "1\n- _position" Cell : "> has for coordinates"
 Trap o--> "1\n# _position" Cell : "> has for coordinates"
 IslandPart o--> "1\n- _position" Cell : "> has for coordinates"
-Weapon o--> "1\n# _position" Cell : "> has for coordinates"
 
 IslandPart o--> "1\n- _placedObject" Placeable : "> stock a placeable"
 

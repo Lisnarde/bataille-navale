@@ -48,4 +48,18 @@ public class Grid {
     public void shoot(Cell cell, Weapon weapon){
 
     }
+
+    public boolean allShipsDead() {
+        for (Placeable p: _placedObjects) {
+            if (p.getType() == PlaceableTypes.SHIP) {
+                Ship ship = (Ship)p;
+                for (int i=0; i< ship.getSize(); i++) {
+                    if (!isOccupiedBy(ship.getCell(i),PlaceableTypes.IMPACT)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }

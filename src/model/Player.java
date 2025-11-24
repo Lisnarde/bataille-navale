@@ -34,4 +34,8 @@ public class Player {
     public Weapon getEquippedWeapon() {
         return _equippedWeapon;
     }
+
+    public boolean hasNoMoreShips() {
+        return _grid.allShipsDead();
+    }
 }

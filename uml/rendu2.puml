@@ -45,7 +45,7 @@ package model #eeaaff{
         ISLANDPART
         WEAPON
     }
-    abstract Placeable <<abstract>> {
+    interface Placeable <<interface>> {
         + getSize() : Integer
         + getCell(index : Integer) : Cell
         + hasThisPosition(cell : Cell) : Boolean
@@ -63,14 +63,14 @@ package model #eeaaff{
         + createTrapBlackHole(cell : Cell)
     }
 
-    class Impact extends Placeable {
+    class Impact implements Placeable {
         +<<create>>Impact(cell : Cell)
         + getSize() : Integer
         + getCell(index : Integer) : Cell
         + hasThisPosition(cell : Cell) : Boolean
     }
 
-    class IslandPart extends Placeable{
+    class IslandPart implements Placeable{
         + <<create>>Island(cell : Cell)
         + getSize() : Integer
         + getCell(index : Integer) : Cell
@@ -80,7 +80,7 @@ package model #eeaaff{
         + setPlacedObject(placeable : Placeable)
     }
 
-    class Ship extends Placeable {
+    class Ship implements Placeable {
         + <<create>>Ship(positions : Cell[])
         + getSize() : Integer
         + getCell(index : Integer) : Cell
@@ -90,7 +90,7 @@ package model #eeaaff{
     }
 
     package traps #ff4040 {
-    abstract Trap <<abstract>> extends model.Placeable {
+    abstract Trap <<abstract>> implements model.Placeable {
         +<<create>>Trap(cell : Cell)
         + getSize() : Integer
         + getCell(index : Integer) : Cell
@@ -105,7 +105,7 @@ package model #eeaaff{
     }
 
     package weapons #dfdf40 {
-        abstract Weapon <<abstract>> extends model.Placeable {
+        abstract Weapon <<abstract>> implements model.Placeable {
             + <<create>>Weapon()
             + getSize() : Integer
             + getCell(index : Integer) : Cell
@@ -161,7 +161,12 @@ package view #99ff99 {
 class Main {
 }
 
-Placeable *-l-> "1\n- _type" PlaceableTypes : "> has for type"
+Weapon ..> PlaceableTypes : "<<uses>>"
+Trap ..> PlaceableTypes : "<<uses>>"
+Impact ..> PlaceableTypes : "<<uses>>"
+Ship ..> PlaceableTypes : "<<uses>>"
+IslandPart ..> PlaceableTypes : "<<uses>>"
+
 PlaceableFactory ..> Placeable : "<<uses>>"
 PlaceableFactory ..> Impact : "<<create>>"
 PlaceableFactory ..> IslandPart : "<<create>>"

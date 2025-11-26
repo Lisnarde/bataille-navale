@@ -10,11 +10,19 @@ package model #eeaaff{
 
     class Game {
         - _turnNum : Integer
+        - _gridSize() : Integer
         +<<create>>Game()
         + setPlayerName(name : String)
         + setGrid(width : Integer, height : Integer, islandMode : Boolean)
+        + getGridSize() : Integer
+        + placeShipOnGrid(type : ShipTypes, x : Integer, y : Integer, axis : Axis) : Boolean
         + isTheGameFinished() : Boolean
         + whoWon() : Player
+    }
+
+    enum Axis <<enum>>{
+        VERTICAL
+        HORIZONTAL
     }
 
     class Player {
@@ -41,7 +49,7 @@ package model #eeaaff{
     }
 
 
-    enum PlaceableTypes {
+    enum PlaceableTypes <<enum>>{
         SHIP
         TRAP
         IMPACT
@@ -88,6 +96,20 @@ package model #eeaaff{
         + getSize() : Integer
         + getCell(index : Integer) : Cell
         + hasThisPosition(cell : Cell) : Boolean
+    }
+    class ShipFactory {
+        + createAircraftCarrier() : Ship
+        + createCruiser() : Ship
+        + createDestroyer() : Ship
+        + createSubmarine() : Ship
+        + createTorpedo() : Ship
+    }
+    enum ShipTypes <<enum>>{
+        AircraftCarrier
+        Cruiser
+        Destroyer
+        Submarine
+        Torpedo
     }
 
     package traps #ff4040 {
@@ -174,6 +196,9 @@ PlaceableFactory ..> Missile : "<<create>>"
 PlaceableFactory ..> Sonar : "<<create>>"
 PlaceableFactory ..> Tornado : "<<create>>"
 PlaceableFactory ..> BlackHole : "<<create>>"
+
+ShipFactory ..> Ship : "<<create>>"
+Ship o--> "1\n- _type" ShipTypes : "> is this type of ship"
 
 Ship o--> "*\n- _positions" Cell : "> has for coordinates"
 Impact o--> "1\n- _position" Cell : "> has for coordinates"

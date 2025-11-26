@@ -34,7 +34,7 @@ public class Grid {
     }
 
     public Boolean isHit(Cell cell){
-        return cell.isHit();
+        return isOccupiedBy(cell, PlaceableTypes.IMPACT);
     }
 
     public void placeObject(Placeable placeable){

@@ -10,12 +10,13 @@ package model #eeaaff{
 
     class Game {
         - _turnNum : Integer
-        - _gridSize() : Integer
+        - _gridSize : Integer
         +<<create>>Game()
         + setPlayerName(name : String)
         + setGrid(width : Integer, height : Integer, islandMode : Boolean)
         + getGridSize() : Integer
-        + placeShipOnGrid(type : ShipTypes, x : Integer, y : Integer, axis : Axis) : Boolean
+        + placeTrapOnGrid(joueur : Integer, trap : Trap) : Boolean
+        + placeShipOnGrid(joueur : Integer, ship : Ship) : Boolean
         + isTheGameFinished() : Boolean
         + whoWon() : Player
     }
@@ -27,11 +28,13 @@ package model #eeaaff{
 
     class Player {
         - _name : String
-        +<<create>>Player(name : String)
+        +<<create>>Player(name : String, grid : Grid)
         + getName() : String
         + getGrid() : Grid
-        + placeShip(ship : Ship)
-        + shoot(grid : Grid, cell : Cell)
+        + setGrid(grid : Grid)
+        + placeTrap(trap : Trap) : Boolean
+        + placeShip(ship : Ship) : Boolean
+        + shoot(otherPlayer : Player, cell : Cell) : Boolean
         + hasNoMoreShips() : Boolean
     }
 
@@ -41,9 +44,10 @@ package model #eeaaff{
         +<<create>>Grid(width : Integer, height : Integer)
         + isOccupied(cell : Cell) : Boolean
         + isHit(cell : Cell) : Boolean
-        + placeObject(placeable : Placeable)
-        + placeImpact(cell : Cell)
-        + shoot(cell : Cell, weapon : Weapon)
+        + canPlaceObject(placeable : Placeable) : Boolean
+        + placeObject(placeable : Placeable) : Boolean
+        + placeImpact(cell : Cell) : Boolean
+        + shoot(cell : Cell, weapon : Weapon) : Boolean
         + isThereAliveShips() : Boolean
         + allShipsDead() : Boolean
     }
@@ -168,6 +172,10 @@ package model #eeaaff{
 
 package controller #6999ff {
     class GameController {
+        + <<create>>GameController(model : Game)
+        + setPlayerName(name : String)
+        + setGrid(width : Integer, height : Integer, islandMode : Boolean)
+        + placeShipOnGrid(joueur : Integer, type : ShipTypes, x : Integer, y : Integer, axis : Axis)
     }
 }
 

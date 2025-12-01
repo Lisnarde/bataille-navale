@@ -1,4 +1,4 @@
-package view;
+/*package view;
 
 import model.Game;
 import model.PlaceableTypes;
@@ -165,3 +165,4 @@ public class TerminalView {
      */
 
 }
+*/

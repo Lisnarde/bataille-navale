@@ -1,5 +1,6 @@
 package model;
 
+import model.traps.Trap;
 import model.weapons.Weapon;
 
 public class Player {
@@ -19,13 +20,18 @@ public class Player {
     public Grid getGrid() {
         return _grid;
     }
+    public void setGrid(Grid grid) {_grid=grid;}
 
-    public void placeShip(Ship ship) {
-        _grid.placeObject(ship);
+    public boolean placeShip(Ship ship) {
+        return _grid.placeObject(ship);
     }
 
-    public void shoot(Grid grid, Cell cell) {
-        grid.shoot(cell,_equippedWeapon);
+    public boolean placeTrap(Trap trap) {
+        return _grid.placeObject(trap);
+    }
+
+    public boolean shoot(Player otherPlayer, Cell cell) {
+        return otherPlayer._grid.shoot(cell,_equippedWeapon);
     }
 
     public void setEquippedWeapon(Weapon weapon) {

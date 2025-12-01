@@ -1,5 +1,9 @@
 package model;
 
+import model.traps.*;
+
+import java.util.List;
+
 public class Game {
     private int _turnNum;
     private int _gridSize;
@@ -13,16 +17,29 @@ public class Game {
     }
 
     public void setGrid(int size, boolean islandMode) {
-        Grid grid = new Grid(size, size);
-        _gridSize = size;
+        if (islandMode) {
+
+        }
+        _players[0].setGrid(new Grid(size, size));
+        _players[1].setGrid(new Grid(size, size));
     }
 
     public int getGridSize() {return _gridSize;}
+    public int otherPlayer(int joueur) {return (joueur+1)%2;}
 
 
-    public boolean placeShipOnGrid() {
-        return false;
+    public boolean placeTrapOnGrid(int joueur, Trap trap) {
+        return _players[joueur].placeTrap(trap);
     }
+
+    public boolean placeShipOnGrid(int joueur, Ship ship) {
+        return _players[joueur].placeShip(ship);
+    }
+
+    public boolean shootOnGrid(int joueur, Cell cell) {
+        return _players[joueur].shoot(_players[otherPlayer(joueur)],cell);
+    }
+
 
 
     public Boolean isTheGameFinished() {

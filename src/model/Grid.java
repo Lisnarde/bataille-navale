@@ -16,9 +16,10 @@ public class Grid {
         _placedObjects = new ArrayList<>();
     }
 
+
     public boolean isOccupied(Cell cell){
         for (Placeable p : _placedObjects){
-            if (p.hasThisPosition(cell)){
+            if (p.getType()!=PlaceableTypes.IMPACT && p.hasThisPosition(cell)){
                 return true;
             }
         }
@@ -37,16 +38,33 @@ public class Grid {
         return isOccupiedBy(cell, PlaceableTypes.IMPACT);
     }
 
-    public void placeObject(Placeable placeable){
-        _placedObjects.add(placeable);
+    public boolean canPlaceObject(Placeable placeable) {
+        for (int i=0; i< placeable.getSize(); i++) {
+            if (isOccupied(placeable.getCell(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public void placeImpact(Cell cell){
-        _placedObjects.add(new Impact(cell));
+    public boolean placeObject(Placeable placeable){
+        if (canPlaceObject(placeable)) {
+            _placedObjects.add(placeable);
+            return true;
+        }
+        return false;
     }
 
-    public void shoot(Cell cell, Weapon weapon){
+    public boolean placeImpact(Cell cell){
+        if (!isOccupiedBy(cell,PlaceableTypes.IMPACT)) {
+            _placedObjects.add(new Impact(cell));
+            return true;
+        }
+        return false;
+    }
 
+    public boolean shoot(Cell cell, Weapon weapon){
+        return false;
     }
 
     public boolean allShipsDead() {

@@ -6,6 +6,7 @@ import model.PlaceableTypes;
 import java.util.Scanner;
 
 public class TerminalView {
+    /*
     private Game _model;
     private GameController _controller;
 
@@ -160,5 +161,7 @@ public class TerminalView {
 
 
     }
+
+     */
 
 }

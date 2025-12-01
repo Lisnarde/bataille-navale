@@ -161,6 +161,8 @@ package model #eeaaff{
         + setY(y : Integer)
     }
 
+    interface GridObserver <<interface>>{
+    }
 
 }
 
@@ -173,9 +175,11 @@ package view #99ff99 {
     class TerminalView {
     }
 
-    class GraphicalView {
+    class GraphicalView{
     }
     class GridPanel{
+    }
+    class InfosPanel{
     }
 
 
@@ -225,6 +229,8 @@ TerminalView o--> "1\n- _controller" GameController : "> Transmit user's demands
 Main ..> Game : "<<uses>>"
 Main ..> GameController : "<<uses>>"
 Main ..> TerminalView : "<<uses>>"
+
+Grid o--> "*\n_observers" GridObserver : > notify
 
 
 @enduml

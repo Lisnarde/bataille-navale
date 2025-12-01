@@ -175,6 +175,10 @@ package view #99ff99 {
 
     class GraphicalView {
     }
+    class GridPanel{
+    }
+
+
 }
 
 

@@ -4,24 +4,42 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GraphicalView extends JFrame{
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
+
     public GraphicalView(){
         super("Bataille Navale");
-        setSize(400,400);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        setLayout(new BorderLayout());
-        GridPanel gridPanelPlayer = new GridPanel(10);
-        GridPanel gridPanelBot = new GridPanel(10);
-        InfosPanel panelInfos = new InfosPanel();
-        JPanel titleAndTurnNumber = new JPanel();
-        JPanel panelWeapon = new JPanel();
-
-        add(gridPanelPlayer, BorderLayout.CENTER);
-        add(gridPanelBot, BorderLayout.EAST);
-        add(panelInfos, BorderLayout.WEST);
-        add(titleAndTurnNumber, BorderLayout.NORTH);
-        add(panelWeapon, BorderLayout.SOUTH);
-
         setVisible(true);
+
+        // Premier écran : configuration
+        showConfigScreen();
     }
+
+    public void showConfigScreen() {
+        setContentPane(new ConfigScreen(this));
+        revalidate();
+        repaint();
+    }
+
+    public void showPlacementScreen() {
+        setContentPane(new PlacementScreen(this));
+        revalidate();
+        repaint();
+    }
+
+    public void showGameScreen() {
+        setContentPane(new GameScreen(this));
+        revalidate();
+        repaint();
+    }
+
+    public void showEndScreen() {
+        setContentPane(new EndScreen(this));
+        revalidate();
+        repaint();
+    }
+
+
 }

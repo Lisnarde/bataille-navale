@@ -187,6 +187,15 @@ package view #99ff99 {
     }
     class GridPanel{
     }
+    class ConfigScreen{
+    }
+    class GameScreen{
+    }
+    class PlacementScreen{
+    }
+    class EndScreen{
+    }
+
     class InfosPanel{
     }
 

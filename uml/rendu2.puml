@@ -44,6 +44,7 @@ package model #eeaaff{
         +<<create>>Grid(width : Integer, height : Integer)
         + isOccupied(cell : Cell) : Boolean
         + isHit(cell : Cell) : Boolean
+        + isInGrid(cell : Cell) : Boolean
         + canPlaceObject(placeable : Placeable) : Boolean
         + placeObject(placeable : Placeable) : Boolean
         + placeImpact(cell : Cell) : Boolean

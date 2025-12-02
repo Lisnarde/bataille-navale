@@ -1,6 +1,7 @@
 package model;
 
 import model.traps.Trap;
+import model.weapons.Missile;
 import model.weapons.Weapon;
 
 public class Player {
@@ -11,7 +12,7 @@ public class Player {
     public Player(String name) {
         _name = name;
         _grid = null;
-        _equippedWeapon = null;
+        _equippedWeapon = new Missile();
     }
 
     public String getName() {

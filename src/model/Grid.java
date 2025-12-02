@@ -38,6 +38,10 @@ public class Grid {
         return isOccupiedBy(cell, PlaceableTypes.IMPACT);
     }
 
+    public boolean isInGrid(Cell cell) {
+        return 0 <= cell.getX() && cell.getX() < _width && 0<= cell.getY() && cell.getY() < _height;
+    }
+
     public boolean canPlaceObject(Placeable placeable) {
         for (int i=0; i< placeable.getSize(); i++) {
             if (isOccupied(placeable.getCell(i))) {
@@ -64,6 +68,10 @@ public class Grid {
     }
 
     public boolean shoot(Cell cell, Weapon weapon){
+        if (isInGrid(cell)) {
+            weapon.execShoot(this, cell);
+            return true;
+        }
         return false;
     }
 

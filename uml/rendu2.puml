@@ -42,7 +42,11 @@ package model #eeaaff{
         - _width : Integer
         - _height : Integer
         +<<create>>Grid(width : Integer, height : Integer)
+        + addObserver(observer : GridObserver)
+        + notifyObserversShoot(pox : Integer, posy : Integer, hit : Boolean)
+        + notifyObserversTrapActivated(pox : Integer, posy : Integer)
         + isOccupied(cell : Cell) : Boolean
+        + isOccupiedBy(cell : Cell, PlaceableTypes type) : Boolean
         + isHit(cell : Cell) : Boolean
         + isInGrid(cell : Cell) : Boolean
         + canPlaceObject(placeable : Placeable) : Boolean
@@ -51,6 +55,10 @@ package model #eeaaff{
         + shoot(cell : Cell, weapon : Weapon) : Boolean
         + isThereAliveShips() : Boolean
         + allShipsDead() : Boolean
+    }
+    interface GridObserver <<interface>> {
+        + updateShoot(pox : Integer, posy : Integer, hit : Boolean)
+        + updateTrapActivated(pox : Integer, posy : Integer)
     }
 
 
@@ -166,9 +174,6 @@ package model #eeaaff{
         + setY(y : Integer)
     }
 
-    interface GridObserver <<interface>>{
-    }
-
 }
 
 package controller #6999ff {
@@ -226,6 +231,7 @@ IslandPart o--> "1\n- _placedObject" Placeable : "> stock a placeable"
 
 
 Grid o--> "*\n- _placedObjects" Placeable : "> contains"
+Grid o--> "*\n_observers" GridObserver : > notify
 Player o--> "1\n- _grid" Grid : "> has for grid"
 Player o--> "*\n- _weaponInventory" Weapon : "> can use theses weapons"
 Player o--> "1\n- _equippedWeapon" Weapon : "> has this strategy of attack"
@@ -239,7 +245,7 @@ Main ..> Game : "<<uses>>"
 Main ..> GameController : "<<uses>>"
 Main ..> TerminalView : "<<uses>>"
 
-Grid o--> "*\n_observers" GridObserver : > notify
+
 
 
 @enduml

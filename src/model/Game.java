@@ -23,6 +23,10 @@ public class Game {
         _players[0].setGrid(new Grid(size, size));
         _players[1].setGrid(new Grid(size, size));
     }
+    public void addGridObserver(GridObserver observer) {
+        _players[0].getGrid().addObserver(observer);
+        _players[1].getGrid().addObserver(observer);
+    }
 
     public int getGridSize() {return _gridSize;}
     public int otherPlayer(int joueur) {return (joueur+1)%2;}

@@ -2,6 +2,7 @@ package model;
 
 import model.weapons.*;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +10,27 @@ public class Grid {
     private int _width;
     private int _height;
     private List<Placeable> _placedObjects;
+    private List<GridObserver> _observers;
 
     public Grid(int width, int height){
         _width = width;
         _height = height;
         _placedObjects = new ArrayList<>();
+        _observers = new ArrayList<>();
+    }
+
+    public void addObserver(GridObserver observer) {
+        _observers.add(observer);
+    }
+    public void notifyObserversShoot(int posx, int posy, boolean hit) {
+        for (GridObserver observer : _observers) {
+            observer.updateShoot(posx, posy, hit);
+        }
+    }
+    public void notifyObserversTrapActivated(int posx, int posy) {
+        for (GridObserver observer : _observers) {
+            observer.updateTrapActivated(posx, posy);
+        }
     }
 
 

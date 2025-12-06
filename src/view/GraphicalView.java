@@ -41,5 +41,8 @@ public class GraphicalView extends JFrame{
         repaint();
     }
 
+    public void configureGame(String pseudo, int gridSize, boolean islandMode) {
+
+    }
 
 }

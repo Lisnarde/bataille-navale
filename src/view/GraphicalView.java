@@ -13,7 +13,7 @@ public class GraphicalView extends JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
-        // Premier écran : configuration
+        //écran de base --> configuration
         showConfigScreen();
     }
 

@@ -16,7 +16,8 @@ public class PlacementScreen extends JPanel {
         //titre
         add(new TitleBanner(), BorderLayout.NORTH);
 
-        
+        //grille de placement
+
 
         //bouton suivant
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));

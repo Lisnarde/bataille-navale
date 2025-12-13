@@ -1,55 +1,56 @@
 package controller;
 
 import model.*;
-import model.traps.Tornado;
 import model.traps.Trap;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-public class GameController implements GridObserver {
-
+public class GameController {
     Game _model;
 
     public GameController(Game model) {
         _model = model;
     }
 
-    @Override
-    public void updateShoot(int posx, int posy, boolean hit) {
-        if (hit) {
-            System.out.println("Tir en " + posx + ";" + posy + " : bateau touché !");
-        } else {
-            System.out.println("Tir en " + posx + ";" + posy + " : aucun bateau touché");
+
+    public void setPlayerName(String name) {
+        _model.setPlayerName(name);
+    }
+
+    public void setGrid(int size, boolean islandMode) {
+        _model.setGrid(size, islandMode);
+    }
+
+    public boolean placeTrapOnGrid(int joueur, int indexTrap, int posx, int posy) {
+        Trap trap = _model.getPlaceableTrap(indexTrap);
+        trap.setPosition(new Cell(posx, posy));
+        return _model.placeTrapOnGrid(joueur, trap);
+    }
+
+    public boolean placeShipOnGrid(int joueur, ShipTypes type, int posx, int posy, Axis axis) {
+        int size = 0;
+        switch (type) {
+            case AircraftCarrier -> size = 5;
+            case Cruiser -> size = 4;
+            case Destroyer -> size = 4;
+            case Submarine -> size = 3;
+            case Torpedo -> size = 2;
         }
+        List<Cell> position = new ArrayList<>();
+        for (int i=0; i<size; i++) {
+            position.add( new Cell(posx + (axis == Axis.HORIZONTAL ? i : 0) , posy + (axis == Axis.VERTICAL ? i : 0)));
+        }
+        Ship ship = new Ship(position);
+        return _model.placeShipOnGrid(joueur,ship);
     }
 
-    @Override
-    public void updateTrapActivated(int posx, int posy) {
-        System.out.println("piège activé en "+posx+";"+posy);
+    public boolean setWeapon(int joueur, int weaponIndex) {
+        return _model.setWeapon(joueur,weaponIndex);
     }
 
-    public void run() {
-        _model.setPlayerName("Bast");
-        _model.setGrid(10,false);
-        _model.addGridObserver(this);
-
-        Trap trap = new Tornado(new Cell(0,3));
-        _model.placeTrapOnGrid(0,trap);
-
-        Ship ship = new Ship(Arrays.asList(new Cell(0,0),new Cell(0,1),new Cell(0,2)));
-        _model.placeShipOnGrid(0,ship);
-
-        Ship ship2 = new Ship(Arrays.asList(new Cell(0,0),new Cell(0,1),new Cell(0,2)));
-        _model.placeShipOnGrid(1,ship2);
-
-        _model.shootOnGrid(1,new Cell(0,3));
-
-        System.out.println(_model.isTheGameFinished());
-
-        _model.shootOnGrid(0,new Cell(0,0));
-        _model.shootOnGrid(0,new Cell(0,1));
-        _model.shootOnGrid(0,new Cell(0,2));
-
-        System.out.println(_model.isTheGameFinished());
+    public boolean shootOnGrid(int joueur, int posx, int posy) {
+        return _model.shootOnGrid(joueur, new Cell(posx, posy));
     }
 }

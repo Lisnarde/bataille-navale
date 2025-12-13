@@ -4,15 +4,22 @@ import model.traps.Trap;
 import model.weapons.Missile;
 import model.weapons.Weapon;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player {
     private String _name;
     private Grid _grid;
     private Weapon _equippedWeapon;
 
+    private List<Weapon> _weaponInventory;
+
     public Player(String name) {
         _name = name;
         _grid = null;
         _equippedWeapon = new Missile();
+        _weaponInventory = new ArrayList<>();
+        _weaponInventory.add(new Missile());
     }
 
     public String getName() {
@@ -35,12 +42,19 @@ public class Player {
         return otherPlayer._grid.shoot(cell,_equippedWeapon);
     }
 
-    public void setEquippedWeapon(Weapon weapon) {
-        _equippedWeapon = weapon;
+    public void addWeaponInInventory(Weapon weapon) {_weaponInventory.add(weapon);}
+    public boolean setEquippedWeapon(int weaponIndex) {
+        if (0 <= weaponIndex && weaponIndex < _weaponInventory.size()) {
+            _equippedWeapon = _weaponInventory.get(weaponIndex);
+            return true;
+        }
+        return false;
     }
     public Weapon getEquippedWeapon() {
         return _equippedWeapon;
     }
+    public int getWeaponInventorySize() {return _weaponInventory.size();}
+    public Weapon getWeaponInInventory(int weaponIndex) {return _weaponInventory.get(weaponIndex);}
 
     public boolean hasNoMoreShips() {
         return _grid.allShipsDead();

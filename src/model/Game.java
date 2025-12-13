@@ -1,16 +1,28 @@
 package model;
 
 import model.traps.*;
+import model.weapons.Bomb;
+import model.weapons.Sonar;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Game {
     private int _turnNum;
     private int _gridSize;
+    private List<Trap> _traps;
 
     private Player[] _players;
 
-    public Game() {}
+    public Game() {
+        _traps = new ArrayList<>( Arrays.asList(new Tornado(), new BlackHole()) );
+    }
+
+    public int getTurnNum() {return _turnNum;}
+
+    public int getTrapsSize() {return _traps.size();}
+    public Trap getPlaceableTrap(int trapIndex) {return _traps.get(trapIndex);}
 
     public void setPlayerName(String name){
         _players = new Player[] {new Player(name), new Player("Bot")};
@@ -19,6 +31,12 @@ public class Game {
     public void setGrid(int size, boolean islandMode) {
         if (islandMode) {
 
+        }
+        else {
+            for (Player p : _players) {
+                p.addWeaponInInventory(new Bomb());
+                p.addWeaponInInventory(new Sonar());
+            }
         }
         _players[0].setGrid(new Grid(size, size));
         _players[1].setGrid(new Grid(size, size));
@@ -42,6 +60,10 @@ public class Game {
 
     public boolean shootOnGrid(int joueur, Cell cell) {
         return _players[joueur].shoot(_players[otherPlayer(joueur)],cell);
+    }
+
+    public boolean setWeapon(int joueur, int weaponIndex) {
+        return _players[joueur].setEquippedWeapon(weaponIndex);
     }
 
 

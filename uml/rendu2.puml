@@ -12,11 +12,16 @@ package model #eeaaff{
         - _turnNum : Integer
         - _gridSize : Integer
         +<<create>>Game()
+        + getTurnNum() : Integer
+        + getTrapsSize() : Integer
+        + getPlaceableTrap(indexTrap : Integer) : Trap
         + setPlayerName(name : String)
         + setGrid(width : Integer, height : Integer, islandMode : Boolean)
         + getGridSize() : Integer
         + placeTrapOnGrid(joueur : Integer, trap : Trap) : Boolean
         + placeShipOnGrid(joueur : Integer, ship : Ship) : Boolean
+        + shootOnGrid(joueur : Integer, cell : Cell) : Boolean
+        + setWeapon(joueur : Integer, weaponIndex : Integer) : Boolean
         + isTheGameFinished() : Boolean
         + whoWon() : Player
     }
@@ -35,6 +40,10 @@ package model #eeaaff{
         + placeTrap(trap : Trap) : Boolean
         + placeShip(ship : Ship) : Boolean
         + shoot(otherPlayer : Player, cell : Cell) : Boolean
+        + addWeaponInInventory(weapon : Weapon)
+        + getEquippedWeapon() : Weapon
+        + getWeaponInventorySize() : Integer
+        + getWeaponInInventory(weaponIndex : Integer) : Weapon
         + hasNoMoreShips() : Boolean
     }
 
@@ -131,6 +140,7 @@ package model #eeaaff{
         + getSize() : Integer
         + getCell(index : Integer) : Cell
         + hasThisPosition(cell : Cell) : Boolean
+        + setPosition(cell : Cell)
     }
     class Tornado extends Trap {
         +<<create>>Tornado(cell : Cell)
@@ -180,8 +190,11 @@ package controller #6999ff {
     class GameController {
         + <<create>>GameController(model : Game)
         + setPlayerName(name : String)
-        + setGrid(width : Integer, height : Integer, islandMode : Boolean)
-        + placeShipOnGrid(joueur : Integer, type : ShipTypes, x : Integer, y : Integer, axis : Axis)
+        + setGrid(size : Integer, islandMode : Boolean)
+        + placeTrapOnGrid(joueur ; Integer, indexTrap : Integer, posx : Integer, posy : Integer) : Boolean
+        + placeShipOnGrid(joueur : Integer, type : ShipTypes, posx : Integer, posy : Integer, axis : Axis) : Boolean
+        + setWeapon(joueur : Integer, weaponIndex : Integer) : Boolean
+        + shootOnGrid(joueur : Integer, posx : Integer, posy : Integer) : Boolean
     }
 }
 
@@ -245,6 +258,7 @@ Player o--> "1\n- _grid" Grid : "> has for grid"
 Player o--> "*\n- _weaponInventory" Weapon : "> can use theses weapons"
 Player o--> "1\n- _equippedWeapon" Weapon : "> has this strategy of attack"
 Game *--> "2\n- _players" Player : "> has 2 players"
+Game *--> "*\n' _traps" Trap : "> knows which traps can be placed"
 
 GameController o--> "1\n- _model" Game : "> Manipulate"
 TerminalView o--> "1\n- _model" Game : "> Consult"

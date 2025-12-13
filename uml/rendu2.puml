@@ -191,8 +191,10 @@ package controller #6999ff {
         + <<create>>GameController(model : Game)
         + setPlayerName(name : String)
         + setGrid(size : Integer, islandMode : Boolean)
-        + placeTrapOnGrid(joueur ; Integer, indexTrap : Integer, posx : Integer, posy : Integer
-        + placeShipOnGrid(joueur : Integer, type : ShipTypes, posx : Integer, posy : Integer, axis : Axis)
+        + placeTrapOnGrid(joueur ; Integer, indexTrap : Integer, posx : Integer, posy : Integer) : Boolean
+        + placeShipOnGrid(joueur : Integer, type : ShipTypes, posx : Integer, posy : Integer, axis : Axis) : Boolean
+        + setWeapon(joueur : Integer, weaponIndex : Integer) : Boolean
+        + shootOnGrid(joueur : Integer, posx : Integer, posy : Integer) : Boolean
     }
 }
 

@@ -23,13 +23,13 @@ public class GameController {
         _model.setGrid(size, islandMode);
     }
 
-    public void placeTrapOnGrid(int joueur, int indexTrap, int posx, int posy) {
+    public boolean placeTrapOnGrid(int joueur, int indexTrap, int posx, int posy) {
         Trap trap = _model.getPlaceableTrap(indexTrap);
         trap.setPosition(new Cell(posx, posy));
-        _model.placeTrapOnGrid(joueur, trap);
+        return _model.placeTrapOnGrid(joueur, trap);
     }
 
-    public void placeShipOnGrid(int joueur, ShipTypes type, int posx, int posy, Axis axis) {
+    public boolean placeShipOnGrid(int joueur, ShipTypes type, int posx, int posy, Axis axis) {
         int size = 0;
         switch (type) {
             case AircraftCarrier -> size = 5;
@@ -43,6 +43,14 @@ public class GameController {
             position.add( new Cell(posx + (axis == Axis.HORIZONTAL ? i : 0) , posy + (axis == Axis.VERTICAL ? i : 0)));
         }
         Ship ship = new Ship(position);
-        _model.placeShipOnGrid(joueur,ship);
+        return _model.placeShipOnGrid(joueur,ship);
+    }
+
+    public boolean setWeapon(int joueur, int weaponIndex) {
+        return _model.setWeapon(joueur,weaponIndex);
+    }
+
+    public boolean shootOnGrid(int joueur, int posx, int posy) {
+        return _model.shootOnGrid(joueur, new Cell(posx, posy));
     }
 }

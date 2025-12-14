@@ -53,7 +53,7 @@ public class ConfigScreen extends JPanel {
 
         _sizeGroup = new ButtonGroup();
         JPanel sizePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        for (int i = 6; i <= 9; i++) {
+        for (int i = 6; i <= 10; i++) {
             JRadioButton sizeButton = new JRadioButton(String.valueOf(i));
             sizeButton.setFont(new Font("Arial", Font.PLAIN, 16));
             _sizeGroup.add(sizeButton);

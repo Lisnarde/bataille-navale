@@ -58,7 +58,7 @@ public class PlacementScreen extends JPanel {
 
              */
 
-            _parent.showGameScreen();
+            //_parent.showGameScreen();
         });
 
         buttonPanel.add(next);

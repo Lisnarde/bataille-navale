@@ -21,6 +21,10 @@ public class Game {
 
     public int getTurnNum() {return _turnNum;}
 
+    public String getPlayerName(int player){
+        return _players[player].getName();
+    }
+
     public int getTrapsSize() {return _traps.size();}
     public Trap getPlaceableTrap(int trapIndex) {return _traps.get(trapIndex);}
 

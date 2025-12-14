@@ -1,20 +1,23 @@
 package view;
+import controller.GameController;
 import model.*;
 import javax.swing.*;
 import java.awt.*;
 
 public class GraphicalView extends JFrame{
-    private CardLayout cardLayout;
-    private JPanel mainPanel;
+    private GameController _controller;
+    private Game _model;
 
-    public GraphicalView(){
+    public GraphicalView(GameController controller, Game model){
         super("Bataille Navale");
+        _controller = controller;
+        _model = model;
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
-        //écran de base --> configuration
-        showConfigScreen();
+        //écran de base → configuration
+        showGameScreen(controller, model);
     }
 
     public void showConfigScreen() {
@@ -29,8 +32,8 @@ public class GraphicalView extends JFrame{
         repaint();
     }
 
-    public void showGameScreen() {
-        setContentPane(new GameScreen(this));
+    public void showGameScreen(GameController controller, Game model) {
+        setContentPane(new GameScreen(this, controller, model));
         revalidate();
         repaint();
     }

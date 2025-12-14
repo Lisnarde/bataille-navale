@@ -35,7 +35,7 @@ public class Main{
         controller.shootOnGrid(0,3,3);
 
         System.out.println(model.isTheGameFinished());
-         */
+        */
     }
 
 }

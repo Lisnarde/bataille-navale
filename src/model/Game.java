@@ -2,7 +2,9 @@ package model;
 
 import model.traps.*;
 import model.weapons.Bomb;
+import model.weapons.IslandSearch;
 import model.weapons.Sonar;
+import model.weapons.Weapon;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +32,9 @@ public class Game {
 
     public void setGrid(int size, boolean islandMode) {
         if (islandMode) {
-
+            for (Player p : _players) {
+                p.addWeaponInInventory(new IslandSearch(p));
+            }
         }
         else {
             for (Player p : _players) {
@@ -38,8 +42,8 @@ public class Game {
                 p.addWeaponInInventory(new Sonar());
             }
         }
-        _players[0].setGrid(new Grid(size, size));
-        _players[1].setGrid(new Grid(size, size));
+        _players[0].setGrid(new Grid(size, size, 0));
+        _players[1].setGrid(new Grid(size, size, 1));
     }
     public void addGridObserver(GridObserver observer) {
         _players[0].addGridObserver(observer);
@@ -56,6 +60,10 @@ public class Game {
 
     public boolean placeShipOnGrid(int joueur, Ship ship) {
         return _players[joueur].placeShip(ship);
+    }
+
+    public boolean placeWeaponOnIsland(int joueur, Weapon weapon, Cell cell) {
+        return _players[joueur].placeWeaponOnIsland(weapon,cell);
     }
 
     public boolean shootOnGrid(int joueur, Cell cell) {

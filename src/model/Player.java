@@ -43,6 +43,10 @@ public class Player {
         return _grid.placeObject(trap);
     }
 
+    public boolean placeWeaponOnIsland(Weapon weapon, Cell cell) {
+        return _grid.placeWeaponOnIsland(weapon,cell);
+    }
+
     public boolean shoot(Player otherPlayer, Cell cell) {
         return otherPlayer._grid.shoot(cell,_equippedWeapon);
     }

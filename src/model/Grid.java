@@ -9,14 +9,34 @@ import java.util.List;
 public class Grid {
     private int _width;
     private int _height;
+    private int _joueur;
+    private boolean _islandMode;
     private List<Placeable> _placedObjects;
     private List<GridObserver> _observers;
 
-    public Grid(int width, int height){
+    public Grid(int width, int height, int joueur){
+        this(width,height,joueur,false);
+    }
+    public Grid(int width, int height, int joueur, boolean islandMode) {
         _width = width;
         _height = height;
+        _joueur = joueur;
         _placedObjects = new ArrayList<>();
         _observers = new ArrayList<>();
+        _islandMode = islandMode;
+        if (_islandMode) {
+            constructIsland();
+        }
+    }
+
+    private void constructIsland() {
+        if (_width == 10 && _height == 10) {
+            for (int y=3; y<7; y++) {
+                for (int x=3; x<7; x++) {
+                    _placedObjects.add(new IslandPart(new Cell(x,y)));
+                }
+            }
+        }
     }
 
     public void addObserver(GridObserver observer) {
@@ -24,12 +44,18 @@ public class Grid {
     }
     public void notifyObserversShoot(int posx, int posy, boolean hit) {
         for (GridObserver observer : _observers) {
-            observer.updateShoot(posx, posy, hit);
+            observer.updateShoot(_joueur, posx, posy, hit);
         }
     }
     public void notifyObserversTrapActivated(int posx, int posy) {
         for (GridObserver observer : _observers) {
-            observer.updateTrapActivated(posx, posy);
+            observer.updateTrapActivated(_joueur, posx, posy);
+        }
+    }
+
+    public void notifyObserversSearch(int posx, int posy, PlaceableTypes objectFound) {
+        for (GridObserver observer : _observers) {
+            observer.updateSearch(_joueur, posx, posy, objectFound);
         }
     }
 
@@ -95,8 +121,25 @@ public class Grid {
 
     public boolean shoot(Cell cell, Weapon weapon){
         if (isInGrid(cell)) {
-            weapon.execShoot(this, cell);
-            return true;
+            return weapon.execShoot(this, cell);
+        }
+        return false;
+    }
+
+    public Placeable getIslandObject(Cell cell) {
+        Placeable object = getObjectByPosition(cell);
+        if (object != null && object.getType() == PlaceableTypes.ISLANDPART) {
+            IslandPart island = (IslandPart) object;
+            return island.getPlacedObject();
+        }
+        return null;
+    }
+
+    public boolean placeWeaponOnIsland(Weapon weapon, Cell cell) {
+        Placeable thing = getObjectByPosition(cell);
+        if (thing!=null && thing.getType() == PlaceableTypes.ISLANDPART) {
+            IslandPart island = (IslandPart) thing;
+            island.setPlacedObject(weapon);
         }
         return false;
     }

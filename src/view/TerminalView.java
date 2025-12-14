@@ -125,7 +125,7 @@ public class TerminalView {
             }
             System.out.println("Incorrect");
         }
-        boolean islandMode = input == "y";
+        boolean islandMode = input.equals("y");
 
         _controller.setGrid(taille, islandMode);
     }

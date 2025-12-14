@@ -21,8 +21,8 @@ public class Game {
 
     public int getTurnNum() {return _turnNum;}
 
-    public int getTrapsSize() {return _traps.size();}
-    public Trap getPlaceableTrap(int trapIndex) {return _traps.get(trapIndex);}
+    public int getTrapInventorySize() {return _traps.size();}
+    public Trap getTrapInInventory(int trapIndex) {return _traps.get(trapIndex);}
 
     public void setPlayerName(String name){
         _players = new Player[] {new Player(name), new Player("Bot")};
@@ -42,8 +42,8 @@ public class Game {
         _players[1].setGrid(new Grid(size, size));
     }
     public void addGridObserver(GridObserver observer) {
-        _players[0].getGrid().addObserver(observer);
-        _players[1].getGrid().addObserver(observer);
+        _players[0].addGridObserver(observer);
+        _players[1].addGridObserver(observer);
     }
 
     public int getGridSize() {return _gridSize;}
@@ -60,6 +60,10 @@ public class Game {
 
     public boolean shootOnGrid(int joueur, Cell cell) {
         return _players[joueur].shoot(_players[otherPlayer(joueur)],cell);
+    }
+
+    public PlaceableTypes getObjectTypeByPosition(int joueur, int posx, int posy) {
+        return _players[joueur].getObjectByPosition(new Cell(posx, posy)).getType();
     }
 
     public boolean setWeapon(int joueur, int weaponIndex) {

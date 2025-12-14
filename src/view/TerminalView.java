@@ -1,12 +1,14 @@
 package view;
 
+import controller.GameController;
+import model.Axis;
 import model.Game;
 import model.PlaceableTypes;
+import model.ShipTypes;
 
 import java.util.Scanner;
 
 public class TerminalView {
-    /*
     private Game _model;
     private GameController _controller;
 
@@ -22,6 +24,8 @@ public class TerminalView {
         initName();
         initGrid();
         //choix du nombre de bateaux
+        placeShips();
+        displayGrid();
         //placement des bateaux
         //placement des pièges
         //Placement armes cachées si ile
@@ -78,7 +82,7 @@ public class TerminalView {
             StringBuilder line = new StringBuilder();
 
             for (int x = 0; x < size; x++) {
-                PlaceableTypes type = _model.getObjectTypes(x, y, 0);
+                PlaceableTypes type = _model.getObjectTypeByPosition(x, y, 0);
 
                 if (type == null) {
                     line.append(". ");            // vide
@@ -116,7 +120,7 @@ public class TerminalView {
         String input;
         while (true) {
             input = askString();
-            if (input == "y" || input == "n") {
+            if (input.equals("y") || input.equals("n")) {
                 break;
             }
             System.out.println("Incorrect");
@@ -148,7 +152,7 @@ public class TerminalView {
                         args[i] = Integer.parseInt(rawArgs[i]);
                     }
                     if (1<=args[0] && args[0]<=5 && 1<=args[1] && args[1]<=gridSize && 1<=args[2] && args[2]<=gridSize && (args[3]==0 || args[3]==1)) {
-                        if (_controller.placeShipOnGrid(args[0], args[2], args[1], args[3])) {
+                        if (_controller.placeShipOnGrid(0, ShipTypes.values()[args[0]], args[2], args[1], Axis.values()[args[3]])) {
                             break;
                         }
                         System.out.println("Impossible de placer le bateau : une case déjà occupée");
@@ -162,6 +166,5 @@ public class TerminalView {
 
     }
 
-     */
 
 }

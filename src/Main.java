@@ -3,6 +3,7 @@ import model.*;
 import model.traps.BlackHole;
 import model.traps.Tornado;
 import model.traps.Trap;
+import view.TerminalView;
 
 import java.util.Arrays;
 
@@ -11,6 +12,9 @@ public class Main{
         Game model = new Game();
         GameController controller = new GameController(model);
 
+        TerminalView view = new TerminalView(model,controller);
+        view.run();
+        /*
         controller.setPlayerName("Bast");
         controller.setGrid(10,false);
 
@@ -31,6 +35,7 @@ public class Main{
         controller.shootOnGrid(0,3,3);
 
         System.out.println(model.isTheGameFinished());
+         */
     }
 
 }

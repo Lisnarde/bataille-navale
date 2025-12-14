@@ -24,7 +24,7 @@ public class GameController {
     }
 
     public boolean placeTrapOnGrid(int joueur, int indexTrap, int posx, int posy) {
-        Trap trap = _model.getPlaceableTrap(indexTrap);
+        Trap trap = _model.getTrapInInventory(indexTrap);
         trap.setPosition(new Cell(posx, posy));
         return _model.placeTrapOnGrid(joueur, trap);
     }

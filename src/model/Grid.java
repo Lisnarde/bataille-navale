@@ -51,6 +51,15 @@ public class Grid {
         return false;
     }
 
+    public Placeable getObjectByPosition(Cell cell) {
+        for (Placeable p : _placedObjects) {
+            if (p.hasThisPosition(cell)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     public Boolean isHit(Cell cell){
         return isOccupiedBy(cell, PlaceableTypes.IMPACT);
     }

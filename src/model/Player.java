@@ -25,10 +25,15 @@ public class Player {
     public String getName() {
         return _name;
     }
-    public Grid getGrid() {
-        return _grid;
-    }
     public void setGrid(Grid grid) {_grid=grid;}
+
+    public void addGridObserver(GridObserver gridObserver) {
+        _grid.addObserver(gridObserver);
+    }
+
+    public Placeable getObjectByPosition(Cell cell) {
+        return _grid.getObjectByPosition(cell);
+    }
 
     public boolean placeShip(Ship ship) {
         return _grid.placeObject(ship);

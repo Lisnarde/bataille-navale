@@ -5,7 +5,8 @@ import model.Grid;
 
 public class Sonar extends model.weapons.Weapon{
     @Override
-    public void execShoot(Grid grid, Cell cell) {
+    public boolean execShoot(Grid grid, Cell cell) {
         grid.placeImpact(cell);
+        return false;
     }
 }

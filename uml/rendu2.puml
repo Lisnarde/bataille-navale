@@ -11,15 +11,17 @@ package model #eeaaff{
     class Game {
         - _turnNum : Integer
         - _gridSize : Integer
+        - _joueur : Integer
         +<<create>>Game()
         + getTurnNum() : Integer
-        + getTrapsSize() : Integer
-        + getPlaceableTrap(indexTrap : Integer) : Trap
+        + getTrapInventorySize() : Integer
+        + getTrapInIventory(indexTrap : Integer) : Trap
         + setPlayerName(name : String)
         + setGrid(width : Integer, height : Integer, islandMode : Boolean)
         + getGridSize() : Integer
         + placeTrapOnGrid(joueur : Integer, trap : Trap) : Boolean
         + placeShipOnGrid(joueur : Integer, ship : Ship) : Boolean
+        + placeWeaponOnIsland(joueur : Integer, weapon : Weapon, cell : Cell) : Boolean
         + shootOnGrid(joueur : Integer, cell : Cell) : Boolean
         + setWeapon(joueur : Integer, weaponIndex : Integer) : Boolean
         + isTheGameFinished() : Boolean
@@ -39,6 +41,7 @@ package model #eeaaff{
         + setGrid(grid : Grid)
         + placeTrap(trap : Trap) : Boolean
         + placeShip(ship : Ship) : Boolean
+        + placeWeaponOnIsland(joueur : Integer, weapon : Weapon, cell : Cell) : Boolean
         + shoot(otherPlayer : Player, cell : Cell) : Boolean
         + addWeaponInInventory(weapon : Weapon)
         + getEquippedWeapon() : Weapon
@@ -50,24 +53,31 @@ package model #eeaaff{
     class Grid {
         - _width : Integer
         - _height : Integer
+        - _islandMode : Boolean
         +<<create>>Grid(width : Integer, height : Integer)
+        +<<create>>Grid(width : Integer, height : Integer, islandMode : Boolean)
+        - constructIsland()
         + addObserver(observer : GridObserver)
-        + notifyObserversShoot(pox : Integer, posy : Integer, hit : Boolean)
-        + notifyObserversTrapActivated(pox : Integer, posy : Integer)
+        + notifyObserversShoot(posx : Integer, posy : Integer, hit : Boolean)
+        + notifyObserversTrapActivated(posx : Integer, posy : Integer)
+        + notifyObserversSearch(posx : Integer, posy : Integer, objectFound : PlaceableTypes)
         + isOccupied(cell : Cell) : Boolean
         + isOccupiedBy(cell : Cell, PlaceableTypes type) : Boolean
+        + getObjectByPosition(cell : Cell) : Placeable
         + isHit(cell : Cell) : Boolean
         + isInGrid(cell : Cell) : Boolean
         + canPlaceObject(placeable : Placeable) : Boolean
         + placeObject(placeable : Placeable) : Boolean
         + placeImpact(cell : Cell) : Boolean
         + shoot(cell : Cell, weapon : Weapon) : Boolean
-        + isThereAliveShips() : Boolean
+        + getIslandObject(cell : Cell) : Placeable
+        + placeWeaponOnIsland(weapon : Weapon, cell : Cell) : Boolean
         + allShipsDead() : Boolean
     }
     interface GridObserver <<interface>> {
-        + updateShoot(pox : Integer, posy : Integer, hit : Boolean)
-        + updateTrapActivated(pox : Integer, posy : Integer)
+        + updateShoot(int joueur, pox : Integer, posy : Integer, hit : Boolean)
+        + updateTrapActivated(int joueur, pox : Integer, posy : Integer)
+        + updateSearch(int joueur, posx : Integer, posy : Integer, objectFound : PlaceableTypes)
     }
 
 
@@ -157,22 +167,27 @@ package model #eeaaff{
             + getCell(index : Integer) : Cell
             + hasThisPosition(cell : Cell) : Boolean
             + setPosition(cell : Cell)
-            + execShoot(grid : Grid, cell : Cell)
+            + execShoot(grid : Grid, cell : Cell) : Boolean
 
-        }
-        class Bomb extends Weapon {
-            +<<create>>Bomb()
-            + execShoot(grid : Grid, cell : Cell)
         }
         class Missile extends Weapon {
             +<<create>>Missile()
-            + execShoot(grid : Grid, cell : Cell)
+            + execShoot(grid : Grid, cell : Cell) : Boolean
+        }
+        class IslandSearch extends Weapon {
+            - _player : Player
+            +<<create>>IslandSearch(player : Player)
+            + execShoot(grid : Grid, cell : Cell) : Boolean
+        }
+        class Bomb extends Weapon {
+            +<<create>>Bomb()
+            + execShoot(grid : Grid, cell : Cell) : Boolean
         }
         class Sonar extends Weapon {
             +<<create>>Sonar()
-            + execShoot(grid : Grid, cell : Cell)
+            + execShoot(grid : Grid, cell : Cell) : Boolean
         }
-        }
+    }
 
     class Cell {
         - _x : Integer

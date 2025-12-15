@@ -2,7 +2,9 @@ package model;
 
 import model.traps.*;
 import model.weapons.Bomb;
+import model.weapons.IslandSearch;
 import model.weapons.Sonar;
+import model.weapons.Weapon;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,8 +27,8 @@ public class Game {
         return _players[player].getName();
     }
 
-    public int getTrapsSize() {return _traps.size();}
-    public Trap getPlaceableTrap(int trapIndex) {return _traps.get(trapIndex);}
+    public int getTrapInventorySize() {return _traps.size();}
+    public Trap getTrapInInventory(int trapIndex) {return _traps.get(trapIndex);}
 
     public void setPlayerName(String name){
         _players = new Player[] {new Player(name), new Player("Bot")};
@@ -34,7 +36,9 @@ public class Game {
 
     public void setGrid(int size, boolean islandMode) {
         if (islandMode) {
-
+            for (Player p : _players) {
+                p.addWeaponInInventory(new IslandSearch(p));
+            }
         }
         else {
             for (Player p : _players) {
@@ -42,12 +46,12 @@ public class Game {
                 p.addWeaponInInventory(new Sonar());
             }
         }
-        _players[0].setGrid(new Grid(size, size));
-        _players[1].setGrid(new Grid(size, size));
+        _players[0].setGrid(new Grid(size, size, 0));
+        _players[1].setGrid(new Grid(size, size, 1));
     }
     public void addGridObserver(GridObserver observer) {
-        _players[0].getGrid().addObserver(observer);
-        _players[1].getGrid().addObserver(observer);
+        _players[0].addGridObserver(observer);
+        _players[1].addGridObserver(observer);
     }
 
     public int getGridSize() {return _gridSize;}
@@ -62,8 +66,16 @@ public class Game {
         return _players[joueur].placeShip(ship);
     }
 
+    public boolean placeWeaponOnIsland(int joueur, Weapon weapon, Cell cell) {
+        return _players[joueur].placeWeaponOnIsland(weapon,cell);
+    }
+
     public boolean shootOnGrid(int joueur, Cell cell) {
         return _players[joueur].shoot(_players[otherPlayer(joueur)],cell);
+    }
+
+    public PlaceableTypes getObjectTypeByPosition(int joueur, int posx, int posy) {
+        return _players[joueur].getObjectByPosition(new Cell(posx, posy)).getType();
     }
 
     public boolean setWeapon(int joueur, int weaponIndex) {

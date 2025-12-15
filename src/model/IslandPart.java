@@ -10,8 +10,8 @@ public class IslandPart implements Placeable{
 
     public IslandPart(Cell cell) {
         _position = new Cell(cell);
+        _placedObject = null;
     }
-
 
     @Override
     public int getSize() {return 1;}

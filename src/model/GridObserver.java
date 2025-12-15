@@ -1,7 +1,9 @@
 package model;
 
 public interface GridObserver {
-    void updateShoot(int posx, int posy, boolean hit);
+    void updateShoot(int joueur, int posx, int posy, boolean hit);
 
-    void updateTrapActivated(int posx, int posy);
+    void updateTrapActivated(int joueur, int posx, int posy);
+
+    void updateSearch(int joueur, int posx, int posy, PlaceableTypes objectFound);
 }

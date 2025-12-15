@@ -67,7 +67,7 @@ public class GridPanel extends JPanel implements GridObserver {
 
 
     @Override
-    public void updateShoot(int posx, int posy, boolean hit) {
+    public void updateShoot(int joueur, int posx, int posy, boolean hit) {
         /*_grid.get(posy).get(posx).dis;
         if (hit) {
             rouge
@@ -77,7 +77,11 @@ public class GridPanel extends JPanel implements GridObserver {
     }
 
     @Override
-    public void updateTrapActivated(int posx, int posy) {
+    public void updateTrapActivated(int joueur, int posx, int posy) {
+
+    }
+    @Override
+    public void updateSearch(int joueur, int posx, int posy, PlaceableTypes objectFound){
 
     }
 }

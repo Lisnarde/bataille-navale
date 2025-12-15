@@ -211,26 +211,40 @@ package controller #6999ff {
         + setWeapon(joueur : Integer, weaponIndex : Integer) : Boolean
         + shootOnGrid(joueur : Integer, posx : Integer, posy : Integer) : Boolean
     }
+
+    class NavigationController {
+        - _layout : CardLayout
+        - _container : JPanel
+        +<<create>>NavigationController(layout : CardLayout, container : JPanel)
+        + showConfig()
+        + showPlacement()
+        + showGame()
+        + showEnd()
+    }
 }
 
 package view #99ff99 {
-    class TerminalView {
+    package components #44bb44 {
+        class TitleBanner  <<extends JPanel>> {}
+        class GridPanel <<extends JPanel>> implements model.GridObserver {
+        }
+        class InfosPanel  <<extends JPanel>>{
+        }
     }
 
-    class GraphicalView{
-    }
-    class GridPanel{
-    }
-    class ConfigScreen{
-    }
-    class GameScreen{
-    }
-    class PlacementScreen{
-    }
-    class EndScreen{
+    class GraphicalView <<extends JFrame>>{
+        - _layout : CardLayout
+        - _mainPanel : JPanel
+        +<<create>>GraphicalView(model : Game, controller : GameController)
     }
 
-    class InfosPanel{
+    class ConfigScreen <<extends JPanel>> {
+    }
+    class GameScreen <<extends JPanel>>{
+    }
+    class PlacementScreen <<extends JPanel>>{
+    }
+    class EndScreen <<extends JPanel>>{
     }
 
 
@@ -276,12 +290,28 @@ Game *--> "2\n- _players" Player : "> has 2 players"
 Game *--> "*\n' _traps" Trap : "> knows which traps can be placed"
 
 GameController o--> "1\n- _model" Game : "> Manipulate"
-TerminalView o--> "1\n- _model" Game : "> Consult"
-TerminalView o--> "1\n- _controller" GameController : "> Transmit user's demands"
+GraphicalView o--> "1\n- _model" Game : "> Consult"
+GraphicalView o--> "1\n- _controller" GameController : "> Transmit user's demands"
+GraphicalView *--> "1\n- _controller" NavigationController : "> view is selected by"
+
+GraphicalView ..> ConfigScreen : "<< create >>"
+GraphicalView ..> PlacementScreen : "<< create >>"
+GraphicalView ..> GameScreen : "<< create >>"
+GraphicalView ..> EndScreen : "<< create >>"
+
+ConfigScreen *--> "1\n- _titleBanner" TitleBanner : "<< create >>"
+GameScreen *--> "1\n- _titleBanner" TitleBanner : "<< create >>"
+EndScreen *--> "1\n- _titleBanner" TitleBanner : "<< create >>"
+
+PlacementScreen *--> "1\n- _grid" GridPanel : "> display 1 grid"
+
+GameScreen *--> "2\n- _grids" GridPanel : "> display 2 grids"
+GameScreen *--> "1\n- _infos" InfosPanel : "> display infos"
+
 
 Main ..> Game : "<<uses>>"
 Main ..> GameController : "<<uses>>"
-Main ..> TerminalView : "<<uses>>"
+Main ..> GraphicalView : "<<uses>>"
 
 
 

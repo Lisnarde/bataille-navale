@@ -12,6 +12,7 @@ package model #eeaaff{
         - _turnNum : Integer
         - _gridSize : Integer
         - _joueur : Integer
+        - _islandMode : Boolean
         +<<create>>Game()
         + getTurnNum() : Integer
         + getTrapInventorySize() : Integer
@@ -19,6 +20,9 @@ package model #eeaaff{
         + setPlayerName(name : String)
         + setGrid(width : Integer, height : Integer, islandMode : Boolean)
         + getGridSize() : Integer
+        + otherPlayer(joueur : Integer) : Integer
+        + getMaxShipsPossible() : Integer
+        + setMaxShipsCells(maxShips : Integer) : Boolean
         + placeTrapOnGrid(joueur : Integer, trap : Trap) : Boolean
         + placeShipOnGrid(joueur : Integer, ship : Ship) : Boolean
         + placeWeaponOnIsland(joueur : Integer, weapon : Weapon, cell : Cell) : Boolean
@@ -39,6 +43,9 @@ package model #eeaaff{
         + getName() : String
         + getGrid() : Grid
         + setGrid(grid : Grid)
+        + addGridObserver(observer : GridObserver)
+        + setMaxShipsCells(maxShipsCells : Integer)
+        + getObjectByPosition(cell : Cell) : Placeable
         + placeTrap(trap : Trap) : Boolean
         + placeShip(ship : Ship) : Boolean
         + placeWeaponOnIsland(joueur : Integer, weapon : Weapon, cell : Cell) : Boolean
@@ -54,6 +61,7 @@ package model #eeaaff{
         - _width : Integer
         - _height : Integer
         - _islandMode : Boolean
+        - _maxShipsCells : Integer
         +<<create>>Grid(width : Integer, height : Integer)
         +<<create>>Grid(width : Integer, height : Integer, islandMode : Boolean)
         - constructIsland()
@@ -61,10 +69,10 @@ package model #eeaaff{
         + notifyObserversShoot(posx : Integer, posy : Integer, hit : Boolean)
         + notifyObserversTrapActivated(posx : Integer, posy : Integer)
         + notifyObserversSearch(posx : Integer, posy : Integer, objectFound : PlaceableTypes)
+        + setMaxShipsCells(maxShipsCells : Integer)
         + isOccupied(cell : Cell) : Boolean
         + isOccupiedBy(cell : Cell, PlaceableTypes type) : Boolean
         + getObjectByPosition(cell : Cell) : Placeable
-        + isHit(cell : Cell) : Boolean
         + isInGrid(cell : Cell) : Boolean
         + canPlaceObject(placeable : Placeable) : Boolean
         + placeObject(placeable : Placeable) : Boolean
@@ -206,31 +214,52 @@ package controller #6999ff {
         + <<create>>GameController(model : Game)
         + setPlayerName(name : String)
         + setGrid(size : Integer, islandMode : Boolean)
+        + setMaxShipsCells(maxShips : Integer) : Boolean
         + placeTrapOnGrid(joueur ; Integer, indexTrap : Integer, posx : Integer, posy : Integer) : Boolean
         + placeShipOnGrid(joueur : Integer, type : ShipTypes, posx : Integer, posy : Integer, axis : Axis) : Boolean
         + setWeapon(joueur : Integer, weaponIndex : Integer) : Boolean
         + shootOnGrid(joueur : Integer, posx : Integer, posy : Integer) : Boolean
     }
+
+    class NavigationController {
+        - _layout : CardLayout
+        - _container : JPanel
+        +<<create>>NavigationController(layout : CardLayout, container : JPanel)
+        + showConfig()
+        + showPlacement()
+        + showGame()
+        + showEnd()
+    }
 }
 
 package view #99ff99 {
-    class TerminalView {
+    package components #44bb44 {
+        class TitleBanner  <<extends JPanel>> {}
+        class GridPanel <<extends JPanel>> implements model.GridObserver {
+        }
+        class InfosPanel  <<extends JPanel>>{
+        }
     }
 
-    class GraphicalView{
-    }
-    class GridPanel{
-    }
-    class ConfigScreen{
-    }
-    class GameScreen{
-    }
-    class PlacementScreen{
-    }
-    class EndScreen{
+    class GraphicalView <<extends JFrame>>{
+        - _layout : CardLayout
+        - _mainPanel : JPanel
+        +<<create>>GraphicalView(model : Game, controller : GameController)
     }
 
-    class InfosPanel{
+    class ConfigScreen <<extends JPanel>> {
+        +<<create>>ConfigScreen(controller : GameScreen, model : Game, navigationController : NavigationController)
+        + validation()
+    }
+     class PlacementScreen <<extends JPanel>>{
+        +<<create>>PlacementScreen(controller : GameScreen, model : Game, navigationController : NavigationController)
+        + validation()
+     }
+    class GameScreen <<extends JPanel>>{
+        +<<create>>GameScreen(controller : GameScreen, model : Game, navigationController : NavigationController)
+    }
+    class EndScreen <<extends JPanel>>{
+        +<<create>>EndScreen(controller : GameScreen, model : Game, navigationController : NavigationController)
     }
 
 
@@ -276,12 +305,28 @@ Game *--> "2\n- _players" Player : "> has 2 players"
 Game *--> "*\n' _traps" Trap : "> knows which traps can be placed"
 
 GameController o--> "1\n- _model" Game : "> Manipulate"
-TerminalView o--> "1\n- _model" Game : "> Consult"
-TerminalView o--> "1\n- _controller" GameController : "> Transmit user's demands"
+GraphicalView o--> "1\n- _model" Game : "> Consult"
+GraphicalView o--> "1\n- _controller" GameController : "> Transmit user's demands"
+GraphicalView *--> "1\n- _controller" NavigationController : "> view is selected by"
+
+GraphicalView ..> ConfigScreen : "<< create >>"
+GraphicalView ..> PlacementScreen : "<< create >>"
+GraphicalView ..> GameScreen : "<< create >>"
+GraphicalView ..> EndScreen : "<< create >>"
+
+ConfigScreen *--> "1\n- _titleBanner" TitleBanner : "<< create >>"
+GameScreen *--> "1\n- _titleBanner" TitleBanner : "<< create >>"
+EndScreen *--> "1\n- _titleBanner" TitleBanner : "<< create >>"
+
+PlacementScreen *--> "1\n- _grid" GridPanel : "> display 1 grid"
+
+GameScreen *--> "2\n- _grids" GridPanel : "> display 2 grids"
+GameScreen *--> "1\n- _infos" InfosPanel : "> display infos"
+
 
 Main ..> Game : "<<uses>>"
 Main ..> GameController : "<<uses>>"
-Main ..> TerminalView : "<<uses>>"
+Main ..> GraphicalView : "<<uses>>"
 
 
 

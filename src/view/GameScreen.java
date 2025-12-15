@@ -1,20 +1,22 @@
 package view;
 
 import controller.GameController;
+import controller.NavigationController;
 import model.Game;
+import view.components.GridPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GameScreen extends JPanel {
-    private GraphicalView _parent;
     private GameController _controller;
     private Game _model;
+    private NavigationController _navigationController;
 
-    public GameScreen(GraphicalView parent, GameController controller, Game model) {
-        _parent = parent;
-        _controller= controller;
+    public GameScreen(GameController controller, Game model, NavigationController navigationController) {
+        _controller = controller;
         _model = model;
+        _navigationController = navigationController;
         setLayout(new BorderLayout());
 
         //titre

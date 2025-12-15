@@ -12,6 +12,7 @@ package model #eeaaff{
         - _turnNum : Integer
         - _gridSize : Integer
         - _joueur : Integer
+        - _islandMode : Boolean
         +<<create>>Game()
         + getTurnNum() : Integer
         + getTrapInventorySize() : Integer
@@ -19,6 +20,9 @@ package model #eeaaff{
         + setPlayerName(name : String)
         + setGrid(width : Integer, height : Integer, islandMode : Boolean)
         + getGridSize() : Integer
+        + otherPlayer(joueur : Integer) : Integer
+        + getMaxShipsPossible() : Integer
+        + setMaxShipsCells(maxShips : Integer) : Boolean
         + placeTrapOnGrid(joueur : Integer, trap : Trap) : Boolean
         + placeShipOnGrid(joueur : Integer, ship : Ship) : Boolean
         + placeWeaponOnIsland(joueur : Integer, weapon : Weapon, cell : Cell) : Boolean
@@ -39,6 +43,9 @@ package model #eeaaff{
         + getName() : String
         + getGrid() : Grid
         + setGrid(grid : Grid)
+        + addGridObserver(observer : GridObserver)
+        + setMaxShipsCells(maxShipsCells : Integer)
+        + getObjectByPosition(cell : Cell) : Placeable
         + placeTrap(trap : Trap) : Boolean
         + placeShip(ship : Ship) : Boolean
         + placeWeaponOnIsland(joueur : Integer, weapon : Weapon, cell : Cell) : Boolean
@@ -54,6 +61,7 @@ package model #eeaaff{
         - _width : Integer
         - _height : Integer
         - _islandMode : Boolean
+        - _maxShipsCells : Integer
         +<<create>>Grid(width : Integer, height : Integer)
         +<<create>>Grid(width : Integer, height : Integer, islandMode : Boolean)
         - constructIsland()
@@ -61,10 +69,10 @@ package model #eeaaff{
         + notifyObserversShoot(posx : Integer, posy : Integer, hit : Boolean)
         + notifyObserversTrapActivated(posx : Integer, posy : Integer)
         + notifyObserversSearch(posx : Integer, posy : Integer, objectFound : PlaceableTypes)
+        + setMaxShipsCells(maxShipsCells : Integer)
         + isOccupied(cell : Cell) : Boolean
         + isOccupiedBy(cell : Cell, PlaceableTypes type) : Boolean
         + getObjectByPosition(cell : Cell) : Placeable
-        + isHit(cell : Cell) : Boolean
         + isInGrid(cell : Cell) : Boolean
         + canPlaceObject(placeable : Placeable) : Boolean
         + placeObject(placeable : Placeable) : Boolean
@@ -206,6 +214,7 @@ package controller #6999ff {
         + <<create>>GameController(model : Game)
         + setPlayerName(name : String)
         + setGrid(size : Integer, islandMode : Boolean)
+        + setMaxShipsCells(maxShips : Integer) : Boolean
         + placeTrapOnGrid(joueur ; Integer, indexTrap : Integer, posx : Integer, posy : Integer) : Boolean
         + placeShipOnGrid(joueur : Integer, type : ShipTypes, posx : Integer, posy : Integer, axis : Axis) : Boolean
         + setWeapon(joueur : Integer, weaponIndex : Integer) : Boolean
@@ -239,12 +248,18 @@ package view #99ff99 {
     }
 
     class ConfigScreen <<extends JPanel>> {
+        +<<create>>ConfigScreen(controller : GameScreen, model : Game, navigationController : NavigationController)
+        + validation()
     }
+     class PlacementScreen <<extends JPanel>>{
+        +<<create>>PlacementScreen(controller : GameScreen, model : Game, navigationController : NavigationController)
+        + validation()
+     }
     class GameScreen <<extends JPanel>>{
-    }
-    class PlacementScreen <<extends JPanel>>{
+        +<<create>>GameScreen(controller : GameScreen, model : Game, navigationController : NavigationController)
     }
     class EndScreen <<extends JPanel>>{
+        +<<create>>EndScreen(controller : GameScreen, model : Game, navigationController : NavigationController)
     }
 
 

@@ -23,6 +23,10 @@ public class GameController {
         _model.setGrid(size, islandMode);
     }
 
+    public boolean setMaxShipsCells(int maxShip) {
+        return _model.setMaxShipsCells(maxShip);
+    }
+
     public boolean placeTrapOnGrid(int joueur, int indexTrap, int posx, int posy) {
         Trap trap = _model.getTrapInInventory(indexTrap);
         trap.setPosition(new Cell(posx, posy));

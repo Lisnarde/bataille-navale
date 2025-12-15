@@ -4,17 +4,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Enumeration;
 
+import controller.GameController;
+import controller.NavigationController;
+import model.Game;
 import view.components.*;
 
 public class ConfigScreen extends JPanel {
-    private GraphicalView _parent;
+    private GameController _controller;
+    private Game _model;
+    private NavigationController _navigationController;
+
     private JTextField _pseudoField;
     private ButtonGroup _sizeGroup;
     private ButtonGroup _islandGroup;
 
 
-    public ConfigScreen(GraphicalView parent) {
-        _parent = parent;
+    public ConfigScreen(GameController controller, Game model, NavigationController navigationController) {
+        _controller = controller;
+        _model = model;
+        _navigationController = navigationController;
         setLayout(new BorderLayout());
 
         //titre
@@ -111,39 +119,42 @@ public class ConfigScreen extends JPanel {
         next.setBackground(new Color(107, 97, 210));
         next.setForeground(Color.WHITE);
 
-        next.addActionListener(e -> {
-            //pseudo
-            String pseudo = _pseudoField.getText();
-
-            // taille de la grille
-            String selectedSize = "";
-            for (Enumeration<AbstractButton> buttons = _sizeGroup.getElements(); buttons.hasMoreElements();) {
-                AbstractButton b = buttons.nextElement();
-                if (b.isSelected()) {
-                    selectedSize = b.getText();
-                    break;
-                }
-            }
-            int gridSize = Integer.parseInt(selectedSize);
-
-            // mode île
-            String islandMode = "";
-            for (Enumeration<AbstractButton> buttons = _islandGroup.getElements(); buttons.hasMoreElements();) {
-                AbstractButton b = buttons.nextElement();
-                if (b.isSelected()) {
-                    islandMode = b.getText();
-                    break;
-                }
-            }
-            boolean isIslandMode = islandMode.equals("oui");
-
-            _parent.configureGame(pseudo, gridSize, isIslandMode);
-
-            _parent.showPlacementScreen();
-        });
+        next.addActionListener(e -> validation());
 
         buttonPanel.add(next);
 
         add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    private void validation() {
+        //pseudo
+        String pseudo = _pseudoField.getText();
+
+        // taille de la grille
+        String selectedSize = "";
+        for (Enumeration<AbstractButton> buttons = _sizeGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton b = buttons.nextElement();
+            if (b.isSelected()) {
+                selectedSize = b.getText();
+                break;
+            }
+        }
+        int gridSize = Integer.parseInt(selectedSize);
+
+        // mode île
+        String islandMode = "";
+        for (Enumeration<AbstractButton> buttons = _islandGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton b = buttons.nextElement();
+            if (b.isSelected()) {
+                islandMode = b.getText();
+                break;
+            }
+        }
+        boolean isIslandMode = islandMode.equals("oui");
+
+        _controller.setPlayerName(pseudo);
+        _controller.setGrid(gridSize,isIslandMode);
+
+        _navigationController.showPlacement();
     }
 }

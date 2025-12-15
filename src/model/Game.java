@@ -13,6 +13,7 @@ import java.util.List;
 public class Game {
     private int _turnNum;
     private int _gridSize;
+    private boolean _islandMode;
     private List<Trap> _traps;
 
     private Player[] _players;
@@ -48,6 +49,7 @@ public class Game {
         }
         _players[0].setGrid(new Grid(size, size, 0));
         _players[1].setGrid(new Grid(size, size, 1));
+        _islandMode = islandMode;
     }
     public void addGridObserver(GridObserver observer) {
         _players[0].addGridObserver(observer);
@@ -56,6 +58,23 @@ public class Game {
 
     public int getGridSize() {return _gridSize;}
     public int otherPlayer(int joueur) {return (joueur+1)%2;}
+
+    public int getMaxShipsPossible() {
+        int cellNumber = _gridSize*_gridSize;
+        if (_islandMode) {
+            cellNumber = cellNumber - (4*4);
+        }
+        int maxShips = (int) (cellNumber * 0.35)+1;
+        return Math.max(maxShips,17);
+    }
+    public boolean setMaxShipsCells(int maxShip) {
+        if (maxShip < 17 || getMaxShipsPossible() < maxShip) {
+            return false;
+        }
+        _players[0].setMaxShipsCells(maxShip);
+        _players[1].setMaxShipsCells(maxShip);
+        return true;
+    }
 
 
     public boolean placeTrapOnGrid(int joueur, Trap trap) {

@@ -31,6 +31,10 @@ public class Player {
         _grid.addObserver(gridObserver);
     }
 
+    public void setMaxShipsCells(int maxShipsCells) {
+        _grid.setMaxShipsCells(maxShipsCells);
+    }
+
     public Placeable getObjectByPosition(Cell cell) {
         return _grid.getObjectByPosition(cell);
     }

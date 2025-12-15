@@ -11,6 +11,7 @@ public class Grid {
     private int _height;
     private int _joueur;
     private boolean _islandMode;
+    private int _maxShipsCells;
     private List<Placeable> _placedObjects;
     private List<GridObserver> _observers;
 
@@ -21,6 +22,7 @@ public class Grid {
         _width = width;
         _height = height;
         _joueur = joueur;
+        _maxShipsCells = 0;
         _placedObjects = new ArrayList<>();
         _observers = new ArrayList<>();
         _islandMode = islandMode;
@@ -59,6 +61,10 @@ public class Grid {
         }
     }
 
+    public void setMaxShipsCells(int maxShipsCells) {
+        _maxShipsCells = maxShipsCells;
+    }
+
 
     public boolean isOccupied(Cell cell){
         for (Placeable p : _placedObjects){
@@ -84,10 +90,6 @@ public class Grid {
             }
         }
         return null;
-    }
-
-    public Boolean isHit(Cell cell){
-        return isOccupiedBy(cell, PlaceableTypes.IMPACT);
     }
 
     public boolean isInGrid(Cell cell) {

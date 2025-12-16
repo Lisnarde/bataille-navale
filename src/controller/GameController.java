@@ -6,6 +6,7 @@ import model.traps.Trap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class GameController {
     Game _model;
@@ -27,6 +28,10 @@ public class GameController {
         return _model.setMaxShipsCells(maxShip);
     }
 
+    public boolean setNumberPerShip(Map<ShipTypes,Integer> numberPerShip) {
+        return _model.setNumberPerShip(numberPerShip);
+    }
+
     public boolean placeTrapOnGrid(int joueur, int indexTrap, int posx, int posy) {
         Trap trap = _model.getTrapInInventory(indexTrap);
         trap.setPosition(new Cell(posx, posy));
@@ -34,14 +39,7 @@ public class GameController {
     }
 
     public boolean placeShipOnGrid(int joueur, ShipTypes type, int posx, int posy, Axis axis) {
-        int size = 0;
-        switch (type) {
-            case AircraftCarrier -> size = 5;
-            case Cruiser -> size = 4;
-            case Destroyer -> size = 4;
-            case Submarine -> size = 3;
-            case Torpedo -> size = 2;
-        }
+        int size = type.getSize();
         List<Cell> position = new ArrayList<>();
         for (int i=0; i<size; i++) {
             position.add( new Cell(posx + (axis == Axis.HORIZONTAL ? i : 0) , posy + (axis == Axis.VERTICAL ? i : 0)));

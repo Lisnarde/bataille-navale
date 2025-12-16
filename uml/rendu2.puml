@@ -13,6 +13,7 @@ package model #eeaaff{
         - _gridSize : Integer
         - _joueur : Integer
         - _islandMode : Boolean
+        - _numberPerShip : Integer[*]
         +<<create>>Game()
         + getTurnNum() : Integer
         + getTrapInventorySize() : Integer
@@ -23,6 +24,7 @@ package model #eeaaff{
         + otherPlayer(joueur : Integer) : Integer
         + getMaxShipsPossible() : Integer
         + setMaxShipsCells(maxShips : Integer) : Boolean
+        + setNumberPerShip(numberPerShip : Integer[*]) : Boolean
         + placeTrapOnGrid(joueur : Integer, trap : Trap) : Boolean
         + placeShipOnGrid(joueur : Integer, ship : Ship) : Boolean
         + placeWeaponOnIsland(joueur : Integer, weapon : Weapon, cell : Cell) : Boolean
@@ -150,6 +152,7 @@ package model #eeaaff{
         Destroyer
         Submarine
         Torpedo
+        + getSize() : Integer
     }
 
     package traps #ff4040 {
@@ -215,6 +218,7 @@ package controller #6999ff {
         + setPlayerName(name : String)
         + setGrid(size : Integer, islandMode : Boolean)
         + setMaxShipsCells(maxShips : Integer) : Boolean
+        + setNumberPerShip(numberPerShip : Integer[*]) : Boolean
         + placeTrapOnGrid(joueur ; Integer, indexTrap : Integer, posx : Integer, posy : Integer) : Boolean
         + placeShipOnGrid(joueur : Integer, type : ShipTypes, posx : Integer, posy : Integer, axis : Axis) : Boolean
         + setWeapon(joueur : Integer, weaponIndex : Integer) : Boolean

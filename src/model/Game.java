@@ -6,15 +6,15 @@ import model.weapons.IslandSearch;
 import model.weapons.Sonar;
 import model.weapons.Weapon;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
+import java.util.*;
 
 public class Game {
     private int _turnNum;
     private int _gridSize;
     private boolean _islandMode;
     private List<Trap> _traps;
+    private Map<ShipTypes,Integer> _numberPerShip;
 
     private Player[] _players;
 
@@ -75,6 +75,18 @@ public class Game {
         _players[0].setMaxShipsCells(maxShip);
         _players[1].setMaxShipsCells(maxShip);
         return true;
+    }
+
+    public boolean setNumberPerShip(Map<ShipTypes,Integer> numberPerShip) {
+        Integer total = 0;
+        for (Map.Entry<ShipTypes, Integer> entry : numberPerShip.entrySet()) {
+            total += entry.getKey().getSize() * entry.getValue();
+        }
+        if (17 <= total && total <= getMaxShipsPossible()) {
+            _numberPerShip = numberPerShip;
+            return true;
+        }
+        return false;
     }
 
 

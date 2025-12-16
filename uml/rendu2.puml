@@ -233,6 +233,17 @@ package controller #6999ff {
 }
 
 package view #99ff99 {
+    package themes #11eedd {
+        class GlobalTheme {
+            - _normalFont : Font
+            - _boldFont : Font
+            - _button : JButton
+            +<<create>>GlobalTheme()
+            + normalFont() : Font
+            + boldFont() : Font
+            + button(text : String) : JButton
+        }
+    }
     package components #44bb44 {
         class TitleBanner  <<extends JPanel>> {}
         class GridPanel <<extends JPanel>> implements model.GridObserver {

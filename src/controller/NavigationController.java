@@ -1,6 +1,8 @@
 package controller;
 
+import view.GameScreen;
 import view.ViewPanel;
+import view.components.GridPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +42,8 @@ public class NavigationController {
         show("PLACEMENT");
     }
 
-    public void showGame() {
+    public void showGame(GridPanel gridPanel) {
+        ((GameScreen)_views.get("GAME")).setPlayerShipsGrid(gridPanel);
         show("GAME");
     }
 

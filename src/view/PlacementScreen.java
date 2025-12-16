@@ -3,6 +3,7 @@ package view;
 import controller.GameController;
 import controller.NavigationController;
 import model.Game;
+import view.components.GridMode;
 import view.components.GridPanel;
 import view.components.TitleBanner;
 import view.themes.Theme;
@@ -16,6 +17,9 @@ public class PlacementScreen extends JPanel implements ViewPanel{
     private Game _model;
     private NavigationController _navigationController;
     private Theme _theme;
+
+
+    private GridPanel _gridPanel;
 
     public PlacementScreen(GameController controller, Game model, NavigationController navigationController, Theme theme) {
         _controller = controller;
@@ -66,7 +70,8 @@ public class PlacementScreen extends JPanel implements ViewPanel{
         content.add(shipQuantity);
 
         //grille de placement
-        content.add(new GridPanel(_model, _controller));
+        _gridPanel = new GridPanel(_model, _controller, GridMode.PLACEMENT);
+        content.add(_gridPanel);
 
         //bateaux à drag n drop
         JPanel shipPanel = new JPanel();
@@ -88,6 +93,6 @@ public class PlacementScreen extends JPanel implements ViewPanel{
     }
 
     private void validation() {
-        _navigationController.showGame();
+        _navigationController.showGame(_gridPanel);
     }
 }

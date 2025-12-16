@@ -260,6 +260,11 @@ package view #99ff99 {
             - _grid : JButton[][]
             +<<create>>GridPanel(gridSize : Integer)
         }
+        enum GridMode {
+            PLACEMENT
+            ATTACK
+            RECEIVE
+        }
         class InfosPanel <<extends JPanel>>{
             +<<create>>InfosPanel()
         }

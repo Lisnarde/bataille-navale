@@ -9,12 +9,13 @@ import java.util.Arrays;
 
 public class Main{
     public static void main(String[] args) {
+        /*
         Game model = new Game();
         GameController controller = new GameController(model);
 
         TerminalView view = new TerminalView(model,controller);
         view.run();
-        /*
+
         controller.setPlayerName("Bast");
         controller.setGrid(10,false);
 

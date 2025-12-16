@@ -54,10 +54,19 @@ public class Grid {
             observer.updateTrapActivated(_joueur, posx, posy);
         }
     }
-
     public void notifyObserversSearch(int posx, int posy, PlaceableTypes objectFound) {
         for (GridObserver observer : _observers) {
             observer.updateSearch(_joueur, posx, posy, objectFound);
+        }
+    }
+    public void notifyObserversShipCellPlaced(int posx, int posy) {
+        for (GridObserver observer : _observers) {
+            observer.updateShipCellPlaced(_joueur, posx, posy);
+        }
+    }
+    public void notifyObserversTrapPlaced(int posx, int posy) {
+        for (GridObserver observer : _observers) {
+            observer.updateTrapPlaced(_joueur, posx, posy);
         }
     }
 
@@ -98,7 +107,7 @@ public class Grid {
 
     public boolean canPlaceObject(Placeable placeable) {
         for (int i=0; i< placeable.getSize(); i++) {
-            if (isOccupied(placeable.getCell(i))) {
+            if (!isInGrid(placeable.getCell(i)) || isOccupied(placeable.getCell(i))) {
                 return false;
             }
         }
@@ -108,6 +117,15 @@ public class Grid {
     public boolean placeObject(Placeable placeable){
         if (canPlaceObject(placeable)) {
             _placedObjects.add(placeable);
+            for (int i=0; i< placeable.getSize(); i++) {
+                if (placeable.getType() == PlaceableTypes.SHIP) {
+                    notifyObserversShipCellPlaced(placeable.getCell(i).getX(), placeable.getCell(i).getY());
+                } else if (placeable.getType() == PlaceableTypes.TRAP) {
+                    notifyObserversTrapPlaced(placeable.getCell(i).getX(), placeable.getCell(i).getY());
+                }{
+                    notifyObserversTrapPlaced(placeable.getCell(i).getX(), placeable.getCell(i).getY());
+                }
+            }
             return true;
         }
         return false;

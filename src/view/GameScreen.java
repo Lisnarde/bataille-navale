@@ -3,6 +3,7 @@ package view;
 import controller.GameController;
 import controller.NavigationController;
 import model.Game;
+import view.components.GridMode;
 import view.components.GridPanel;
 import view.themes.Theme;
 
@@ -15,6 +16,9 @@ public class GameScreen extends JPanel implements ViewPanel {
     private NavigationController _navigationController;
     private Theme _theme;
 
+    private GridPanel _gridPanelAttack;
+    private GridPanel _gridPanelReceive;
+
     public GameScreen(GameController controller, Game model, NavigationController navigationController, Theme theme) {
         _controller = controller;
         _model = model;
@@ -25,6 +29,8 @@ public class GameScreen extends JPanel implements ViewPanel {
 
     @Override
     public void onShow() {
+        TerminalView terminalView = new TerminalView(_model,_controller);
+
         setLayout(new BorderLayout());
 
         //titre
@@ -40,10 +46,10 @@ public class GameScreen extends JPanel implements ViewPanel {
         panelContent.setLayout(new BoxLayout(panelContent, BoxLayout.X_AXIS));
         add(panelContent, BorderLayout.CENTER);
 
-        //grille joueur
-        GridPanel playerGrid = new GridPanel(_model, _controller);
-        playerGrid.setPreferredSize(new Dimension(400,400));
-        panelContent.add(playerGrid);
+        //grille attaque
+        _gridPanelAttack = new GridPanel(_model, _controller, GridMode.ATTACK);
+        _gridPanelAttack.setPreferredSize(new Dimension(400,400));
+        panelContent.add(_gridPanelAttack);
 
         //infos
         JPanel panelInfos = new JPanel();
@@ -171,11 +177,15 @@ public class GameScreen extends JPanel implements ViewPanel {
 
         panelContent.add(panelInfos);
 
-        //grille bot
-        GridPanel botGrid = new GridPanel(_model, _controller);
-        botGrid.setPreferredSize(new Dimension(400,400));
-        panelContent.add(botGrid);
+        //grille receive
+        _gridPanelReceive.setPreferredSize(new Dimension(400,400));
+        _gridPanelReceive.setMode(GridMode.RECEIVE);
+        panelContent.add(_gridPanelReceive);
 
         //armes disponibles
+    }
+
+    public void setPlayerShipsGrid(GridPanel gridPanel) {
+        _gridPanelReceive = gridPanel;
     }
 }

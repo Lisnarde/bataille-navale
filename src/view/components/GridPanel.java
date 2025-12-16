@@ -10,14 +10,25 @@ public class GridPanel extends JPanel implements GridObserver {
     private Game _model;
     private GameController _controller;
 
+    private GridMode _mode;
+
     private List<List<JButton>> _grid;
 
-    public GridPanel(Game model, GameController controller) {
+    public GridPanel(Game model, GameController controller, GridMode mode) {
         _model = model;
         _controller = controller;
+        _mode = mode;
         _model.addGridObserver(this);
-        int gridSize = _model.getGridSize();
         _grid = new ArrayList<>();
+        draw();
+    }
+
+    public void setMode(GridMode mode) {
+        _mode = mode;
+    }
+
+    private void draw() {
+        int gridSize = _model.getGridSize();
         int maxHeight = 800/gridSize;
 
         // +1 pour ajouter la ligne et colonne des labels
@@ -66,19 +77,25 @@ public class GridPanel extends JPanel implements GridObserver {
     private void buttonClicked(JButton button) {
         int x = (int)button.getClientProperty("x");
         int y = (int)button.getClientProperty("y");
-        _controller.shootOnGrid(0, x, y);
+        switch (_mode) {
+            case PLACEMENT -> _controller.placeShipOnGrid(0,ShipTypes.Cruiser,x,y,Axis.HORIZONTAL);
+            case ATTACK -> _controller.shootOnGrid(0, x, y);
+        };
+
     }
 
 
 
     @Override
     public void updateShoot(int joueur, int posx, int posy, boolean hit) {
-        JButton buttonClicked = _grid.get(posy).get(posx);
-        buttonClicked.setEnabled(false);
-        if (hit) {
-            buttonClicked.setBackground(new Color(200,0,0));
-        } else {
-            buttonClicked.setBackground(new Color(0, 0, 120));
+        if ((_mode == GridMode.ATTACK && joueur==1) || _mode == GridMode.RECEIVE && joueur==0) {
+            JButton buttonClicked = _grid.get(posy).get(posx);
+            buttonClicked.setEnabled(false);
+            if (hit) {
+                buttonClicked.setBackground(new Color(200, 0, 0));
+            } else {
+                buttonClicked.setBackground(new Color(0, 0, 120));
+            }
         }
     }
 
@@ -88,6 +105,20 @@ public class GridPanel extends JPanel implements GridObserver {
     }
     @Override
     public void updateSearch(int joueur, int posx, int posy, PlaceableTypes objectFound){
+
+    }
+
+    @Override
+    public void updateShipCellPlaced(int joueur, int posx, int posy) {
+        if (_mode == GridMode.PLACEMENT) {
+            JButton buttonClicked = _grid.get(posy).get(posx);
+            buttonClicked.setEnabled(false);
+            buttonClicked.setBackground(new Color(100,100,100));
+        }
+    }
+
+    @Override
+    public void updateTrapPlaced(int joueur, int posx, int posy) {
 
     }
 }

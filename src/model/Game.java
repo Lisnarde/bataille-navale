@@ -49,6 +49,7 @@ public class Game {
         }
         _players[0].setGrid(new Grid(size, size, 0));
         _players[1].setGrid(new Grid(size, size, 1));
+        _gridSize = size;
         _islandMode = islandMode;
     }
     public void addGridObserver(GridObserver observer) {

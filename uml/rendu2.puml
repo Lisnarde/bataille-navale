@@ -238,10 +238,14 @@ package controller #6999ff {
 
 package view #99ff99 {
     package themes #11eedd {
-        class GlobalTheme {
+        interface Theme <<interface>> {
+            + normalFont() : Font
+            + boldFont() : Font
+            + button(text : String) : JButton
+        }
+        class GlobalTheme implements Theme {
             - _normalFont : Font
             - _boldFont : Font
-            - _button : JButton
             +<<create>>GlobalTheme()
             + normalFont() : Font
             + boldFont() : Font
@@ -249,10 +253,15 @@ package view #99ff99 {
         }
     }
     package components #44bb44 {
-        class TitleBanner  <<extends JPanel>> {}
-        class GridPanel <<extends JPanel>> implements model.GridObserver {
+        class TitleBanner <<extends JPanel>> {
+            +<<create>>TitleBanner()
         }
-        class InfosPanel  <<extends JPanel>>{
+        class GridPanel <<extends JPanel>> implements model.GridObserver {
+            - _grid : JButton[][]
+            +<<create>>GridPanel(gridSize : Integer)
+        }
+        class InfosPanel <<extends JPanel>>{
+            +<<create>>InfosPanel()
         }
     }
 
@@ -263,18 +272,18 @@ package view #99ff99 {
     }
 
     class ConfigScreen <<extends JPanel>> {
-        +<<create>>ConfigScreen(controller : GameScreen, model : Game, navigationController : NavigationController)
+        +<<create>>ConfigScreen(controller : GameScreen, model : Game, navigationController : NavigationController, theme : Theme)
         + validation()
     }
      class PlacementScreen <<extends JPanel>>{
-        +<<create>>PlacementScreen(controller : GameScreen, model : Game, navigationController : NavigationController)
+        +<<create>>PlacementScreen(controller : GameScreen, model : Game, navigationController : NavigationController, theme : Theme)
         + validation()
      }
     class GameScreen <<extends JPanel>>{
-        +<<create>>GameScreen(controller : GameScreen, model : Game, navigationController : NavigationController)
+        +<<create>>GameScreen(controller : GameScreen, model : Game, navigationController : NavigationController, theme : Theme)
     }
     class EndScreen <<extends JPanel>>{
-        +<<create>>EndScreen(controller : GameScreen, model : Game, navigationController : NavigationController)
+        +<<create>>EndScreen(controller : GameScreen, model : Game, navigationController : NavigationController, theme : Theme)
     }
 
 
@@ -323,6 +332,7 @@ GameController o--> "1\n- _model" Game : "> Manipulate"
 GraphicalView o--> "1\n- _model" Game : "> Consult"
 GraphicalView o--> "1\n- _controller" GameController : "> Transmit user's demands"
 GraphicalView *--> "1\n- _controller" NavigationController : "> view is selected by"
+GraphicalView *--> "1\n- _theme" Theme : "> apply this theme"
 
 GraphicalView ..> ConfigScreen : "<< create >>"
 GraphicalView ..> PlacementScreen : "<< create >>"

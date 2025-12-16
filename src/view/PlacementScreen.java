@@ -5,20 +5,28 @@ import controller.NavigationController;
 import model.Game;
 import view.components.GridPanel;
 import view.components.TitleBanner;
+import view.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Enumeration;
 
-public class PlacementScreen extends JPanel {
+public class PlacementScreen extends JPanel implements ViewPanel{
     private GameController _controller;
     private Game _model;
     private NavigationController _navigationController;
+    private Theme _theme;
 
-    public PlacementScreen(GameController controller, Game model, NavigationController navigationController) {
+    public PlacementScreen(GameController controller, Game model, NavigationController navigationController, Theme theme) {
         _controller = controller;
         _model = model;
         _navigationController = navigationController;
+        _theme = theme;
+
+    }
+
+    @Override
+    public void onShow() {
         setLayout(new BorderLayout());
 
         //titre
@@ -58,7 +66,7 @@ public class PlacementScreen extends JPanel {
         content.add(shipQuantity);
 
         //grille de placement
-        content.add(new GridPanel(_model.getGridSize()));
+        content.add(new GridPanel(_model, _controller));
 
         //bateaux à drag n drop
         JPanel shipPanel = new JPanel();
@@ -70,11 +78,7 @@ public class PlacementScreen extends JPanel {
 
         //bouton suivant
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        Button next = new Button("suivant");
-        next.setPreferredSize(new Dimension(120, 40));
-        next.setFont(new Font("Arial", Font.BOLD, 16));
-        next.setBackground(new Color(107, 97, 210));
-        next.setForeground(Color.WHITE);
+        JButton next = _theme.button("Suivant");
 
         next.addActionListener(e -> validation());
 

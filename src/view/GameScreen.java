@@ -4,19 +4,27 @@ import controller.GameController;
 import controller.NavigationController;
 import model.Game;
 import view.components.GridPanel;
+import view.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GameScreen extends JPanel {
+public class GameScreen extends JPanel implements ViewPanel {
     private GameController _controller;
     private Game _model;
     private NavigationController _navigationController;
+    private Theme _theme;
 
-    public GameScreen(GameController controller, Game model, NavigationController navigationController) {
+    public GameScreen(GameController controller, Game model, NavigationController navigationController, Theme theme) {
         _controller = controller;
         _model = model;
         _navigationController = navigationController;
+        _theme = theme;
+
+    }
+
+    @Override
+    public void onShow() {
         setLayout(new BorderLayout());
 
         //titre
@@ -27,9 +35,15 @@ public class GameScreen extends JPanel {
         title.setFont(new Font("Arial", Font.BOLD, 46));
         add(title, BorderLayout.NORTH);
 
+        // Panel Content
+        JPanel panelContent = new JPanel();
+        panelContent.setLayout(new BoxLayout(panelContent, BoxLayout.X_AXIS));
+        add(panelContent, BorderLayout.CENTER);
+
         //grille joueur
-        JPanel panelPlayer = new JPanel();
-        add(new GridPanel(10), BorderLayout.WEST); //model.getGridSize()
+        GridPanel playerGrid = new GridPanel(_model, _controller);
+        playerGrid.setPreferredSize(new Dimension(400,400));
+        panelContent.add(playerGrid);
 
         //infos
         JPanel panelInfos = new JPanel();
@@ -39,7 +53,8 @@ public class GameScreen extends JPanel {
         panelInfosPlayer.setLayout(new BoxLayout(panelInfosPlayer,BoxLayout.Y_AXIS));
 
         JLabel player = new JLabel();
-        //player.setText(_model.getPlayerName(0)); //rajouter un get du pseudo
+        player.setText(_model.getPlayerName(0));
+        panelInfosPlayer.add(player);
 
         JLabel lastActionPlayedPlayer = new JLabel(); //dernière action jouée
         lastActionPlayedPlayer.setText("Dernière action jouée : ");
@@ -98,6 +113,10 @@ public class GameScreen extends JPanel {
         JPanel panelInfosBot = new JPanel();
         panelInfosBot.setLayout(new BoxLayout(panelInfosBot,BoxLayout.Y_AXIS));
 
+        JLabel bot = new JLabel();
+        bot.setText(_model.getPlayerName(1));
+        panelInfosBot.add(bot);
+
         JLabel lastActionPlayedBot =new JLabel(); //dernière action jouée
         lastActionPlayedBot.setText("Dernière action jouée : ");
         lastActionPlayedBot.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -148,14 +167,14 @@ public class GameScreen extends JPanel {
         numCellIslandNonSearchedBot.setFont(new Font("Arial", Font.PLAIN, 16));
         panelInfosBot.add(numCellIslandNonSearchedBot);
 
-
         panelInfos.add(panelInfosBot);
 
-        add(panelInfos, BorderLayout.CENTER);
+        panelContent.add(panelInfos);
 
         //grille bot
-        JPanel panelBot = new JPanel();
-        add(new GridPanel(10), BorderLayout.EAST);
+        GridPanel botGrid = new GridPanel(_model, _controller);
+        botGrid.setPreferredSize(new Dimension(400,400));
+        panelContent.add(botGrid);
 
         //armes disponibles
     }

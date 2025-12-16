@@ -3,20 +3,13 @@ package view.themes;
 import javax.swing.*;
 import java.awt.*;
 
-public class GlobalTheme {
+public class GlobalTheme implements Theme {
     private Font _normalFont;
     private Font _boldFont;
-    private JButton _button;
 
     public GlobalTheme() {
-        _normalFont = new Font("Arial",Font.PLAIN, 16);
-        _boldFont = new Font("Arial",Font.BOLD, 16);
-
-        _button = new JButton();
-        _button.setPreferredSize(new Dimension(120, 40));
-        _button.setFont(new Font("Arial", Font.BOLD, 16));
-        _button.setBackground(new Color(100, 100, 210));
-        _button.setForeground(Color.WHITE);
+        _normalFont = new Font("Arial",Font.PLAIN, 20);
+        _boldFont = new Font("Arial",Font.BOLD, 20);
     }
 
     public Font normalFont() {
@@ -27,7 +20,12 @@ public class GlobalTheme {
     }
 
     public JButton button(String text) {
-        _button.setText(text);
-        return _button;
+        JButton button = new JButton();
+        button.setFont(boldFont());
+        button.setBackground(new Color(100, 100, 210));
+        button.setForeground(Color.WHITE);
+
+        button.setText(text);
+        return button;
     }
 }

@@ -1,4 +1,5 @@
 package view.components;
+import controller.GameController;
 import model.*;
 import javax.swing.*;
 import java.awt.*;
@@ -6,12 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GridPanel extends JPanel implements GridObserver {
+    private Game _model;
+    private GameController _controller;
 
     private List<List<JButton>> _grid;
 
-    public GridPanel(int gridSize) {
-
+    public GridPanel(Game model, GameController controller) {
+        _model = model;
+        _controller = controller;
+        _model.addGridObserver(this);
+        int gridSize = _model.getGridSize();
         _grid = new ArrayList<>();
+        int maxHeight = 800/gridSize;
 
         // +1 pour ajouter la ligne et colonne des labels
         setLayout(new GridLayout(gridSize + 1, gridSize + 1));
@@ -40,21 +47,13 @@ public class GridPanel extends JPanel implements GridObserver {
 
                 JButton button = new JButton();
                 button.setBackground(new Color(50, 150, 200));
+                button.setPreferredSize(new Dimension(maxHeight,maxHeight));
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                button.putClientProperty("x",col);
+                button.putClientProperty("y",row);
 
-                // Hover effect
-                button.addMouseListener(new java.awt.event.MouseAdapter() {
-                    @Override
-                    public void mouseEntered(java.awt.event.MouseEvent e) {
-                        button.setBackground(new Color(0, 200, 225));
-                    }
-
-                    @Override
-                    public void mouseExited(java.awt.event.MouseEvent e) {
-                        button.setBackground(new Color(50, 150, 200));
-                    }
-                });
+                button.addActionListener(actionEvent -> buttonClicked(button));
 
                 rowButtons.add(button);
                 add(button);
@@ -64,16 +63,23 @@ public class GridPanel extends JPanel implements GridObserver {
         }
     }
 
+    private void buttonClicked(JButton button) {
+        int x = (int)button.getClientProperty("x");
+        int y = (int)button.getClientProperty("y");
+        _controller.shootOnGrid(0, x, y);
+    }
+
 
 
     @Override
     public void updateShoot(int joueur, int posx, int posy, boolean hit) {
-        /*_grid.get(posy).get(posx).dis;
+        JButton buttonClicked = _grid.get(posy).get(posx);
+        buttonClicked.setEnabled(false);
         if (hit) {
-            rouge
+            buttonClicked.setBackground(new Color(200,0,0));
         } else {
-            autre couleur
-        }*/
+            buttonClicked.setBackground(new Color(0, 0, 120));
+        }
     }
 
     @Override

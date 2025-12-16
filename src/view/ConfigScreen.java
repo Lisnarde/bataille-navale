@@ -3,16 +3,21 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import controller.GameController;
 import controller.NavigationController;
 import model.Game;
+import model.ShipTypes;
 import view.components.*;
+import view.themes.Theme;
 
 public class ConfigScreen extends JPanel {
     private GameController _controller;
     private Game _model;
     private NavigationController _navigationController;
+    private Theme _theme;
 
     private JPanel _leftPanel;
     private JPanel _rightPanel;
@@ -25,10 +30,11 @@ public class ConfigScreen extends JPanel {
     private JButton _btnSuivant;
 
 
-    public ConfigScreen(GameController controller, Game model, NavigationController navigationController) {
+    public ConfigScreen(GameController controller, Game model, NavigationController navigationController, Theme theme) {
         _controller = controller;
         _model = model;
         _navigationController = navigationController;
+        _theme = theme;
         draw();
         setEnabledPanel(_leftPanel,true);
         setEnabledPanel(_rightPanel,false);
@@ -39,8 +45,6 @@ public class ConfigScreen extends JPanel {
 
         //titre
         add(new TitleBanner(), BorderLayout.NORTH);
-
-        Font font = new Font("Arial",Font.PLAIN, 16);
 
         //centre (contenu)
         JPanel configPanel = new JPanel(new GridLayout(1, 2));
@@ -61,11 +65,11 @@ public class ConfigScreen extends JPanel {
         pseudoPanel.setLayout(new FlowLayout());
 
         JLabel pseudoLabel = new JLabel("Pseudo:");
-        pseudoLabel.setFont(font);
+        pseudoLabel.setFont(_theme.normalFont());
         pseudoPanel.add(pseudoLabel);
 
         _pseudoField = new JTextField();
-        _pseudoField.setFont(font);
+        _pseudoField.setFont(_theme.normalFont());
         _pseudoField.setPreferredSize(new Dimension(200, 30));
         pseudoPanel.add(_pseudoField);
 
@@ -76,14 +80,14 @@ public class ConfigScreen extends JPanel {
         sizeGridPanel.setLayout(new FlowLayout());
 
         JLabel sizeLabel = new JLabel("Choisissez la taille de la grille :");
-        sizeLabel.setFont(font);
+        sizeLabel.setFont(_theme.normalFont());
         sizeGridPanel.add(sizeLabel);
 
         _sizeGroup = new ButtonGroup();
         JPanel sizePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         for (int i = 6; i <= 10; i++) {
-            JRadioButton sizeButton = new JRadioButton(String.valueOf(i));
-            sizeButton.setFont(font);
+            JRadioButton sizeButton = new JRadioButton(i+"");
+            sizeButton.setFont(_theme.normalFont());
             _sizeGroup.add(sizeButton);
             sizePanel.add(sizeButton);
             if (i == 6) sizeButton.setSelected(true);
@@ -97,15 +101,16 @@ public class ConfigScreen extends JPanel {
         islandPanel.setLayout(new FlowLayout());
 
         JLabel islandLabel = new JLabel("Activer le mode île ?");
-        islandLabel.setFont(font);
+        islandLabel.setFont(_theme.normalFont());
         islandPanel.add(islandLabel);
 
         _islandGroup = new ButtonGroup();
         JPanel islandButtonPanel = new JPanel(new FlowLayout((FlowLayout.LEFT)));
         JRadioButton ouiButton = new JRadioButton("oui");
-        ouiButton.setFont(font);
+        ouiButton.setFont(_theme.normalFont());
         JRadioButton nonButton = new JRadioButton("non");
-        nonButton.setFont(font);
+        nonButton.setFont(_theme.normalFont());
+        nonButton.setSelected(true);
         islandButtonPanel.add(ouiButton);
         _islandGroup.add(ouiButton);
         islandButtonPanel.add(nonButton);
@@ -119,11 +124,7 @@ public class ConfigScreen extends JPanel {
         _leftPanel.add(leftButtonPanel, BorderLayout.SOUTH);
 
         // Bouton accepter du panel gauche
-        _btnAccepter = new JButton("Accepter");
-        _btnAccepter.setPreferredSize(new Dimension(120, 40));
-        _btnAccepter.setFont(new Font("Arial", Font.BOLD, 16));
-        _btnAccepter.setBackground(new Color(107, 97, 210));
-        _btnAccepter.setForeground(Color.WHITE);
+        _btnAccepter = _theme.button("Accepter");
         _btnAccepter.addActionListener(e -> accepter());
         leftButtonPanel.add(_btnAccepter);
 
@@ -139,7 +140,7 @@ public class ConfigScreen extends JPanel {
         rightPanelContent.setLayout(new BoxLayout(rightPanelContent, BoxLayout.Y_AXIS));
         _rightPanel.add(rightPanelContent, BorderLayout.CENTER);
 
-        // texte dans le panel droite
+        // texte dans le panel de droite
         rightPanelContent.add(new JLabel("Configuration des bateaux :"));
         rightPanelContent.add(Box.createVerticalStrut(10));
         rightPanelContent.add(new JLabel("truc type bato")); // à remplacer plus tard
@@ -149,11 +150,7 @@ public class ConfigScreen extends JPanel {
         _rightPanel.add(rightButtonPanel,BorderLayout.SOUTH);
 
         // Bouton suivant du panel droit
-        _btnSuivant = new JButton("Suivant");
-        _btnSuivant.setPreferredSize(new Dimension(120, 40));
-        _btnSuivant.setFont(new Font("Arial", Font.BOLD, 16));
-        _btnSuivant.setBackground(new Color(107, 97, 210));
-        _btnSuivant.setForeground(Color.WHITE);
+        _btnSuivant = _theme.button("Suivant");
         _btnSuivant.addActionListener(e -> suivant());
         rightButtonPanel.add(_btnSuivant);
     }
@@ -195,6 +192,9 @@ public class ConfigScreen extends JPanel {
         }
         boolean isIslandMode = islandMode.equals("oui");
 
+        // Vérification des champs
+        if (pseudo.equals("") || gridSize<6) {return;}
+
         _controller.setPlayerName(pseudo);
         _controller.setGrid(gridSize,isIslandMode);
 
@@ -203,6 +203,11 @@ public class ConfigScreen extends JPanel {
     }
 
     private void suivant() {
+        Map<ShipTypes,Integer> map = new HashMap<>();
+        for (ShipTypes type : ShipTypes.values()) {
+            map.put(type,1);
+        }
+        _controller.setNumberPerShip(map);
         _navigationController.showPlacement();
     }
 }

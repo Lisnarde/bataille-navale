@@ -39,6 +39,10 @@ public class Player {
         return _grid.getObjectByPosition(cell);
     }
 
+    public int getNumberOfShipByType(ShipTypes shipTypes) {
+        return _grid.getNumberOfShipByType(shipTypes);
+    }
+
     public boolean placeShip(Ship ship) {
         return _grid.placeObject(ship);
     }

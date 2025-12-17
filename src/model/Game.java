@@ -66,7 +66,7 @@ public class Game {
             cellNumber = cellNumber - (4*4);
         }
         int maxShips = (int) (cellNumber * 0.35)+1;
-        return Math.max(maxShips,17);
+        return Math.max(maxShips,18);
     }
     public boolean setMaxShipsCells(int maxShip) {
         if (maxShip < 17 || getMaxShipsPossible() < maxShip) {
@@ -89,13 +89,20 @@ public class Game {
         return false;
     }
 
+    public int getNumberMaxOfShip(ShipTypes shipTypes) {
+        return _numberPerShip.get(shipTypes);
+    }
+
 
     public boolean placeTrapOnGrid(int joueur, Trap trap) {
         return _players[joueur].placeTrap(trap);
     }
 
     public boolean placeShipOnGrid(int joueur, Ship ship) {
-        return _players[joueur].placeShip(ship);
+        if (_players[joueur].getNumberOfShipByType(ship.geyShipType()) < getNumberMaxOfShip(ship.geyShipType())) {
+            return _players[joueur].placeShip(ship);
+        }
+        return false;
     }
 
     public boolean placeWeaponOnIsland(int joueur, Weapon weapon, Cell cell) {
@@ -118,7 +125,7 @@ public class Game {
         return _players[joueur].getWeaponInventorySize();
     }
     public String getWeaponNameInInventory(int joueur, int weaponIndex) {
-        return _players[joueur].getWeaponInInventory(weaponIndex).getType().name();
+        return _players[joueur].getWeaponInInventory(weaponIndex).getWeaponType().name();
     }
     public boolean setWeapon(int joueur, int weaponIndex) {
         return _players[joueur].setEquippedWeapon(weaponIndex);

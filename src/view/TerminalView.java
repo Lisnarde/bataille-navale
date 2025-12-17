@@ -38,6 +38,6 @@ public class TerminalView implements GridObserver {
 
     @Override
     public void updateTrapPlaced(int joueur, int posx, int posy, TrapTypes trapType) {
-
+        System.out.println("Piège "+trapType.name()+" placé par joueur "+joueur+" à "+posx+";"+posy);
     }
 }

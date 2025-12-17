@@ -2,7 +2,10 @@ package view;
 
 import controller.GameController;
 import controller.NavigationController;
+import model.Axis;
 import model.Game;
+import model.ShipTypes;
+import model.traps.TrapTypes;
 import view.components.GridMode;
 import view.components.GridPanel;
 import view.components.TitleBanner;
@@ -18,8 +21,8 @@ public class PlacementScreen extends JPanel implements ViewPanel{
     private NavigationController _navigationController;
     private Theme _theme;
 
-
     private GridPanel _gridPanel;
+
 
     public PlacementScreen(GameController controller, Game model, NavigationController navigationController, Theme theme) {
         _controller = controller;
@@ -39,6 +42,7 @@ public class PlacementScreen extends JPanel implements ViewPanel{
         //panel du content principal
         JPanel content = new JPanel();
         content.setLayout(new FlowLayout());
+        add(content, BorderLayout.CENTER);
 
         //panel quantité de bateaux
         JPanel shipQuantity = new JPanel();
@@ -71,19 +75,57 @@ public class PlacementScreen extends JPanel implements ViewPanel{
 
         //grille de placement
         _gridPanel = new GridPanel(_model, _controller, GridMode.PLACEMENT);
+        _gridPanel.setTypePlacement(ShipTypes.AircraftCarrier,-1);
+        _gridPanel.setAxisPlacement(Axis.HORIZONTAL);
         content.add(_gridPanel);
 
-        //bateaux à drag n drop
+
+        //panel des bateaux à placer avec axis et pièges
         JPanel shipPanel = new JPanel();
         shipPanel.setLayout(new BoxLayout(shipPanel, BoxLayout.Y_AXIS));
-
         content.add(shipPanel);
 
-        add(content, BorderLayout.CENTER);
+        //Les bateaux
+        ButtonGroup grpTypes = new ButtonGroup();
+        for (ShipTypes shipType : ShipTypes.values()) {
+            JRadioButton btn = new JRadioButton(shipType.name());
+            _theme.buttonTheme(btn);
+            btn.addActionListener(actionEvent -> _gridPanel.setTypePlacement(shipType,-1));
+            grpTypes.add(btn);
+            shipPanel.add(btn);
+            if (shipType == ShipTypes.AircraftCarrier) {btn.setSelected(true);}
+        }
+
+        shipPanel.add(Box.createRigidArea(new Dimension(10,10)));
+
+        for (int i=0; i<_model.getTrapInventorySize(); i++) {
+            TrapTypes trapType = _model.getTrapInInventory(i).getTrapType();
+            JRadioButton btn = new JRadioButton(trapType.name());
+            btn.putClientProperty("trapIndex",i);
+            _theme.buttonTheme(btn);
+            btn.addActionListener(actionEvent -> _gridPanel.setTypePlacement(null,(int)btn.getClientProperty("trapIndex")));
+            grpTypes.add(btn);
+            shipPanel.add(btn);
+        }
+
+        shipPanel.add(Box.createRigidArea(new Dimension(10,20)));
+
+        // Les axis
+        ButtonGroup grpAxis = new ButtonGroup();
+        for (Axis axis : Axis.values()) {
+            JRadioButton btn = new JRadioButton(axis.name());
+            _theme.buttonTheme(btn);
+            btn.addActionListener(actionEvent -> _gridPanel.setAxisPlacement(axis));
+            grpAxis.add(btn);
+            shipPanel.add(btn);
+            if (axis == Axis.HORIZONTAL) {btn.setSelected(true);}
+        }
+
 
         //bouton suivant
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton next = _theme.button("Suivant");
+        JButton next = new JButton("Suivant");
+        _theme.buttonTheme(next);
 
         next.addActionListener(e -> validation());
 

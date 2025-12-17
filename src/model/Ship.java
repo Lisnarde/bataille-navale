@@ -4,8 +4,10 @@ import java.util.List;
 
 public class Ship implements Placeable {
     private List<Cell> _positions;
+    private ShipTypes _shipType;
 
-    public Ship(List<Cell> cells) {
+    public Ship(ShipTypes shipType, List<Cell> cells) {
+        _shipType = shipType;
         _positions = cells;
     }
 
@@ -28,4 +30,6 @@ public class Ship implements Placeable {
     }
     @Override
     public PlaceableTypes getType() {return PlaceableTypes.SHIP;}
+
+    public ShipTypes geyShipType() {return _shipType;}
 }

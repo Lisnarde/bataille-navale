@@ -52,7 +52,7 @@ public class GameController {
         for (int i=0; i<size; i++) {
             position.add( new Cell(posx + (axis == Axis.HORIZONTAL ? i : 0) , posy + (axis == Axis.VERTICAL ? i : 0)));
         }
-        Ship ship = new Ship(position);
+        Ship ship = new Ship(type,position);
         return _model.placeShipOnGrid(joueur,ship);
     }
 

@@ -105,6 +105,18 @@ public class Grid {
         return null;
     }
 
+    public int getNumberOfShipByType(ShipTypes shipType) {
+        int nb = 0;
+        for (Placeable p : _placedObjects) {
+            if (p.getType() == PlaceableTypes.SHIP) {
+                if ( ((Ship)p).geyShipType() == shipType ) {
+                    nb++;
+                }
+            }
+        }
+        return nb;
+    }
+
     public boolean isInGrid(Cell cell) {
         return 0 <= cell.getX() && cell.getX() < _width && 0<= cell.getY() && cell.getY() < _height;
     }
@@ -121,6 +133,7 @@ public class Grid {
     public boolean placeObject(Placeable placeable){
         if (canPlaceObject(placeable)) {
             _placedObjects.add(placeable);
+            System.out.println("PLace");
             for (int i=0; i< placeable.getSize(); i++) {
                 if (placeable.getType() == PlaceableTypes.SHIP) {
                     notifyObserversShipCellPlaced(placeable.getCell(i).getX(), placeable.getCell(i).getY());

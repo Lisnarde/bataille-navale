@@ -9,4 +9,9 @@ public class Sonar extends model.weapons.Weapon{
         grid.placeImpact(cell);
         return false;
     }
+
+    @Override
+    public WeaponTypes getWeaponType() {
+        return WeaponTypes.SONAR;
+    }
 }

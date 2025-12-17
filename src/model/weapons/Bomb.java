@@ -3,6 +3,7 @@ package model.weapons;
 import model.Cell;
 import model.Grid;
 import model.PlaceableTypes;
+import model.traps.Trap;
 
 public class Bomb extends model.weapons.Weapon{
     @Override
@@ -17,11 +18,16 @@ public class Bomb extends model.weapons.Weapon{
                     boolean hit = grid.isOccupiedBy(newCell, PlaceableTypes.SHIP);
                     grid.notifyObserversShoot(x, y, hit);
                     if (grid.isOccupiedBy(newCell, PlaceableTypes.TRAP)) {
-                        grid.notifyObserversTrapActivated(x, y);
+                        grid.notifyObserversTrapActivated(x, y, ((Trap)grid.getObjectByPosition(cell)).getTrapType());
                     }
                 }
             }
         }
         return hitCells > 0;
+    }
+
+    @Override
+    public WeaponTypes getWeaponType() {
+        return WeaponTypes.BOMB;
     }
 }

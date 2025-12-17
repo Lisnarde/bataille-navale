@@ -2,6 +2,7 @@ package view;
 
 import controller.GameController;
 import model.*;
+import model.traps.TrapTypes;
 
 import java.util.Scanner;
 
@@ -17,12 +18,12 @@ public class TerminalView implements GridObserver {
 
     @Override
     public void updateShoot(int joueur, int posx, int posy, boolean hit) {
-        System.out.println("Joueur "+joueur+" tire en "+posx+" ; "+posy+ " : "+(hit ? "bateau touché" : ""));
+        System.out.println("Joueur "+joueur+" s'est fait tiré dessus en "+posx+" ; "+posy+ " : "+(hit ? "bateau touché" : ""));
     }
 
     @Override
-    public void updateTrapActivated(int joueur, int posx, int posy) {
-
+    public void updateTrapActivated(int joueur, int posx, int posy, TrapTypes trapType) {
+        System.out.println("Piège "+trapType+" de joueur "+joueur+" activé en "+posx+";"+posy);
     }
 
     @Override
@@ -36,7 +37,7 @@ public class TerminalView implements GridObserver {
     }
 
     @Override
-    public void updateTrapPlaced(int joueur, int posx, int posy) {
+    public void updateTrapPlaced(int joueur, int posx, int posy, TrapTypes trapType) {
 
     }
 }

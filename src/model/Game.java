@@ -47,8 +47,8 @@ public class Game {
                 p.addWeaponInInventory(new Sonar());
             }
         }
-        _players[0].setGrid(new Grid(size, size, 0));
-        _players[1].setGrid(new Grid(size, size, 1));
+        _players[0].setGrid(new Grid(size, size, 0, islandMode));
+        _players[1].setGrid(new Grid(size, size, 1, islandMode));
         _gridSize = size;
         _islandMode = islandMode;
     }
@@ -107,9 +107,19 @@ public class Game {
     }
 
     public PlaceableTypes getObjectTypeByPosition(int joueur, int posx, int posy) {
-        return _players[joueur].getObjectByPosition(new Cell(posx, posy)).getType();
+        Placeable p = _players[joueur].getObjectByPosition(new Cell(posx, posy));
+        if (p != null) {
+            return p.getType();
+        }
+        return null;
     }
 
+    public int getWeaponInventorySize(int joueur) {
+        return _players[joueur].getWeaponInventorySize();
+    }
+    public String getWeaponNameInInventory(int joueur, int weaponIndex) {
+        return _players[joueur].getWeaponInInventory(weaponIndex).getType().name();
+    }
     public boolean setWeapon(int joueur, int weaponIndex) {
         return _players[joueur].setEquippedWeapon(weaponIndex);
     }

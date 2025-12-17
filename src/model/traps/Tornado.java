@@ -9,4 +9,9 @@ public class Tornado extends model.traps.Trap{
     public Tornado() {
         this(new Cell(-1,-1));
     }
+
+    @Override
+    public TrapTypes getTrapType() {
+        return TrapTypes.TORNADO;
+    }
 }

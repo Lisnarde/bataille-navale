@@ -3,6 +3,7 @@ package view;
 import controller.GameController;
 import controller.NavigationController;
 import model.Game;
+import model.weapons.Weapon;
 import view.components.GridMode;
 import view.components.GridPanel;
 import view.themes.Theme;
@@ -183,6 +184,16 @@ public class GameScreen extends JPanel implements ViewPanel {
         panelContent.add(_gridPanelReceive);
 
         //armes disponibles
+        JPanel panelArmes = new JPanel();
+        panelArmes.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        for (int i=0; i<_model.getWeaponInventorySize(0); i++) {
+            String weaponName = _model.getWeaponNameInInventory(0,i);
+            JButton btn = new JButton(weaponName);
+            btn.putClientProperty("index",i);
+            btn.addActionListener(actionEvent -> _controller.setWeapon(0,(int)btn.getClientProperty("index")));
+            panelArmes.add(btn);
+        }
+        add(panelArmes,BorderLayout.SOUTH);
     }
 
     public void setPlayerShipsGrid(GridPanel gridPanel) {

@@ -1,6 +1,8 @@
 package view.components;
 import controller.GameController;
 import model.*;
+import model.traps.TrapTypes;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -61,9 +63,13 @@ public class GridPanel extends JPanel implements GridObserver {
                 button.setPreferredSize(new Dimension(maxHeight,maxHeight));
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+                if (_model.getObjectTypeByPosition(0,col,row) == PlaceableTypes.ISLANDPART) {
+                    button.setBackground(new Color(170,150,50));
+                }
+
                 button.putClientProperty("x",col);
                 button.putClientProperty("y",row);
-
                 button.addActionListener(actionEvent -> buttonClicked(button));
 
                 rowButtons.add(button);
@@ -100,7 +106,7 @@ public class GridPanel extends JPanel implements GridObserver {
     }
 
     @Override
-    public void updateTrapActivated(int joueur, int posx, int posy) {
+    public void updateTrapActivated(int joueur, int posx, int posy,  TrapTypes trapType) {
 
     }
     @Override
@@ -118,7 +124,7 @@ public class GridPanel extends JPanel implements GridObserver {
     }
 
     @Override
-    public void updateTrapPlaced(int joueur, int posx, int posy) {
+    public void updateTrapPlaced(int joueur, int posx, int posy,  TrapTypes trapType) {
 
     }
 }

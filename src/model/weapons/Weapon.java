@@ -19,5 +19,7 @@ public abstract class Weapon implements Placeable {
         return PlaceableTypes.WEAPON;
     }
 
+    public abstract WeaponTypes getWeaponType();
+
     public abstract boolean execShoot(Grid grid, Cell cell);
 }

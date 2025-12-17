@@ -29,6 +29,8 @@ public abstract class Trap implements model.Placeable{
         return PlaceableTypes.TRAP;
     }
 
+    public abstract TrapTypes getTrapType();
+
     public void setPosition(Cell cell) {
         _position = new Cell(cell);
     }

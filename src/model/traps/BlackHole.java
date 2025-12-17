@@ -10,4 +10,9 @@ public class BlackHole extends model.traps.Trap{
     public BlackHole() {
         this(new Cell(-1,-1));
     }
+
+    @Override
+    public TrapTypes getTrapType() {
+        return TrapTypes.BLACKHOLE;
+    }
 }

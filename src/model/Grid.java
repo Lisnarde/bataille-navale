@@ -1,5 +1,7 @@
 package model;
 
+import model.traps.Trap;
+import model.traps.TrapTypes;
 import model.weapons.*;
 
 import java.lang.reflect.Method;
@@ -27,6 +29,7 @@ public class Grid {
         _observers = new ArrayList<>();
         _islandMode = islandMode;
         if (_islandMode) {
+            System.out.println("Y'a ile là");
             constructIsland();
         }
     }
@@ -36,6 +39,7 @@ public class Grid {
             for (int y=3; y<7; y++) {
                 for (int x=3; x<7; x++) {
                     _placedObjects.add(new IslandPart(new Cell(x,y)));
+                    System.out.println("Je construit ici : "+x+";"+y);
                 }
             }
         }
@@ -49,9 +53,9 @@ public class Grid {
             observer.updateShoot(_joueur, posx, posy, hit);
         }
     }
-    public void notifyObserversTrapActivated(int posx, int posy) {
+    public void notifyObserversTrapActivated(int posx, int posy, TrapTypes trapType) {
         for (GridObserver observer : _observers) {
-            observer.updateTrapActivated(_joueur, posx, posy);
+            observer.updateTrapActivated(_joueur, posx, posy, trapType);
         }
     }
     public void notifyObserversSearch(int posx, int posy, PlaceableTypes objectFound) {
@@ -64,9 +68,9 @@ public class Grid {
             observer.updateShipCellPlaced(_joueur, posx, posy);
         }
     }
-    public void notifyObserversTrapPlaced(int posx, int posy) {
+    public void notifyObserversTrapPlaced(int posx, int posy, TrapTypes trapType) {
         for (GridObserver observer : _observers) {
-            observer.updateTrapPlaced(_joueur, posx, posy);
+            observer.updateTrapPlaced(_joueur, posx, posy, trapType);
         }
     }
 
@@ -121,9 +125,7 @@ public class Grid {
                 if (placeable.getType() == PlaceableTypes.SHIP) {
                     notifyObserversShipCellPlaced(placeable.getCell(i).getX(), placeable.getCell(i).getY());
                 } else if (placeable.getType() == PlaceableTypes.TRAP) {
-                    notifyObserversTrapPlaced(placeable.getCell(i).getX(), placeable.getCell(i).getY());
-                }{
-                    notifyObserversTrapPlaced(placeable.getCell(i).getX(), placeable.getCell(i).getY());
+                    notifyObserversTrapPlaced(placeable.getCell(i).getX(), placeable.getCell(i).getY(), ((Trap)placeable).getTrapType());
                 }
             }
             return true;

@@ -1,5 +1,6 @@
 package controller;
 
+import controller.bots.Bot;
 import model.*;
 import model.traps.Trap;
 
@@ -9,10 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 public class GameController {
-    Game _model;
+    private Game _model;
 
-    public GameController(Game model) {
+    private Bot _bot;
+
+    public GameController(Game model, Bot bot) {
         _model = model;
+        _bot = bot;
     }
 
 
@@ -29,7 +33,11 @@ public class GameController {
     }
 
     public boolean setNumberPerShip(Map<ShipTypes,Integer> numberPerShip) {
-        return _model.setNumberPerShip(numberPerShip);
+        if (_model.setNumberPerShip(numberPerShip)) {
+            _bot.placeShips(_model,this, numberPerShip);
+            return true;
+        }
+        return false;
     }
 
     public boolean placeTrapOnGrid(int joueur, int indexTrap, int posx, int posy) {
@@ -53,6 +61,12 @@ public class GameController {
     }
 
     public boolean shootOnGrid(int joueur, int posx, int posy) {
-        return _model.shootOnGrid(joueur, new Cell(posx, posy));
+        if (_model.shootOnGrid(joueur, new Cell(posx, posy))) {
+            if (joueur==0) {
+                _bot.shoot(_model, this);
+            }
+            return true;
+        }
+        return false;
     }
 }

@@ -161,47 +161,64 @@ package model #eeaaff{
 
     package traps #ff4040 {
     abstract Trap <<abstract>> implements model.Placeable {
+        - _position : Cell
         +<<create>>Trap(cell : Cell)
         + getSize() : Integer
         + getCell(index : Integer) : Cell
         + hasThisPosition(cell : Cell) : Boolean
+        + getType() : PlaceableTypes
+        {abstract} getTrapType() : TrapTypes
         + setPosition(cell : Cell)
     }
     class Tornado extends Trap {
         +<<create>>Tornado(cell : Cell)
+        + Tornado()
+        + getTrapType() : TrapTypes
     }
     class BlackHole extends Trap {
         +<<create>>BlackHole(cell : Cell)
+        + BlackHole()
+        + getTrapType() : TrapTypes
+    }
+    enum TrapTypes <<enum>>{
+        BLACKHOLE
+        TORNADO
     }
     }
 
     package weapons #dfdf40 {
         abstract Weapon <<abstract>> implements model.Placeable {
-            + <<create>>Weapon()
             + getSize() : Integer
-            + getCell(index : Integer) : Cell
-            + hasThisPosition(cell : Cell) : Boolean
-            + setPosition(cell : Cell)
-            + execShoot(grid : Grid, cell : Cell) : Boolean
-
+            + getCell(index: int) : Cell
+            + hasThisPosition(cell: Cell) : Boolean
+            + getType() : PlaceableTypes
+            {abstract} getWeaponType() : WeaponTypes
+            {abstract} execShoot(grid: Grid, cell: Cell) : boolean
         }
         class Missile extends Weapon {
-            +<<create>>Missile()
             + execShoot(grid : Grid, cell : Cell) : Boolean
+            + getWeaponType() : WeaponTypes
         }
         class IslandSearch extends Weapon {
             - _player : Player
             +<<create>>IslandSearch(player : Player)
             + execShoot(grid : Grid, cell : Cell) : Boolean
+            + getWeaponType() : WeaponTypes
         }
         class Bomb extends Weapon {
-            +<<create>>Bomb()
             + execShoot(grid : Grid, cell : Cell) : Boolean
             - applyImpact(grid : Grid, cell : Cell) : Integer
+            + getWeaponType() : WeaponTypes
         }
         class Sonar extends Weapon {
-            +<<create>>Sonar()
             + execShoot(grid : Grid, cell : Cell) : Boolean
+            + getWeaponType() : WeaponTypes
+        }
+        enum WeaponTypes <<enum>>{
+            MISSILE
+            ISLANDSEARCH
+            BOMB
+            SONAR
         }
     }
 

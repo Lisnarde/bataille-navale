@@ -66,8 +66,8 @@ public class Game implements GridObserver{
         _gridSize = size;
         _islandMode = islandMode;
 
-        _players[0].setMaxShipsCells(getMaxShipsPossible());
-        _players[1].setMaxShipsCells(getMaxShipsPossible());
+        _players[0].setMaxShipsCells(getMaxShipsCellsPossible());
+        _players[1].setMaxShipsCells(getMaxShipsCellsPossible());
 
         addGridObserver(this);
     }
@@ -82,7 +82,7 @@ public class Game implements GridObserver{
     public int getGridSize() {return _gridSize;}
     public int otherPlayer(int joueur) {return (joueur+1)%2;}
 
-    public int getMaxShipsPossible() {
+    public int getMaxShipsCellsPossible() {
         int cellNumber = _gridSize*_gridSize;
         if (_islandMode) {
             cellNumber = cellNumber - (4*4);
@@ -96,7 +96,7 @@ public class Game implements GridObserver{
         for (Map.Entry<ShipTypes, Integer> entry : numberPerShip.entrySet()) {
             total += entry.getKey().getSize() * entry.getValue();
         }
-        if (17 <= total && total <= getMaxShipsPossible()) {
+        if (17 <= total && total <= getMaxShipsCellsPossible()) {
             _numberPerShip = numberPerShip;
             return true;
         }

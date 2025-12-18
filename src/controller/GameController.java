@@ -52,6 +52,8 @@ public class GameController {
         return _model.placeShipOnGrid(joueur,ship);
     }
 
+    public boolean placeWeaponOnIsland()
+
     public boolean setWeapon(int joueur, int weaponIndex) {
         return _model.setWeapon(joueur,weaponIndex);
     }

@@ -5,6 +5,7 @@ import controller.NavigationController;
 import model.Game;
 import model.GameObserver;
 import model.weapons.Weapon;
+import model.weapons.WeaponTypes;
 import view.components.GridMode;
 import view.components.GridPanel;
 import view.components.TitleBanner;
@@ -23,6 +24,7 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
     private GridPanel _gridPanelReceive;
 
     private TitleBanner _title;
+    private JPanel _panelArmes;
 
     public GameScreen(GameController controller, Game model, NavigationController navigationController, Theme theme) {
         _controller = controller;
@@ -185,16 +187,19 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
         panelContent.add(_gridPanelReceive);
 
         //armes disponibles
-        JPanel panelArmes = new JPanel();
-        panelArmes.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        _panelArmes = new JPanel();
+        _panelArmes.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        add(_panelArmes,BorderLayout.SOUTH);
+
         for (int i=0; i<_model.getWeaponInventorySize(0); i++) {
             String weaponName = _model.getWeaponNameInInventory(0,i);
             JButton btn = new JButton(weaponName);
+            _theme.buttonTheme(btn);
+            btn.setPreferredSize(new Dimension(200,70));
             btn.putClientProperty("index",i);
             btn.addActionListener(actionEvent -> _controller.setWeapon(0,(int)btn.getClientProperty("index")));
-            panelArmes.add(btn);
+            _panelArmes.add(btn);
         }
-        add(panelArmes,BorderLayout.SOUTH);
     }
 
     public void setPlayerShipsGrid(GridPanel gridPanel) {
@@ -210,5 +215,17 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
     @Override
     public void updateTurnNumber(int turnNum) {
         _title.setText("BATAILLE NAVALE - TOUR N°" +turnNum);
+    }
+
+    @Override
+    public void updateWeaponFound(int joueur, WeaponTypes weaponType) {
+        int indexWeapon = _model.getWeaponInventorySize(0)-1;
+        String weaponName = _model.getWeaponNameInInventory(0, indexWeapon);
+        JButton btn = new JButton(weaponName);
+        _theme.buttonTheme(btn);
+        btn.setPreferredSize(new Dimension(200,70));
+        btn.putClientProperty("index",indexWeapon);
+        btn.addActionListener(actionEvent -> _controller.setWeapon(0,(int)btn.getClientProperty("index")));
+        _panelArmes.add(btn);
     }
 }

@@ -2,6 +2,7 @@ package view.components;
 import controller.GameController;
 import model.*;
 import model.traps.TrapTypes;
+import model.weapons.WeaponTypes;
 
 import javax.swing.*;
 import java.awt.*;
@@ -133,8 +134,16 @@ public class GridPanel extends JPanel implements GridObserver {
         }
     }
     @Override
-    public void updateSearch(int joueur, int posx, int posy, PlaceableTypes objectFound){
-
+    public void updateSearch(int joueur, int posx, int posy, WeaponTypes objectFound){
+        if ((_mode == GridMode.ATTACK && joueur==1) || _mode == GridMode.RECEIVE && joueur==0) {
+            JButton buttonClicked = _grid.get(posy).get(posx);
+            buttonClicked.setEnabled(false);
+            if (objectFound == null) {
+                buttonClicked.setBackground(new Color(140, 120, 10));
+            } else {
+                buttonClicked.setBackground(new Color(100, 80, 0));
+            }
+        }
     }
 
     @Override
@@ -156,6 +165,15 @@ public class GridPanel extends JPanel implements GridObserver {
             } else if (trapType == TrapTypes.TORNADO) {
                 buttonClicked.setBackground(new Color(84, 19, 0));
             }
+        }
+    }
+
+    @Override
+    public void updateWeaponPlacedOnIsland(int joueur, int posx, int posy, WeaponTypes weaponType) {
+        if (_mode == GridMode.PLACEMENT) {
+            JButton buttonClicked = _grid.get(posy).get(posx);
+            buttonClicked.setEnabled(false);
+            buttonClicked.setBackground(new Color(100, 80, 0));
         }
     }
 

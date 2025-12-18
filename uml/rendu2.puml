@@ -246,14 +246,17 @@ package view #99ff99 {
         interface Theme <<interface>> {
             + normalFont() : Font
             + boldFont() : Font
+            + titleFont() : Font
             + button(text : String) : JButton
         }
         class GlobalTheme implements Theme {
             - _normalFont : Font
             - _boldFont : Font
+            - _titleFont
             +<<create>>GlobalTheme()
             + normalFont() : Font
             + boldFont() : Font
+            + titleFont() : Font
             + button(text : String) : JButton
         }
     }

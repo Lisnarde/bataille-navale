@@ -2,6 +2,8 @@ package view;
 
 import controller.GameController;
 import controller.NavigationController;
+import controller.bots.Bot;
+import controller.bots.RandomBot;
 import model.*;
 import model.traps.TrapTypes;
 import model.weapons.WeaponTypes;
@@ -138,8 +140,13 @@ public class PlacementScreen extends JPanel implements ViewPanel {
             if (axis == Axis.HORIZONTAL) {btn.setSelected(true);}
         }
 
-        shipPanel.add(Box.createRigidArea(new Dimension(10,20)));
+        shipPanel.add(Box.createRigidArea(new Dimension(10,40)));
 
+        // Bouton Random
+        JButton btnRandom = new JButton("Génération aléatoire");
+        _theme.buttonTheme(btnRandom);
+        btnRandom.addActionListener(actionEvent -> randomGeneration());
+        shipPanel.add(btnRandom);
 
 
         //bouton suivant
@@ -154,7 +161,14 @@ public class PlacementScreen extends JPanel implements ViewPanel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    private void randomGeneration() {
+        _controller.washGrid(0);
+        _gridPanel.resetView();
+        _controller.botPlaceObjects(0);
+    }
+
     private void validation() {
+        _controller.botPlaceObjects(1);
         _navigationController.showGame(_gridPanel);
     }
 }

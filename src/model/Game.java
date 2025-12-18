@@ -114,6 +114,9 @@ public class Game implements GridObserver{
         }
         return false;
     }
+    public Map<ShipTypes,Integer> getNumberPerShip() {
+        return _numberPerShip;
+    }
 
     public int getNumberMaxOfShip(ShipTypes shipTypes) {
         return _numberPerShip.get(shipTypes);
@@ -162,7 +165,9 @@ public class Game implements GridObserver{
         return _players[joueur].setEquippedWeapon(weaponIndex);
     }
 
-
+    public void washGrid(int joueur) {
+        _players[joueur].washGrid();
+    }
 
     public Boolean isTheGameFinished() {
         return _players[0].hasNoMoreShips() || _players[1].hasNoMoreShips();

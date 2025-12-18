@@ -73,6 +73,10 @@ public class Player {
     public int getWeaponInventorySize() {return _weaponInventory.size();}
     public Weapon getWeaponInInventory(int weaponIndex) {return _weaponInventory.get(weaponIndex);}
 
+    public void washGrid() {
+        _grid.washGrid();
+    }
+
     public boolean hasNoMoreShips() {
         return _grid.allShipsDead();
     }

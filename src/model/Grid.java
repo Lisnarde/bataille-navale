@@ -216,6 +216,17 @@ public class Grid {
         return null;
     }
 
+    public void washGrid() {
+        for (int i=_placedObjects.size()-1; i>=0; i--) {
+            Placeable p = _placedObjects.get(i);
+            if (p.getType() != PlaceableTypes.ISLANDPART) {
+                _placedObjects.remove(i);
+            } else {
+                ((IslandPart)p).setPlacedObject(null);
+            }
+        }
+    }
+
     public boolean placeWeaponOnIsland(Weapon weapon, Cell cell) {
         if (getNumberOfWeaponOnIslandByType(weapon.getWeaponType()) > 0 ) {return false;}
         Placeable thing = getObjectByPosition(cell);

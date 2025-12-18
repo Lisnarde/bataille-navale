@@ -7,6 +7,6 @@ import model.ShipTypes;
 import java.util.Map;
 
 public interface Bot {
-    void placeShips(Game model, GameController controller, Map<ShipTypes,Integer> numberPerShip);
-    void shoot(Game model, GameController controller);
+    void placeShips(int player, Game model, GameController controller, Map<ShipTypes,Integer> numberPerShip);
+    void shoot(int player, Game model, GameController controller);
 }

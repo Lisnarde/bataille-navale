@@ -15,6 +15,7 @@ import view.themes.Theme;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Enumeration;
+import java.util.Map;
 
 public class PlacementScreen extends JPanel implements ViewPanel {
     private GameController _controller;
@@ -50,27 +51,29 @@ public class PlacementScreen extends JPanel implements ViewPanel {
         JPanel shipQuantity = new JPanel();
         shipQuantity.setLayout(new BoxLayout(shipQuantity, BoxLayout.Y_AXIS));
         JLabel titleShipQuantity = new JLabel("Quantité de bateaux");
-        titleShipQuantity.setFont(new Font("Arial", Font.PLAIN, 32));
+        titleShipQuantity.setFont(_theme.titleFont());
         shipQuantity.add(titleShipQuantity);
 
-        JLabel aircraftCarrierLabel = new JLabel("Porte-avion : 1");
-        aircraftCarrierLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        Map<ShipTypes, Integer> ships = _model.getNumberPerShip();
+
+        JLabel aircraftCarrierLabel = new JLabel("Porte-avion : "+ ships.get(ShipTypes.AircraftCarrier));
+        aircraftCarrierLabel.setFont(_theme.normalFont());
         shipQuantity.add(aircraftCarrierLabel);
 
-        JLabel cruiserLabel = new JLabel("Croiseur : 1");
-        cruiserLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        JLabel cruiserLabel = new JLabel("Croiseur : "+ ships.get(ShipTypes.Cruiser));
+        cruiserLabel.setFont(_theme.normalFont());
         shipQuantity.add(cruiserLabel);
 
-        JLabel destroyerLabel = new JLabel("Contre-torpilleur : 1");
-        destroyerLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        JLabel destroyerLabel = new JLabel("Contre-torpilleur : "+ ships.get(ShipTypes.Destroyer));
+        destroyerLabel.setFont(_theme.normalFont());
         shipQuantity.add(destroyerLabel);
 
-        JLabel submarineLabel = new JLabel("Sous-marin : 1");
-        submarineLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        JLabel submarineLabel = new JLabel("Sous-marin : "+ ships.get(ShipTypes.Submarine));
+        submarineLabel.setFont(_theme.normalFont());
         shipQuantity.add(submarineLabel);
 
-        JLabel torpedoLabel = new JLabel("Torpilleur : 1");
-        torpedoLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        JLabel torpedoLabel = new JLabel("Torpilleur : "+ ships.get(ShipTypes.Torpedo));
+        torpedoLabel.setFont(_theme.normalFont());
         shipQuantity.add(torpedoLabel);
 
         content.add(shipQuantity);

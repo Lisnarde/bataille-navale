@@ -45,9 +45,9 @@ public class GridPanel extends JPanel implements GridObserver {
         // Première case vide (coin haut-gauche)
         add(new JLabel(""));
 
-        // --- Ligne des colonnes : A, B, C, ...
+        // --- Ligne des colonnes : 1, 2, 3, ...
         for (int col = 0; col < gridSize; col++) {
-            JLabel label = new JLabel(String.valueOf((char) ('A' + col)), SwingConstants.CENTER);
+            JLabel label = new JLabel(String.valueOf(col + 1), SwingConstants.CENTER);
             label.setFont(new Font("Arial", Font.BOLD, 16));
             add(label);
         }
@@ -55,8 +55,8 @@ public class GridPanel extends JPanel implements GridObserver {
         // --- Grille principale
         for (int row = 0; row < gridSize; row++) {
 
-            // Label de ligne (1, 2, 3, ...)
-            JLabel rowLabel = new JLabel(String.valueOf(row + 1), SwingConstants.CENTER);
+            // Label de ligne : A, B, C, ...
+            JLabel rowLabel = new JLabel(String.valueOf((char) ('A' + row)), SwingConstants.CENTER);
             rowLabel.setFont(new Font("Arial", Font.BOLD, 16));
             add(rowLabel);
 

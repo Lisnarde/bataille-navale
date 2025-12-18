@@ -28,10 +28,6 @@ public class GameController {
         _model.setGrid(size, islandMode);
     }
 
-    public boolean setMaxShipsCells(int maxShip) {
-        return _model.setMaxShipsCells(maxShip);
-    }
-
     public boolean setNumberPerShip(Map<ShipTypes,Integer> numberPerShip) {
         if (_model.setNumberPerShip(numberPerShip)) {
             _bot.placeShips(_model,this, numberPerShip);

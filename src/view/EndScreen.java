@@ -27,7 +27,7 @@ public class EndScreen extends JPanel implements ViewPanel{
         setLayout(new BorderLayout());
 
         //titre
-        add(new TitleBanner(), BorderLayout.NORTH);
+        add(new TitleBanner("BATAILLE NAVALE - Bravo "+_model.getPlayerName(_model.whoWon())+" !"), BorderLayout.NORTH);
 
 
     }

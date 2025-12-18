@@ -25,6 +25,13 @@ public class RandomBot implements Bot {
         for (int t=0; t<model.getTrapInventorySize(); t++) {
             while (!controller.placeTrapOnGrid(1, t, _random.nextInt(gridSize), _random.nextInt(gridSize)));
         }
+
+        if (model.isIslandModeActivated()) {
+            for (int w=0; w < model.getGlobalWeaponInventorySize(); w++) {
+                while (!controller.placeWeaponOnIsland(1, w, _random.nextInt(gridSize), _random.nextInt(gridSize)))
+                    System.out.println("aaa");
+            }
+        }
     }
 
     @Override

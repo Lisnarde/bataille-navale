@@ -2,7 +2,10 @@ package controller;
 
 import controller.bots.Bot;
 import model.*;
+import model.traps.BlackHole;
+import model.traps.Tornado;
 import model.traps.Trap;
+import model.traps.TrapTypes;
 import model.weapons.Bomb;
 import model.weapons.Sonar;
 import model.weapons.Weapon;
@@ -41,7 +44,10 @@ public class GameController {
     }
 
     public boolean placeTrapOnGrid(int joueur, int indexTrap, int posx, int posy) {
-        Trap trap = _model.getTrapInInventory(indexTrap);
+        Trap trap = switch (_model.getTrapInInventory(indexTrap)) {
+            case BLACKHOLE -> new BlackHole();
+            case TORNADO -> new Tornado();
+        };
         trap.setPosition(new Cell(posx, posy));
         return _model.placeTrapOnGrid(joueur, trap);
     }
@@ -56,8 +62,8 @@ public class GameController {
         return _model.placeShipOnGrid(joueur,ship);
     }
 
-    public boolean placeWeaponOnIsland(int joueur, WeaponTypes type, int posx, int posy) {
-        Weapon weapon = switch (type) {
+    public boolean placeWeaponOnIsland(int joueur, int weaponIndex, int posx, int posy) {
+        Weapon weapon = switch (_model.getWeaponInGlobalInventory(weaponIndex)) {
             case BOMB -> new Bomb();
             case SONAR -> new Sonar();
             default -> null;

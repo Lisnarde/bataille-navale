@@ -31,5 +31,5 @@ public class Ship implements Placeable {
     @Override
     public PlaceableTypes getType() {return PlaceableTypes.SHIP;}
 
-    public ShipTypes geyShipType() {return _shipType;}
+    public ShipTypes getShipType() {return _shipType;}
 }

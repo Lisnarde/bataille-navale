@@ -7,5 +7,5 @@ public interface Theme {
     Font normalFont();
     Font boldFont();
 
-    JButton button(String text);
+    void buttonTheme(AbstractButton button);
 }

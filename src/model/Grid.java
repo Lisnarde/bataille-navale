@@ -74,6 +74,12 @@ public class Grid {
         }
     }
 
+    public void notifyObserversShipCellDrowned(int posx, int posy){
+        for (GridObserver obs : _observers) {
+            obs.updateShipCellDrowned(_joueur, posx, posy);
+        }
+    }
+
     public void setMaxShipsCells(int maxShipsCells) {
         _maxShipsCells = maxShipsCells;
     }
@@ -105,6 +111,18 @@ public class Grid {
         return null;
     }
 
+    public int getNumberOfShipByType(ShipTypes shipType) {
+        int nb = 0;
+        for (Placeable p : _placedObjects) {
+            if (p.getType() == PlaceableTypes.SHIP) {
+                if ( ((Ship)p).geyShipType() == shipType ) {
+                    nb++;
+                }
+            }
+        }
+        return nb;
+    }
+
     public boolean isInGrid(Cell cell) {
         return 0 <= cell.getX() && cell.getX() < _width && 0<= cell.getY() && cell.getY() < _height;
     }
@@ -121,6 +139,7 @@ public class Grid {
     public boolean placeObject(Placeable placeable){
         if (canPlaceObject(placeable)) {
             _placedObjects.add(placeable);
+            System.out.println("Placed");
             for (int i=0; i< placeable.getSize(); i++) {
                 if (placeable.getType() == PlaceableTypes.SHIP) {
                     notifyObserversShipCellPlaced(placeable.getCell(i).getX(), placeable.getCell(i).getY());
@@ -143,9 +162,29 @@ public class Grid {
 
     public boolean shoot(Cell cell, Weapon weapon){
         if (isInGrid(cell)) {
-            return weapon.execShoot(this, cell);
+            boolean result = weapon.execShoot(this, cell);
+            if (isOccupiedBy(cell, PlaceableTypes.SHIP)) {
+                Ship ship = (Ship) getObjectByPosition(cell);
+                if (isTheShipDrowned(ship)) {
+                    for (int i = 0; i < ship.getSize(); i++) {
+                        Cell c = ship.getCell(i);
+                        notifyObserversShipCellDrowned(c.getX(), c.getY());
+                    }
+                }
+            }
+            return result;
         }
         return false;
+    }
+
+    public boolean isTheShipDrowned(Ship ship){
+        for (int i = 0; i < ship.getSize(); i++) {
+            Cell c = ship.getCell(i);
+            if (!isOccupiedBy(c, PlaceableTypes.IMPACT)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public Placeable getIslandObject(Cell cell) {

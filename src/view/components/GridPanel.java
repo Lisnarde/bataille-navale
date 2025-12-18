@@ -16,6 +16,10 @@ public class GridPanel extends JPanel implements GridObserver {
 
     private List<List<JButton>> _grid;
 
+    private Axis _axis;
+    private ShipTypes _shipType;
+    private int _trapIndex;
+
     public GridPanel(Game model, GameController controller, GridMode mode) {
         _model = model;
         _controller = controller;
@@ -80,11 +84,22 @@ public class GridPanel extends JPanel implements GridObserver {
         }
     }
 
+    public void setTypePlacement(ShipTypes shipType, int trapIndex) {
+        _shipType = shipType;
+        _trapIndex = trapIndex;
+    }
+    public void setAxisPlacement(Axis axis) {
+        _axis = axis;
+    }
+
     private void buttonClicked(JButton button) {
         int x = (int)button.getClientProperty("x");
         int y = (int)button.getClientProperty("y");
         switch (_mode) {
-            case PLACEMENT -> _controller.placeShipOnGrid(0,ShipTypes.Cruiser,x,y,Axis.HORIZONTAL);
+            case PLACEMENT -> {
+                if (_shipType!=null) _controller.placeShipOnGrid(0,_shipType,x,y,_axis);
+                else if (_trapIndex!=-1) _controller.placeTrapOnGrid(0, _trapIndex,x,y);
+            }
             case ATTACK -> _controller.shootOnGrid(0, x, y);
         };
 
@@ -98,7 +113,7 @@ public class GridPanel extends JPanel implements GridObserver {
             JButton buttonClicked = _grid.get(posy).get(posx);
             buttonClicked.setEnabled(false);
             if (hit) {
-                buttonClicked.setBackground(new Color(200, 0, 0));
+                buttonClicked.setBackground(new Color(200, 122, 45));
             } else {
                 buttonClicked.setBackground(new Color(0, 0, 120));
             }
@@ -106,8 +121,16 @@ public class GridPanel extends JPanel implements GridObserver {
     }
 
     @Override
-    public void updateTrapActivated(int joueur, int posx, int posy,  TrapTypes trapType) {
-
+    public void updateTrapActivated(int joueur, int posx, int posy, TrapTypes trapType) {
+        if ((_mode == GridMode.ATTACK && joueur==1) || _mode == GridMode.RECEIVE && joueur==0) {
+            JButton buttonClicked = _grid.get(posy).get(posx);
+            buttonClicked.setEnabled(false);
+            if (trapType == TrapTypes.BLACKHOLE) {
+                buttonClicked.setBackground(new Color(0, 0, 0));
+            } else if (trapType == TrapTypes.TORNADO) {
+                buttonClicked.setBackground(new Color(84, 19, 0));
+            }
+        }
     }
     @Override
     public void updateSearch(int joueur, int posx, int posy, PlaceableTypes objectFound){
@@ -124,7 +147,24 @@ public class GridPanel extends JPanel implements GridObserver {
     }
 
     @Override
-    public void updateTrapPlaced(int joueur, int posx, int posy,  TrapTypes trapType) {
+    public void updateTrapPlaced(int joueur, int posx, int posy, TrapTypes trapType) {
+        if (_mode == GridMode.PLACEMENT) {
+            JButton buttonClicked = _grid.get(posy).get(posx);
+            buttonClicked.setEnabled(false);
+            if (trapType == TrapTypes.BLACKHOLE) {
+                buttonClicked.setBackground(new Color(0, 0, 0));
+            } else if (trapType == TrapTypes.TORNADO) {
+                buttonClicked.setBackground(new Color(84, 19, 0));
+            }
+        }
+    }
 
+    @Override
+    public void updateShipCellDrowned(int joueur, int posx, int posy){
+        if ( _mode == GridMode.ATTACK && joueur == 1 || _mode == GridMode.RECEIVE && joueur == 0){
+            JButton button = _grid.get(posy).get(posx);
+            button.setEnabled(false);
+            button.setBackground(new Color(200, 0, 0));
+        }
     }
 }

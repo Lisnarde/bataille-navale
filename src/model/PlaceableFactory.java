@@ -10,7 +10,7 @@ public class PlaceableFactory {
     }
 
     public Placeable createShip(List<Cell> cells){
-        return new Ship(cells);
+        return new Ship(null,cells);
     }
 
     public Placeable createTrapTornado(Cell cell){

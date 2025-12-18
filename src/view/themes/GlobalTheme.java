@@ -19,13 +19,10 @@ public class GlobalTheme implements Theme {
         return _boldFont;
     }
 
-    public JButton button(String text) {
-        JButton button = new JButton();
+    public void buttonTheme(AbstractButton button) {
         button.setFont(boldFont());
         button.setBackground(new Color(100, 100, 210));
         button.setForeground(Color.WHITE);
 
-        button.setText(text);
-        return button;
     }
 }

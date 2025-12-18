@@ -124,7 +124,8 @@ public class ConfigScreen extends JPanel {
         _leftPanel.add(leftButtonPanel, BorderLayout.SOUTH);
 
         // Bouton accepter du panel gauche
-        _btnAccepter = _theme.button("Accepter");
+        _btnAccepter = new JButton("Accepter");
+        _theme.buttonTheme(_btnAccepter);
         _btnAccepter.addActionListener(e -> accepter());
         leftButtonPanel.add(_btnAccepter);
 
@@ -150,7 +151,8 @@ public class ConfigScreen extends JPanel {
         _rightPanel.add(rightButtonPanel,BorderLayout.SOUTH);
 
         // Bouton suivant du panel droit
-        _btnSuivant = _theme.button("Suivant");
+        _btnSuivant = new JButton("Suivant");
+        _theme.buttonTheme(_btnSuivant);
         _btnSuivant.addActionListener(e -> suivant());
         rightButtonPanel.add(_btnSuivant);
     }
@@ -207,7 +209,8 @@ public class ConfigScreen extends JPanel {
         for (ShipTypes type : ShipTypes.values()) {
             map.put(type,1);
         }
-        _controller.setNumberPerShip(map);
-        _navigationController.showPlacement();
+        if (_controller.setNumberPerShip(map)) {
+            _navigationController.showPlacement();
+        }
     }
 }

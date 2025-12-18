@@ -58,7 +58,7 @@ public class Grid {
             observer.updateTrapActivated(_joueur, posx, posy, trapType);
         }
     }
-    public void notifyObserversSearch(int posx, int posy, PlaceableTypes objectFound) {
+    public void notifyObserversSearch(int posx, int posy, WeaponTypes objectFound) {
         for (GridObserver observer : _observers) {
             observer.updateSearch(_joueur, posx, posy, objectFound);
         }
@@ -71,6 +71,11 @@ public class Grid {
     public void notifyObserversTrapPlaced(int posx, int posy, TrapTypes trapType) {
         for (GridObserver observer : _observers) {
             observer.updateTrapPlaced(_joueur, posx, posy, trapType);
+        }
+    }
+    public void notifyObserversWeaponPlaced(int posx, int posy, WeaponTypes weaponType) {
+        for (GridObserver observer : _observers) {
+            observer.updateWeaponPlacedOnIsland(_joueur, posx, posy, weaponType);
         }
     }
     public void notifyObserversShipCellDrowned(int posx, int posy){
@@ -196,6 +201,7 @@ public class Grid {
         if (thing!=null && thing.getType() == PlaceableTypes.ISLANDPART) {
             IslandPart island = (IslandPart) thing;
             island.setPlacedObject(weapon);
+            notifyObserversWeaponPlaced(cell.getX(),cell.getY(),weapon.getWeaponType());
         }
         return false;
     }

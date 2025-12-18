@@ -3,6 +3,10 @@ package controller;
 import controller.bots.Bot;
 import model.*;
 import model.traps.Trap;
+import model.weapons.Bomb;
+import model.weapons.Sonar;
+import model.weapons.Weapon;
+import model.weapons.WeaponTypes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +54,15 @@ public class GameController {
         }
         Ship ship = new Ship(type,position);
         return _model.placeShipOnGrid(joueur,ship);
+    }
+
+    public boolean placeWeaponOnIsland(int joueur, WeaponTypes type, int posx, int posy) {
+        Weapon weapon = switch (type) {
+            case BOMB -> new Bomb();
+            case SONAR -> new Sonar();
+            default -> null;
+        };
+        return _model.placeWeaponOnIsland(joueur, weapon, new Cell(posx,posy));
     }
 
     public boolean setWeapon(int joueur, int weaponIndex) {

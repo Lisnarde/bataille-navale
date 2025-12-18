@@ -1,10 +1,7 @@
 package model;
 
 import model.traps.*;
-import model.weapons.Bomb;
-import model.weapons.IslandSearch;
-import model.weapons.Sonar;
-import model.weapons.Weapon;
+import model.weapons.*;
 
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.util.*;
@@ -32,6 +29,11 @@ public class Game implements GridObserver{
     private void notifyObserversTurnNumber() {
         for (GameObserver obs : _observers) {
             obs.updateTurnNumber(_turnNum);
+        }
+    }
+    private void notifyObserversWeaponFound(int joueur, WeaponTypes weaponType) {
+        for (GameObserver obs : _observers) {
+            obs.updateWeaponFound(joueur, weaponType);
         }
     }
 
@@ -87,8 +89,8 @@ public class Game implements GridObserver{
         if (_islandMode) {
             cellNumber = cellNumber - (4*4);
         }
-        int maxShips = (int) (cellNumber * 0.35)+1;
-        return Math.max(maxShips,18);
+        int maxShips = (int) (cellNumber * 0.35);
+        return Math.max(maxShips,17);
     }
 
     public boolean setNumberPerShip(Map<ShipTypes,Integer> numberPerShip) {
@@ -164,9 +166,15 @@ public class Game implements GridObserver{
 
     @Override public void updateShoot(int joueur, int posx, int posy, boolean hit) {}
     @Override public void updateTrapActivated(int joueur, int posx, int posy, TrapTypes trapType) {}
-    @Override public void updateSearch(int joueur, int posx, int posy, PlaceableTypes objectFound) {}
+    @Override public void updateSearch(int joueur, int posx, int posy, WeaponTypes objectFound) {
+        if (objectFound != null) {
+            notifyObserversWeaponFound(joueur, objectFound);
+        }
+    }
     @Override public void updateShipCellPlaced(int joueur, int posx, int posy) {}
     @Override public void updateTrapPlaced(int joueur, int posx, int posy, TrapTypes trapType) {}
+    @Override
+    public void updateWeaponPlacedOnIsland(int joueur, int posx, int posy, WeaponTypes weaponType) {}
     @Override public void updateShipCellDrowned(int joueur, int posx, int posy) {}
     @Override
     public void updateNoMoreShips(int joueur) {

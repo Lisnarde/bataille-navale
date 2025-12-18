@@ -3,6 +3,7 @@ package view;
 import controller.GameController;
 import model.*;
 import model.traps.TrapTypes;
+import model.weapons.WeaponTypes;
 
 import java.util.Scanner;
 
@@ -27,8 +28,8 @@ public class TerminalView implements GridObserver {
     }
 
     @Override
-    public void updateSearch(int joueur, int posx, int posy, PlaceableTypes objectFound) {
-
+    public void updateSearch(int joueur, int posx, int posy, WeaponTypes objectFound) {
+        System.out.println("Le joueur "+joueur+" se fait fouiller en "+posx+";"+posy+" : "+(objectFound != null ? objectFound.name() : "Rien trouvé"));
     }
 
     @Override
@@ -39,6 +40,11 @@ public class TerminalView implements GridObserver {
     @Override
     public void updateTrapPlaced(int joueur, int posx, int posy, TrapTypes trapType) {
         System.out.println("Piège "+trapType.name()+" placé par joueur "+joueur+" à "+posx+";"+posy);
+    }
+
+    @Override
+    public void updateWeaponPlacedOnIsland(int joueur, int posx, int posy, WeaponTypes weaponType) {
+        System.out.println("Arme "+weaponType+" cachée sur l'île par le joueur "+joueur+" à "+posx+";"+posy);
     }
 
     @Override

@@ -4,13 +4,18 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TitleBanner extends JPanel {
+    JLabel _title;
     public TitleBanner() {
         this("BATAILLE NAVALE");
     }
     public TitleBanner(String text) {
         setLayout(new BorderLayout());
-        JLabel title = new JLabel(text, SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 46));
-        add(title, BorderLayout.CENTER);
+        _title = new JLabel(text, SwingConstants.CENTER);
+        _title.setFont(new Font("Arial", Font.BOLD, 46));
+        add(_title, BorderLayout.CENTER);
+    }
+
+    public void setText(String text) {
+        _title.setText(text);
     }
 }

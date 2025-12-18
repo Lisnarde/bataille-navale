@@ -16,10 +16,10 @@ public class IslandSearch extends Weapon {
         if (object!=null && object.getType() == PlaceableTypes.WEAPON) {
             Weapon weapon = (Weapon)object;
             _player.addWeaponInInventory(weapon);
-            grid.notifyObserversSearch(cell.getX(), cell.getY(), object.getType());
+            grid.notifyObserversSearch(cell.getX(), cell.getY(), weapon.getWeaponType());
+        } else {
+            grid.notifyObserversSearch(cell.getX(), cell.getY(), null);
         }
-        grid.notifyObserversSearch(cell.getX(), cell.getY(), null);
-
         return true;
     }
 

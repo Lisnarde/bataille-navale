@@ -7,6 +7,7 @@ import model.GameObserver;
 import model.weapons.Weapon;
 import view.components.GridMode;
 import view.components.GridPanel;
+import view.components.TitleBanner;
 import view.themes.Theme;
 
 import javax.swing.*;
@@ -21,14 +22,13 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
     private GridPanel _gridPanelAttack;
     private GridPanel _gridPanelReceive;
 
-    private JLabel _title;
+    private TitleBanner _title;
 
     public GameScreen(GameController controller, Game model, NavigationController navigationController, Theme theme) {
         _controller = controller;
         _model = model;
         _navigationController = navigationController;
         _theme = theme;
-
     }
 
     @Override
@@ -39,7 +39,7 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
         setLayout(new BorderLayout());
 
         //titre
-        _title = new JLabel("BATAILLE NAVALE - TOUR N°" +_model.getTurnNum(), SwingConstants.CENTER);
+        _title = new TitleBanner("BATAILLE NAVALE - TOUR N°" +_model.getTurnNum());
         _title.setFont(new Font("Arial", Font.BOLD, 46));
         add(_title, BorderLayout.NORTH);
 

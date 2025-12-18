@@ -161,7 +161,7 @@ public class Grid {
     }
 
     public boolean shoot(Cell cell, Weapon weapon){
-        if (isInGrid(cell)) {
+        if (isInGrid(cell) && !isOccupiedBy(cell,PlaceableTypes.IMPACT)) {
             boolean result = weapon.execShoot(this, cell);
             if (isOccupiedBy(cell, PlaceableTypes.SHIP)) {
                 Ship ship = (Ship) getObjectByPosition(cell);

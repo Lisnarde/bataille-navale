@@ -9,8 +9,8 @@ import model.traps.TrapTypes;
 public class Missile extends model.weapons.Weapon{
     @Override
     public boolean execShoot(Grid grid, Cell cell) {
-        grid.placeImpact(cell);
         if (grid.isOccupiedBy(cell,PlaceableTypes.ISLANDPART)) {return false;}
+        grid.placeImpact(cell);
         boolean hit = grid.isOccupiedBy(cell, PlaceableTypes.SHIP);
         grid.notifyObserversShoot(cell.getX(), cell.getY(), hit);
 

@@ -161,47 +161,64 @@ package model #eeaaff{
 
     package traps #ff4040 {
     abstract Trap <<abstract>> implements model.Placeable {
+        - _position : Cell
         +<<create>>Trap(cell : Cell)
         + getSize() : Integer
         + getCell(index : Integer) : Cell
         + hasThisPosition(cell : Cell) : Boolean
+        + getType() : PlaceableTypes
+        {abstract} getTrapType() : TrapTypes
         + setPosition(cell : Cell)
     }
     class Tornado extends Trap {
         +<<create>>Tornado(cell : Cell)
+        + Tornado()
+        + getTrapType() : TrapTypes
     }
     class BlackHole extends Trap {
         +<<create>>BlackHole(cell : Cell)
+        + BlackHole()
+        + getTrapType() : TrapTypes
+    }
+    enum TrapTypes <<enum>>{
+        BLACKHOLE
+        TORNADO
     }
     }
 
     package weapons #dfdf40 {
         abstract Weapon <<abstract>> implements model.Placeable {
-            + <<create>>Weapon()
             + getSize() : Integer
-            + getCell(index : Integer) : Cell
-            + hasThisPosition(cell : Cell) : Boolean
-            + setPosition(cell : Cell)
-            + execShoot(grid : Grid, cell : Cell) : Boolean
-
+            + getCell(index: int) : Cell
+            + hasThisPosition(cell: Cell) : Boolean
+            + getType() : PlaceableTypes
+            {abstract} getWeaponType() : WeaponTypes
+            {abstract} execShoot(grid: Grid, cell: Cell) : boolean
         }
         class Missile extends Weapon {
-            +<<create>>Missile()
             + execShoot(grid : Grid, cell : Cell) : Boolean
+            + getWeaponType() : WeaponTypes
         }
         class IslandSearch extends Weapon {
             - _player : Player
             +<<create>>IslandSearch(player : Player)
             + execShoot(grid : Grid, cell : Cell) : Boolean
+            + getWeaponType() : WeaponTypes
         }
         class Bomb extends Weapon {
-            +<<create>>Bomb()
             + execShoot(grid : Grid, cell : Cell) : Boolean
             - applyImpact(grid : Grid, cell : Cell) : Integer
+            + getWeaponType() : WeaponTypes
         }
         class Sonar extends Weapon {
-            +<<create>>Sonar()
             + execShoot(grid : Grid, cell : Cell) : Boolean
+            + getWeaponType() : WeaponTypes
+        }
+        enum WeaponTypes <<enum>>{
+            MISSILE
+            ISLANDSEARCH
+            BOMB
+            SONAR
         }
     }
 
@@ -218,25 +235,46 @@ package model #eeaaff{
 }
 
 package controller #6999ff {
+    package bots {
+    interface Bot <<interface>>{
+    + placeShips(player : Integer, model : Game, controller : GameController, numberPerShip: Map<ShipTypes, Integer>)
+    + shoot(player : Integer, model : Game, controller : GameController)
+    }
+
+    class RandomBot implements Bot{
+    - _random : Random
+    + <<create>>RandomBot()
+    + placeShips(player: int, model: Game, controller: GameController, numberPerShip: Map<ShipTypes, Integer>)
+    + shoot(player: int, model: Game, controller: GameController)
+    }
+
+    }
     class GameController {
-        + <<create>>GameController(model : Game)
+        - _model : Game
+        - _bot : Bot
+        + <<create>>GameController(model : Game, bot : Bot)
         + setPlayerName(name : String)
         + setGrid(size : Integer, islandMode : Boolean)
-        + setMaxShipsCells(maxShips : Integer) : Boolean
-        + setNumberPerShip(numberPerShip : Integer[*]) : Boolean
-        + placeTrapOnGrid(joueur ; Integer, indexTrap : Integer, posx : Integer, posy : Integer) : Boolean
-        + placeShipOnGrid(joueur : Integer, type : ShipTypes, posx : Integer, posy : Integer, axis : Axis) : Boolean
-        + setWeapon(joueur : Integer, weaponIndex : Integer) : Boolean
-        + shootOnGrid(joueur : Integer, posx : Integer, posy : Integer) : Boolean
+        + setNumberPerShip(numberPerShip : Map<ShipTypes, Integer>) : Boolean
+        + botPlaceObjects(player: Integer)
+        + placeTrapOnGrid(player : Integer, indexTrap : Integer, posx : Integer, posy : Integer) : Boolean
+        + placeShipOnGrid(player : Integer, type : ShipTypes, posx : Integer, posy : Integer, axis : Axis) : Boolean
+        + placeWeaponOnIsland(player : Integer, weaponIndex : Integer, posx : Integer, posy : Integer) : Boolean
+        + setWeapon(player : Integer, weaponIndex : Integer) : Boolean
+        + shootOnGrid(player : Integer, posx : Integer, posy : Integer) : Boolean
+        + washGrid(player : Integer)
     }
 
     class NavigationController {
         - _layout : CardLayout
         - _container : JPanel
+        - _views : Map<String, JPanel>
         +<<create>>NavigationController(layout : CardLayout, container : JPanel)
+        + saveCard(name : String, view : JPanel)
+        + show(name : String)
         + showConfig()
         + showPlacement()
-        + showGame()
+        + showGame(gridPanel : GridPanel)
         + showEnd()
     }
 }

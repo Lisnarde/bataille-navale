@@ -86,6 +86,19 @@ public class GridPanel extends JPanel implements GridObserver {
         }
     }
 
+    public void resetView() {
+        for (int row=0; row< _grid.size(); row++) {
+            for (int col=0; col < _grid.get(row).size(); col++) {
+                if (_model.getObjectTypeByPosition(0,col,row) == PlaceableTypes.ISLANDPART) {
+                    _grid.get(row).get(col).setBackground(new Color(170,150,50));
+                } else {
+                    _grid.get(row).get(col).setBackground(new Color(50, 150, 200));
+                }
+            }
+        }
+        repaint();
+    }
+
     public void setTypePlacement(ShipTypes shipType, int trapIndex, int weaponIndex) {
         _shipType = shipType;
         _trapIndex = trapIndex;

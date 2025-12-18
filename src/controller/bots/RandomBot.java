@@ -15,28 +15,29 @@ public class RandomBot implements Bot {
     }
 
     @Override
-    public void placeShips(Game model, GameController controller, Map<ShipTypes, Integer> numberPerShip) {
+    public void placeShips(int player, Game model, GameController controller, Map<ShipTypes, Integer> numberPerShip) {
         int gridSize = model.getGridSize();
 
         for (Map.Entry<ShipTypes, Integer> entry : numberPerShip.entrySet()) {
-            while (!controller.placeShipOnGrid(1, entry.getKey(), _random.nextInt(gridSize), _random.nextInt(gridSize), Axis.values()[_random.nextInt(2)]));
+            for (int i=0; i < entry.getValue(); i++) {
+                while (!controller.placeShipOnGrid(player, entry.getKey(), _random.nextInt(gridSize), _random.nextInt(gridSize), Axis.values()[_random.nextInt(2)]));
+            }
         }
 
         for (int t=0; t<model.getTrapInventorySize(); t++) {
-            while (!controller.placeTrapOnGrid(1, t, _random.nextInt(gridSize), _random.nextInt(gridSize)));
+            while (!controller.placeTrapOnGrid(player, t, _random.nextInt(gridSize), _random.nextInt(gridSize)));
         }
 
         if (model.isIslandModeActivated()) {
             for (int w=0; w < model.getGlobalWeaponInventorySize(); w++) {
-                while (!controller.placeWeaponOnIsland(1, w, _random.nextInt(gridSize), _random.nextInt(gridSize)))
-                    System.out.println("aaa");
+                while (!controller.placeWeaponOnIsland(player, w, _random.nextInt(gridSize), _random.nextInt(gridSize)));
             }
         }
     }
 
     @Override
-    public void shoot(Game model, GameController controller) {
+    public void shoot(int player, Game model, GameController controller) {
         int gridSize = model.getGridSize();
-        while (!controller.shootOnGrid(1, _random.nextInt(gridSize), _random.nextInt(gridSize)));
+        while (!controller.shootOnGrid(player, _random.nextInt(gridSize), _random.nextInt(gridSize)));
     }
 }

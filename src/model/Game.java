@@ -136,11 +136,12 @@ public class Game implements GridObserver{
     }
 
     public boolean shootOnGrid(int joueur, Cell cell) {
-        if (joueur == 1) {
+        boolean valide = _players[joueur].shoot(_players[otherPlayer(joueur)],cell);
+        if (valide && joueur == 1) {
             _turnNum++;
             notifyObserversTurnNumber();
         }
-        return _players[joueur].shoot(_players[otherPlayer(joueur)],cell);
+        return valide;
     }
 
     public PlaceableTypes getObjectTypeByPosition(int joueur, int posx, int posy) {

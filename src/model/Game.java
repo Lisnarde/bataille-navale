@@ -9,7 +9,8 @@ import model.weapons.Weapon;
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.util.*;
 
-public class Game {
+public class Game implements GridObserver{
+    private List<GameObserver> _observers;
     private int _turnNum;
     private int _gridSize;
     private boolean _islandMode;
@@ -19,8 +20,21 @@ public class Game {
     private Player[] _players;
 
     public Game() {
+        _observers = new ArrayList<>();
         _traps = new ArrayList<>( Arrays.asList(new Tornado(), new BlackHole()) );
     }
+    private void notifyObserversNoMoreShip(int joueur) {
+        for (GameObserver obs : _observers) {
+            obs.updateNoMoreShips(joueur);
+        }
+        System.out.println("TEST : plus de bateaux game");
+    }
+    private void notifyObserversTurnNumber() {
+        for (GameObserver obs : _observers) {
+            obs.updateTurnNumber(_turnNum);
+        }
+    }
+
 
     public int getTurnNum() {return _turnNum;}
 
@@ -51,10 +65,15 @@ public class Game {
         _players[1].setGrid(new Grid(size, size, 1, islandMode));
         _gridSize = size;
         _islandMode = islandMode;
+
+        addGridObserver(this);
     }
     public void addGridObserver(GridObserver observer) {
         _players[0].addGridObserver(observer);
         _players[1].addGridObserver(observer);
+    }
+    public void addGameObserver(GameObserver observer) {
+        _observers.add(observer);
     }
 
     public int getGridSize() {return _gridSize;}
@@ -110,6 +129,10 @@ public class Game {
     }
 
     public boolean shootOnGrid(int joueur, Cell cell) {
+        if (joueur == 1) {
+            _turnNum++;
+            notifyObserversTurnNumber();
+        }
         return _players[joueur].shoot(_players[otherPlayer(joueur)],cell);
     }
 
@@ -141,5 +164,17 @@ public class Game {
             return _players[1].hasNoMoreShips() ? _players[0] : _players[1];
         }
         return null;
+    }
+
+
+    @Override public void updateShoot(int joueur, int posx, int posy, boolean hit) {}
+    @Override public void updateTrapActivated(int joueur, int posx, int posy, TrapTypes trapType) {}
+    @Override public void updateSearch(int joueur, int posx, int posy, PlaceableTypes objectFound) {}
+    @Override public void updateShipCellPlaced(int joueur, int posx, int posy) {}
+    @Override public void updateTrapPlaced(int joueur, int posx, int posy, TrapTypes trapType) {}
+    @Override public void updateShipCellDrowned(int joueur, int posx, int posy) {}
+    @Override
+    public void updateNoMoreShips(int joueur) {
+        notifyObserversNoMoreShip(joueur);
     }
 }

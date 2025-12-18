@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Enumeration;
 
-public class PlacementScreen extends JPanel implements ViewPanel, GridObserver {
+public class PlacementScreen extends JPanel implements ViewPanel {
     private GameController _controller;
     private Game _model;
     private NavigationController _navigationController;
@@ -31,8 +31,6 @@ public class PlacementScreen extends JPanel implements ViewPanel, GridObserver {
 
     @Override
     public void onShow() {
-        _model.addGridObserver(this);
-
         setLayout(new BorderLayout());
 
         //titre
@@ -135,17 +133,5 @@ public class PlacementScreen extends JPanel implements ViewPanel, GridObserver {
 
     private void validation() {
         _navigationController.showGame(_gridPanel);
-    }
-
-
-    @Override public void updateShoot(int joueur, int posx, int posy, boolean hit) {}
-    @Override public void updateTrapActivated(int joueur, int posx, int posy, TrapTypes trapType) {}
-    @Override public void updateSearch(int joueur, int posx, int posy, PlaceableTypes objectFound) {}
-    @Override public void updateShipCellPlaced(int joueur, int posx, int posy) {}
-    @Override public void updateTrapPlaced(int joueur, int posx, int posy, TrapTypes trapType) {}
-    @Override public void updateShipCellDrowned(int joueur, int posx, int posy) {}
-    @Override
-    public void updateNoMoreShips(int joueur) {
-        _navigationController.showEnd();
     }
 }

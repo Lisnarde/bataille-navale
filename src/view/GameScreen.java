@@ -3,6 +3,7 @@ package view;
 import controller.GameController;
 import controller.NavigationController;
 import model.Game;
+import model.GameObserver;
 import model.weapons.Weapon;
 import view.components.GridMode;
 import view.components.GridPanel;
@@ -11,7 +12,7 @@ import view.themes.Theme;
 import javax.swing.*;
 import java.awt.*;
 
-public class GameScreen extends JPanel implements ViewPanel {
+public class GameScreen extends JPanel implements ViewPanel, GameObserver {
     private GameController _controller;
     private Game _model;
     private NavigationController _navigationController;
@@ -19,6 +20,8 @@ public class GameScreen extends JPanel implements ViewPanel {
 
     private GridPanel _gridPanelAttack;
     private GridPanel _gridPanelReceive;
+
+    private JLabel _title;
 
     public GameScreen(GameController controller, Game model, NavigationController navigationController, Theme theme) {
         _controller = controller;
@@ -30,17 +33,15 @@ public class GameScreen extends JPanel implements ViewPanel {
 
     @Override
     public void onShow() {
+        _model.addGameObserver(this);
         TerminalView terminalView = new TerminalView(_model,_controller);
 
         setLayout(new BorderLayout());
 
         //titre
-        int turnNum = _model.getTurnNum();
-        String text = "BATAILLE NAVALE - TOUR N°" + turnNum;
-        setLayout(new BorderLayout());
-        JLabel title = new JLabel(text, SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 46));
-        add(title, BorderLayout.NORTH);
+        _title = new JLabel("BATAILLE NAVALE - TOUR N°" +_model.getTurnNum(), SwingConstants.CENTER);
+        _title.setFont(new Font("Arial", Font.BOLD, 46));
+        add(_title, BorderLayout.NORTH);
 
         // Panel Content
         JPanel panelContent = new JPanel();
@@ -198,5 +199,16 @@ public class GameScreen extends JPanel implements ViewPanel {
 
     public void setPlayerShipsGrid(GridPanel gridPanel) {
         _gridPanelReceive = gridPanel;
+    }
+
+
+    @Override
+    public void updateNoMoreShips(int joueur) {
+        _navigationController.showEnd();
+    }
+
+    @Override
+    public void updateTurnNumber(int turnNum) {
+        _title.setText("BATAILLE NAVALE - TOUR N°" +turnNum);
     }
 }

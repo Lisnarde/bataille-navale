@@ -9,7 +9,7 @@ import view.themes.Theme;
 import javax.swing.*;
 import java.awt.*;
 
-public class EndScreen extends JPanel {
+public class EndScreen extends JPanel implements ViewPanel{
     private GameController _controller;
     private Game _model;
     private NavigationController _navigationController;
@@ -20,9 +20,15 @@ public class EndScreen extends JPanel {
         _model = model;
         _navigationController = navigationController;
         _theme = theme;
+    }
+
+    @Override
+    public void onShow() {
         setLayout(new BorderLayout());
 
         //titre
         add(new TitleBanner(), BorderLayout.NORTH);
+
+
     }
 }

@@ -3,6 +3,7 @@ package model.weapons;
 import model.Cell;
 import model.Grid;
 import model.PlaceableTypes;
+import model.Ship;
 import model.traps.Trap;
 
 public class Bomb extends model.weapons.Weapon{
@@ -31,6 +32,18 @@ public class Bomb extends model.weapons.Weapon{
         if (grid.isOccupiedBy(c, PlaceableTypes.TRAP)) {
             Trap trap = (Trap) grid.getObjectByPosition(c);
             grid.notifyObserversTrapActivated(c.getX(), c.getY(), trap.getTrapType());
+        }
+        if (hit) {
+            Ship ship = (Ship) grid.getObjectByPosition(c);
+            if (grid.isTheShipDrowned(ship)) {
+                for (int i = 0; i < ship.getSize(); i++) {
+                    Cell cell = ship.getCell(i);
+                    grid.notifyObserversShipCellDrowned(cell.getX(), cell.getY());
+                }
+                if (grid.allShipsDead()) {
+                    grid.notifyObserversNoMoreShip();
+                }
+            }
         }
 
         return 1;

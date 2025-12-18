@@ -82,6 +82,7 @@ public class Grid {
         for (GridObserver obs : _observers) {
             obs.updateNoMoreShips(_joueur);
         }
+        System.out.println("TEST : plus de bateaux grid");
     }
 
     public void setMaxShipsCells(int maxShipsCells) {
@@ -166,20 +167,7 @@ public class Grid {
 
     public boolean shoot(Cell cell, Weapon weapon){
         if (isInGrid(cell) && !isOccupiedBy(cell,PlaceableTypes.IMPACT)) {
-            boolean result = weapon.execShoot(this, cell);
-            if (isOccupiedBy(cell, PlaceableTypes.SHIP)) {
-                Ship ship = (Ship) getObjectByPosition(cell);
-                if (isTheShipDrowned(ship)) {
-                    for (int i = 0; i < ship.getSize(); i++) {
-                        Cell c = ship.getCell(i);
-                        notifyObserversShipCellDrowned(c.getX(), c.getY());
-                    }
-                    if (allShipsDead()) {
-                        notifyObserversNoMoreShip();
-                    }
-                }
-            }
-            return result;
+            return weapon.execShoot(this, cell);
         }
         return false;
     }

@@ -55,26 +55,34 @@ public class ConfigScreen extends JPanel {
 
     private void draw() {
         setLayout(new BorderLayout());
+        /*JLabel background = new JLabel(new ImageIcon("res/background.jpg"));
+        background.setLayout(new BorderLayout());
+        add(background);
+        */
 
         //titre
         add(new TitleBanner(), BorderLayout.NORTH);
 
         //centre (contenu)
         JPanel configPanel = new JPanel(new GridLayout(1, 2));
+        configPanel.setOpaque(false);
         add(configPanel, BorderLayout.CENTER);
 
         //panel de gauche dans configPanel
         _leftPanel = new JPanel(new BorderLayout());
+        _leftPanel.setOpaque(false);
         _leftPanel.setBorder(BorderFactory.createEmptyBorder(50, 40, 20, 40));
         configPanel.add(_leftPanel);
 
         // Contenu du left panel
         JPanel leftPanelContent = new JPanel();
+        leftPanelContent.setOpaque(false);
         leftPanelContent.setLayout(new BoxLayout(leftPanelContent, BoxLayout.Y_AXIS));
         _leftPanel.add(leftPanelContent,BorderLayout.CENTER);
 
         //pseudo
         JPanel pseudoPanel = new JPanel();
+        pseudoPanel.setOpaque(false);
         pseudoPanel.setLayout(new FlowLayout());
 
         JLabel pseudoLabel = new JLabel("Pseudo:");
@@ -90,6 +98,7 @@ public class ConfigScreen extends JPanel {
 
         //taille de la grille
         JPanel sizeGridPanel = new JPanel();
+        sizeGridPanel.setOpaque(false);
         sizeGridPanel.setLayout(new FlowLayout());
 
         JLabel sizeLabel = new JLabel("Choisissez la taille de la grille :");
@@ -98,6 +107,7 @@ public class ConfigScreen extends JPanel {
 
         _sizeGroup = new ButtonGroup();
         JPanel sizePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        sizePanel.setOpaque(false);
         for (int i = 6; i <= 10; i++) {
             JRadioButton sizeButton = new JRadioButton(i+"");
             sizeButton.setFont(_theme.normalFont());
@@ -111,6 +121,7 @@ public class ConfigScreen extends JPanel {
 
         //mode île
         JPanel islandPanel = new JPanel();
+        islandPanel.setOpaque(false);
         islandPanel.setLayout(new FlowLayout());
 
         JLabel islandLabel = new JLabel("Activer le mode île ?");
@@ -119,6 +130,7 @@ public class ConfigScreen extends JPanel {
 
         _islandGroup = new ButtonGroup();
         JPanel islandButtonPanel = new JPanel(new FlowLayout((FlowLayout.LEFT)));
+        islandButtonPanel.setOpaque(false);
         JRadioButton ouiButton = new JRadioButton("oui");
         ouiButton.setFont(_theme.normalFont());
         JRadioButton nonButton = new JRadioButton("non");
@@ -134,6 +146,7 @@ public class ConfigScreen extends JPanel {
 
         //Panel du bouton Accepter
         JPanel leftButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        leftButtonPanel.setOpaque(false);
         _leftPanel.add(leftButtonPanel, BorderLayout.SOUTH);
 
         // Bouton accepter du panel gauche
@@ -144,31 +157,40 @@ public class ConfigScreen extends JPanel {
 
         //panel de droite dans configPanel
         _rightPanel = new JPanel(new BorderLayout());
+        _rightPanel.setOpaque(false);
         _rightPanel.setBorder(BorderFactory.createEmptyBorder(50, 40, 20, 40));
         configPanel.add(_rightPanel);
 
         // Panel de contenu du panel de droite
         JPanel rightPanelContent = new JPanel();
-        rightPanelContent.setLayout(new GridLayout(0, 1, 0, 10));
+        rightPanelContent.setOpaque(false);
+        rightPanelContent.setLayout(new GridLayout(0, 1, 0, 5));
         _rightPanel.add(rightPanelContent, BorderLayout.CENTER);
+
+        JPanel panelHeader = new JPanel();
+        panelHeader.setOpaque(false);
+        panelHeader.setLayout(new BoxLayout(panelHeader, BoxLayout.Y_AXIS));
 
         // texte dans le panel de droite
         JLabel titleConfig = new JLabel("Configuration des bateaux :");
         titleConfig.setFont(_theme.titleFont());
-        rightPanelContent.add(titleConfig);
+        panelHeader.add(titleConfig);
 
         // label d'indication du nombre max de cellules bateaux
         _labelMaxCellsShip = new JLabel();
         _labelMaxCellsShip.setFont(_theme.boldFont());
-        rightPanelContent.add(_labelMaxCellsShip);
+        panelHeader.add(_labelMaxCellsShip);
 
         //label du nombre de cases utilisées
         _labelUsedCells = new JLabel();
         _labelUsedCells.setFont(_theme.normalFont());
-        rightPanelContent.add(_labelUsedCells);
+        panelHeader.add(_labelUsedCells);
+
+        rightPanelContent.add(panelHeader);
 
         // lignes de porte-avion
         JPanel lineAircraftCarrier = new JPanel();
+        lineAircraftCarrier.setOpaque(false);
         lineAircraftCarrier.setLayout(new BoxLayout(lineAircraftCarrier, BoxLayout.X_AXIS));
         lineAircraftCarrier.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 
@@ -181,6 +203,7 @@ public class ConfigScreen extends JPanel {
         JButton minusAircraftCarrier = new JButton("-");
         _theme.buttonConfigMinusTheme(minusAircraftCarrier);
         _labelNumAircraftCarrier =new JLabel("1");
+        _labelNumAircraftCarrier.setFont(_theme.normalFont());
         _labelNumAircraftCarrier.setPreferredSize(new Dimension(30, 25));
         _labelNumAircraftCarrier.setHorizontalAlignment(SwingConstants.CENTER);
         _plusAircraftCarrier = new JButton("+");
@@ -200,13 +223,16 @@ public class ConfigScreen extends JPanel {
         });
 
         lineAircraftCarrier.add(minusAircraftCarrier);
+        lineAircraftCarrier.add(Box.createHorizontalStrut(20));
         lineAircraftCarrier.add(_labelNumAircraftCarrier);
+        lineAircraftCarrier.add(Box.createHorizontalStrut(20));
         lineAircraftCarrier.add(_plusAircraftCarrier);
 
         rightPanelContent.add(lineAircraftCarrier);
 
         // ligne du croiseur
         JPanel lineCruiser = new JPanel();
+        lineCruiser.setOpaque(false);
         lineCruiser.setLayout(new BoxLayout(lineCruiser, BoxLayout.X_AXIS));
         lineCruiser.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 
@@ -219,6 +245,7 @@ public class ConfigScreen extends JPanel {
         JButton minusCruiser = new JButton("-");
         _theme.buttonConfigMinusTheme(minusCruiser);
         _labelNumCruiser = new JLabel("1");
+        _labelNumCruiser.setFont(_theme.normalFont());
         _labelNumCruiser.setPreferredSize(new Dimension(30, 25));
         _labelNumCruiser.setHorizontalAlignment(SwingConstants.CENTER);
         _plusCruiser = new JButton("+");
@@ -238,13 +265,16 @@ public class ConfigScreen extends JPanel {
         });
 
         lineCruiser.add(minusCruiser);
+        lineCruiser.add(Box.createHorizontalStrut(20));
         lineCruiser.add(_labelNumCruiser);
+        lineCruiser.add(Box.createHorizontalStrut(20));
         lineCruiser.add(_plusCruiser);
 
         rightPanelContent.add(lineCruiser);
 
         // ligne du contre torpilleur
         JPanel lineDestroyer = new JPanel();
+        lineDestroyer.setOpaque(false);
         lineDestroyer.setLayout(new BoxLayout(lineDestroyer, BoxLayout.X_AXIS));
         lineDestroyer.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 
@@ -258,6 +288,7 @@ public class ConfigScreen extends JPanel {
         JButton minusDestroyer = new JButton("-");
         _theme.buttonConfigMinusTheme(minusDestroyer);
         _labelNumDestroyer = new JLabel("1");
+        _labelNumDestroyer.setFont(_theme.normalFont());
         _labelNumDestroyer.setPreferredSize(new Dimension(30, 25));
         _labelNumDestroyer.setHorizontalAlignment(SwingConstants.CENTER);
         _plusDestroyer = new JButton("+");
@@ -277,13 +308,16 @@ public class ConfigScreen extends JPanel {
         });
 
         lineDestroyer.add(minusDestroyer);
+        lineDestroyer.add(Box.createHorizontalStrut(20));
         lineDestroyer.add(_labelNumDestroyer);
+        lineDestroyer.add(Box.createHorizontalStrut(20));
         lineDestroyer.add(_plusDestroyer);
 
         rightPanelContent.add(lineDestroyer);
 
         // ligne du sous-marin
         JPanel lineSubmarine = new JPanel();
+        lineSubmarine.setOpaque(false);
         lineSubmarine.setLayout(new BoxLayout(lineSubmarine, BoxLayout.X_AXIS));
         lineSubmarine.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 
@@ -296,6 +330,7 @@ public class ConfigScreen extends JPanel {
         JButton minusSubmarine = new JButton("-");
         _theme.buttonConfigMinusTheme(minusSubmarine);
         _labelNumSubmarine = new JLabel("1");
+        _labelNumSubmarine.setFont(_theme.normalFont());
         _labelNumSubmarine.setPreferredSize(new Dimension(30, 25));
         _labelNumSubmarine.setHorizontalAlignment(SwingConstants.CENTER);
         _plusSubmarine = new JButton("+");
@@ -315,13 +350,16 @@ public class ConfigScreen extends JPanel {
         });
 
         lineSubmarine.add(minusSubmarine);
+        lineSubmarine.add(Box.createHorizontalStrut(20));
         lineSubmarine.add(_labelNumSubmarine);
+        lineSubmarine.add(Box.createHorizontalStrut(20));
         lineSubmarine.add(_plusSubmarine);
 
         rightPanelContent.add(lineSubmarine);
 
         //ligne du torpilleur
         JPanel lineTorpedo = new JPanel();
+        lineTorpedo.setOpaque(false);
         lineTorpedo.setLayout(new BoxLayout(lineTorpedo, BoxLayout.X_AXIS));
         lineTorpedo.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 
@@ -334,6 +372,7 @@ public class ConfigScreen extends JPanel {
         JButton minusTorpedo = new JButton("-");
         _theme.buttonConfigMinusTheme(minusTorpedo);
         _labelNumTorpedo = new JLabel("1");
+        _labelNumTorpedo.setFont(_theme.normalFont());
         _labelNumTorpedo.setPreferredSize(new Dimension(30, 25));
         _labelNumTorpedo.setHorizontalAlignment(SwingConstants.CENTER);
         _plusTorpedo = new JButton("+");
@@ -353,13 +392,16 @@ public class ConfigScreen extends JPanel {
         });
 
         lineTorpedo.add(minusTorpedo);
+        lineTorpedo.add(Box.createHorizontalStrut(20));
         lineTorpedo.add(_labelNumTorpedo);
+        lineTorpedo.add(Box.createHorizontalStrut(20));
         lineTorpedo.add(_plusTorpedo);
 
         rightPanelContent.add(lineTorpedo);
 
         //Panel du bouton suivant du panel droit
         JPanel rightButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightButtonPanel.setOpaque(false);
         _rightPanel.add(rightButtonPanel,BorderLayout.SOUTH);
 
         // Bouton suivant du panel droit

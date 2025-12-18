@@ -113,7 +113,7 @@ public class GridPanel extends JPanel implements GridObserver {
             JButton buttonClicked = _grid.get(posy).get(posx);
             buttonClicked.setEnabled(false);
             if (hit) {
-                buttonClicked.setBackground(new Color(200, 0, 0));
+                buttonClicked.setBackground(new Color(200, 122, 45));
             } else {
                 buttonClicked.setBackground(new Color(0, 0, 120));
             }
@@ -156,6 +156,15 @@ public class GridPanel extends JPanel implements GridObserver {
             } else if (trapType == TrapTypes.TORNADO) {
                 buttonClicked.setBackground(new Color(84, 19, 0));
             }
+        }
+    }
+
+    @Override
+    public void updateShipCellDrowned(int joueur, int posx, int posy){
+        if ( _mode == GridMode.ATTACK && joueur == 1 || _mode == GridMode.RECEIVE && joueur == 0){
+            JButton button = _grid.get(posy).get(posx);
+            button.setEnabled(false);
+            button.setBackground(new Color(200, 0, 0));
         }
     }
 }

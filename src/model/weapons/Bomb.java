@@ -20,10 +20,9 @@ public class Bomb extends model.weapons.Weapon{
     }
 
     private int applyImpact(Grid grid, Cell c) {
-        if (!grid.isInGrid(c) || grid.isOccupiedBy(c, PlaceableTypes.ISLANDPART)) {
+        if (!grid.isInGrid(c) || grid.isOccupiedBy(c, PlaceableTypes.ISLANDPART)|| grid.isOccupiedBy(c, PlaceableTypes.IMPACT)) {
             return 0;
         }
-
         grid.placeImpact(c);
 
         boolean hit = grid.isOccupiedBy(c, PlaceableTypes.SHIP);

@@ -71,6 +71,7 @@ package model #eeaaff{
         + notifyObserversShoot(posx : Integer, posy : Integer, hit : Boolean)
         + notifyObserversTrapActivated(posx : Integer, posy : Integer)
         + notifyObserversSearch(posx : Integer, posy : Integer, objectFound : PlaceableTypes)
+        + notifyObserversShipCellDrowned(posx : Integer, posy : Integer)
         + setMaxShipsCells(maxShipsCells : Integer)
         + isOccupied(cell : Cell) : Boolean
         + isOccupiedBy(cell : Cell, PlaceableTypes type) : Boolean
@@ -80,16 +81,19 @@ package model #eeaaff{
         + placeObject(placeable : Placeable) : Boolean
         + placeImpact(cell : Cell) : Boolean
         + shoot(cell : Cell, weapon : Weapon) : Boolean
+        + isTheShipDrowned(ship : Ship) : Boolean
         + getIslandObject(cell : Cell) : Placeable
         + placeWeaponOnIsland(weapon : Weapon, cell : Cell) : Boolean
         + allShipsDead() : Boolean
     }
     interface GridObserver <<interface>> {
-        + updateShoot(int joueur, pox : Integer, posy : Integer, hit : Boolean)
-        + updateTrapActivated(int joueur, pox : Integer, posy : Integer)
-        + updateSearch(int joueur, posx : Integer, posy : Integer, objectFound : PlaceableTypes)
+        + updateShoot(joueur : Integer, posx : Integer, posy : Integer, hit : Boolean)
+        + updateTrapActivated(joueur : Integer, pox : Integer, posy : Integer)
+        + updateSearch(joueur : Integer, posx : Integer, posy : Integer, objectFound : PlaceableTypes)
+        + updateShipCellPlaced(joueur : Integer, posx : Integer, posy : Integer)
+        + updateTrapPlaced(joueur : Integer, posx : Integer, posy : Integer, trapType : TrapTypes)
+        + updateShipCellDrowned(joueur : Integer, posx : Integer, posy : Integer)
     }
-
 
     enum PlaceableTypes <<enum>>{
         SHIP

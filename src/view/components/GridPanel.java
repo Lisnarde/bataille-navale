@@ -20,6 +20,7 @@ public class GridPanel extends JPanel implements GridObserver {
     private Axis _axis;
     private ShipTypes _shipType;
     private int _trapIndex;
+    private int _weaponIndex;
 
     public GridPanel(Game model, GameController controller, GridMode mode) {
         _model = model;
@@ -85,9 +86,10 @@ public class GridPanel extends JPanel implements GridObserver {
         }
     }
 
-    public void setTypePlacement(ShipTypes shipType, int trapIndex) {
+    public void setTypePlacement(ShipTypes shipType, int trapIndex, int weaponIndex) {
         _shipType = shipType;
         _trapIndex = trapIndex;
+        _weaponIndex = weaponIndex;
     }
     public void setAxisPlacement(Axis axis) {
         _axis = axis;
@@ -100,6 +102,7 @@ public class GridPanel extends JPanel implements GridObserver {
             case PLACEMENT -> {
                 if (_shipType!=null) _controller.placeShipOnGrid(0,_shipType,x,y,_axis);
                 else if (_trapIndex!=-1) _controller.placeTrapOnGrid(0, _trapIndex,x,y);
+                else if (_weaponIndex!=-1) _controller.placeWeaponOnIsland(0,_weaponIndex,x,y);
             }
             case ATTACK -> _controller.shootOnGrid(0, x, y);
         };

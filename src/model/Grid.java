@@ -29,7 +29,6 @@ public class Grid {
         _observers = new ArrayList<>();
         _islandMode = islandMode;
         if (_islandMode) {
-            System.out.println("Y'a ile là");
             constructIsland();
         }
     }
@@ -39,7 +38,6 @@ public class Grid {
             for (int y=3; y<7; y++) {
                 for (int x=3; x<7; x++) {
                     _placedObjects.add(new IslandPart(new Cell(x,y)));
-                    System.out.println("Je construit ici : "+x+";"+y);
                 }
             }
         }
@@ -87,7 +85,6 @@ public class Grid {
         for (GridObserver obs : _observers) {
             obs.updateNoMoreShips(_joueur);
         }
-        System.out.println("TEST : plus de bateaux grid");
     }
 
     public void setMaxShipsCells(int maxShipsCells) {
@@ -125,7 +122,30 @@ public class Grid {
         int nb = 0;
         for (Placeable p : _placedObjects) {
             if (p.getType() == PlaceableTypes.SHIP) {
-                if ( ((Ship)p).geyShipType() == shipType ) {
+                if ( ((Ship)p).getShipType() == shipType ) {
+                    nb++;
+                }
+            }
+        }
+        return nb;
+    }
+    public int getNumberOfTrapByType(TrapTypes trapType) {
+        int nb = 0;
+        for (Placeable p : _placedObjects) {
+            if (p.getType() == PlaceableTypes.TRAP) {
+                if ( ((Trap)p).getTrapType() == trapType ) {
+                    nb++;
+                }
+            }
+        }
+        return nb;
+    }
+    public int getNumberOfWeaponOnIslandByType(WeaponTypes weaponType) {
+        int nb = 0;
+        for (Placeable p : _placedObjects) {
+            if (p.getType() == PlaceableTypes.ISLANDPART) {
+                Placeable p2 = ((IslandPart)p).getPlacedObject();
+                if ( p2 != null && p2.getType() == PlaceableTypes.WEAPON && ((Weapon)p2).getWeaponType() == weaponType ) {
                     nb++;
                 }
             }
@@ -138,6 +158,7 @@ public class Grid {
     }
 
     public boolean canPlaceObject(Placeable placeable) {
+        if (placeable.getType() == PlaceableTypes.TRAP && getNumberOfTrapByType(((Trap)placeable).getTrapType()) > 0 ) {return false;}
         for (int i=0; i< placeable.getSize(); i++) {
             if (!isInGrid(placeable.getCell(i)) || isOccupied(placeable.getCell(i))) {
                 return false;
@@ -149,7 +170,6 @@ public class Grid {
     public boolean placeObject(Placeable placeable){
         if (canPlaceObject(placeable)) {
             _placedObjects.add(placeable);
-            System.out.println("Placed");
             for (int i=0; i< placeable.getSize(); i++) {
                 if (placeable.getType() == PlaceableTypes.SHIP) {
                     notifyObserversShipCellPlaced(placeable.getCell(i).getX(), placeable.getCell(i).getY());
@@ -197,11 +217,15 @@ public class Grid {
     }
 
     public boolean placeWeaponOnIsland(Weapon weapon, Cell cell) {
+        if (getNumberOfWeaponOnIslandByType(weapon.getWeaponType()) > 0 ) {return false;}
         Placeable thing = getObjectByPosition(cell);
         if (thing!=null && thing.getType() == PlaceableTypes.ISLANDPART) {
             IslandPart island = (IslandPart) thing;
-            island.setPlacedObject(weapon);
-            notifyObserversWeaponPlaced(cell.getX(),cell.getY(),weapon.getWeaponType());
+            if (island.getPlacedObject()==null) {
+                island.setPlacedObject(weapon);
+                notifyObserversWeaponPlaced(cell.getX(), cell.getY(), weapon.getWeaponType());
+                return true;
+            }
         }
         return false;
     }

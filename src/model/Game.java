@@ -11,14 +11,16 @@ public class Game implements GridObserver{
     private int _turnNum;
     private int _gridSize;
     private boolean _islandMode;
-    private List<Trap> _traps;
+    private List<TrapTypes> _traps;
+    private List<WeaponTypes> _globalWeaponInventory;
     private Map<ShipTypes,Integer> _numberPerShip;
 
     private Player[] _players;
 
     public Game() {
         _observers = new ArrayList<>();
-        _traps = new ArrayList<>( Arrays.asList(new Tornado(), new BlackHole()) );
+        _traps = new ArrayList<>( Arrays.asList(TrapTypes.TORNADO, TrapTypes.BLACKHOLE) );
+        _globalWeaponInventory = new ArrayList<>();
     }
     private void notifyObserversNoMoreShip(int joueur) {
         for (GameObserver obs : _observers) {
@@ -37,6 +39,9 @@ public class Game implements GridObserver{
         }
     }
 
+    public boolean isIslandModeActivated() {
+        return _islandMode;
+    }
 
     public int getTurnNum() {return _turnNum;}
 
@@ -45,7 +50,10 @@ public class Game implements GridObserver{
     }
 
     public int getTrapInventorySize() {return _traps.size();}
-    public Trap getTrapInInventory(int trapIndex) {return _traps.get(trapIndex);}
+    public TrapTypes getTrapInInventory(int trapIndex) {return _traps.get(trapIndex);}
+
+    public int getGlobalWeaponInventorySize() {return _globalWeaponInventory.size();}
+    public WeaponTypes getWeaponInGlobalInventory(int weaponIndex) {return _globalWeaponInventory.get(weaponIndex);}
 
     public void setPlayerName(String name){
         _players = new Player[] {new Player(name), new Player("Bot")};
@@ -56,6 +64,8 @@ public class Game implements GridObserver{
             for (Player p : _players) {
                 p.addWeaponInInventory(new IslandSearch(p));
             }
+            _globalWeaponInventory.add(WeaponTypes.BOMB);
+            _globalWeaponInventory.add(WeaponTypes.SONAR);
         }
         else {
             for (Player p : _players) {
@@ -115,7 +125,7 @@ public class Game implements GridObserver{
     }
 
     public boolean placeShipOnGrid(int joueur, Ship ship) {
-        if (_players[joueur].getNumberOfShipByType(ship.geyShipType()) < getNumberMaxOfShip(ship.geyShipType())) {
+        if (_players[joueur].getNumberOfShipByType(ship.getShipType()) < getNumberMaxOfShip(ship.getShipType())) {
             return _players[joueur].placeShip(ship);
         }
         return false;

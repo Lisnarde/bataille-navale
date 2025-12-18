@@ -36,7 +36,6 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
     @Override
     public void onShow() {
         _model.addGameObserver(this);
-        TerminalView terminalView = new TerminalView(_model,_controller);
 
         setLayout(new BorderLayout());
 

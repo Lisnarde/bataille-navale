@@ -4,6 +4,7 @@ import controller.GameController;
 import controller.NavigationController;
 import model.*;
 import model.traps.TrapTypes;
+import model.weapons.WeaponTypes;
 import view.components.GridMode;
 import view.components.GridPanel;
 import view.components.TitleBanner;
@@ -31,6 +32,8 @@ public class PlacementScreen extends JPanel implements ViewPanel {
 
     @Override
     public void onShow() {
+        TerminalView terminalView = new TerminalView(_model,_controller);
+
         setLayout(new BorderLayout());
 
         //titre
@@ -72,7 +75,7 @@ public class PlacementScreen extends JPanel implements ViewPanel {
 
         //grille de placement
         _gridPanel = new GridPanel(_model, _controller, GridMode.PLACEMENT);
-        _gridPanel.setTypePlacement(ShipTypes.AircraftCarrier,-1);
+        _gridPanel.setTypePlacement(ShipTypes.AircraftCarrier,-1,-1);
         _gridPanel.setAxisPlacement(Axis.HORIZONTAL);
         content.add(_gridPanel);
 
@@ -87,7 +90,7 @@ public class PlacementScreen extends JPanel implements ViewPanel {
         for (ShipTypes shipType : ShipTypes.values()) {
             JRadioButton btn = new JRadioButton(shipType.name());
             _theme.buttonTheme(btn);
-            btn.addActionListener(actionEvent -> _gridPanel.setTypePlacement(shipType,-1));
+            btn.addActionListener(actionEvent -> _gridPanel.setTypePlacement(shipType,-1,-1));
             grpTypes.add(btn);
             shipPanel.add(btn);
             if (shipType == ShipTypes.AircraftCarrier) {btn.setSelected(true);}
@@ -96,16 +99,33 @@ public class PlacementScreen extends JPanel implements ViewPanel {
         shipPanel.add(Box.createRigidArea(new Dimension(10,10)));
 
         for (int i=0; i<_model.getTrapInventorySize(); i++) {
-            TrapTypes trapType = _model.getTrapInInventory(i).getTrapType();
+            TrapTypes trapType = _model.getTrapInInventory(i);
             JRadioButton btn = new JRadioButton(trapType.name());
             btn.putClientProperty("trapIndex",i);
             _theme.buttonTheme(btn);
-            btn.addActionListener(actionEvent -> _gridPanel.setTypePlacement(null,(int)btn.getClientProperty("trapIndex")));
+            btn.addActionListener(actionEvent -> _gridPanel.setTypePlacement(null,(int)btn.getClientProperty("trapIndex"),-1));
             grpTypes.add(btn);
             shipPanel.add(btn);
         }
 
         shipPanel.add(Box.createRigidArea(new Dimension(10,20)));
+
+
+        // Les armes à placer si mode île
+        if (_model.isIslandModeActivated()) {
+            for (int w=0; w< _model.getGlobalWeaponInventorySize(); w++) {
+                WeaponTypes weaponType = _model.getWeaponInGlobalInventory(w);
+                JRadioButton btn = new JRadioButton(weaponType.name());
+                btn.putClientProperty("weaponIndex",w);
+                _theme.buttonTheme(btn);
+                btn.addActionListener(actionEvent -> _gridPanel.setTypePlacement(null,-1,(int)btn.getClientProperty("weaponIndex")));
+                grpTypes.add(btn);
+                shipPanel.add(btn);
+            }
+        }
+
+        shipPanel.add(Box.createRigidArea(new Dimension(10,20)));
+
 
         // Les axis
         ButtonGroup grpAxis = new ButtonGroup();
@@ -117,6 +137,9 @@ public class PlacementScreen extends JPanel implements ViewPanel {
             shipPanel.add(btn);
             if (axis == Axis.HORIZONTAL) {btn.setSelected(true);}
         }
+
+        shipPanel.add(Box.createRigidArea(new Dimension(10,20)));
+
 
 
         //bouton suivant

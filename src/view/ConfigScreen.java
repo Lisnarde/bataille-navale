@@ -25,6 +25,19 @@ public class ConfigScreen extends JPanel {
     private JTextField _pseudoField;
     private ButtonGroup _sizeGroup;
     private ButtonGroup _islandGroup;
+    private int _maxShipsCells;
+    private JLabel _labelMaxCellsShip;
+    private JLabel _labelUsedCells;
+    private JLabel _labelNumAircraftCarrier;
+    private JLabel _labelNumCruiser;
+    private JLabel _labelNumDestroyer;
+    private JLabel _labelNumSubmarine;
+    private JLabel _labelNumTorpedo;
+    private JButton _plusAircraftCarrier;
+    private JButton _plusCruiser;
+    private JButton _plusDestroyer;
+    private JButton _plusSubmarine;
+    private JButton _plusTorpedo;
 
     private JButton _btnAccepter;
     private JButton _btnSuivant;
@@ -126,10 +139,8 @@ public class ConfigScreen extends JPanel {
         // Bouton accepter du panel gauche
         _btnAccepter = new JButton("Accepter");
         _theme.buttonTheme(_btnAccepter);
-        _btnAccepter.addActionListener(e -> accepter());
+        _btnAccepter.addActionListener(e -> accept());
         leftButtonPanel.add(_btnAccepter);
-
-
 
         //panel de droite dans configPanel
         _rightPanel = new JPanel(new BorderLayout());
@@ -138,13 +149,214 @@ public class ConfigScreen extends JPanel {
 
         // Panel de contenu du panel de droite
         JPanel rightPanelContent = new JPanel();
-        rightPanelContent.setLayout(new BoxLayout(rightPanelContent, BoxLayout.Y_AXIS));
+        rightPanelContent.setLayout(new GridLayout(0, 1, 0, 10));
         _rightPanel.add(rightPanelContent, BorderLayout.CENTER);
 
         // texte dans le panel de droite
-        rightPanelContent.add(new JLabel("Configuration des bateaux :"));
-        rightPanelContent.add(Box.createVerticalStrut(10));
-        rightPanelContent.add(new JLabel("truc type bato")); // à remplacer plus tard
+        JLabel titleConfig = new JLabel("Configuration des bateaux :");
+        titleConfig.setFont(_theme.titleFont());
+        rightPanelContent.add(titleConfig);
+
+        // label d'indication du nombre max de cellules bateaux
+        _labelMaxCellsShip = new JLabel();
+        _labelMaxCellsShip.setFont(_theme.boldFont());
+        rightPanelContent.add(_labelMaxCellsShip);
+
+        //label du nombre de cases utilisées
+        _labelUsedCells = new JLabel();
+        _labelUsedCells.setFont(_theme.normalFont());
+        rightPanelContent.add(_labelUsedCells);
+
+        // lignes de porte-avion
+        JPanel lineAircraftCarrier = new JPanel();
+        lineAircraftCarrier.setLayout(new BoxLayout(lineAircraftCarrier, BoxLayout.X_AXIS));
+        lineAircraftCarrier.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+
+        JLabel labelAircraftCarrier = new JLabel("Porte-avion (5 cases)");
+        labelAircraftCarrier.setFont(_theme.normalFont());
+        labelAircraftCarrier.setPreferredSize(new Dimension(160, 25));
+        lineAircraftCarrier.add(labelAircraftCarrier);
+        lineAircraftCarrier.add(Box.createHorizontalStrut(10));
+
+        JButton minusAircraftCarrier = new JButton("-");
+        _theme.buttonConfigMinusTheme(minusAircraftCarrier);
+        _labelNumAircraftCarrier =new JLabel("1");
+        _labelNumAircraftCarrier.setPreferredSize(new Dimension(30, 25));
+        _labelNumAircraftCarrier.setHorizontalAlignment(SwingConstants.CENTER);
+        _plusAircraftCarrier = new JButton("+");
+        _theme.buttonConfigPlusTheme(_plusAircraftCarrier);
+
+        minusAircraftCarrier.addActionListener(e -> {
+            int value = Integer.parseInt(_labelNumAircraftCarrier.getText());
+            value = decrementNumberOfShip(value);
+            _labelNumAircraftCarrier.setText(String.valueOf(value));
+            updateUsedCells();
+        });
+        _plusAircraftCarrier.addActionListener(e -> {
+            int value = Integer.parseInt(_labelNumAircraftCarrier.getText());
+            value = incrementNumberOfShip(value);
+            _labelNumAircraftCarrier.setText(String.valueOf(value));
+            updateUsedCells();
+        });
+
+        lineAircraftCarrier.add(minusAircraftCarrier);
+        lineAircraftCarrier.add(_labelNumAircraftCarrier);
+        lineAircraftCarrier.add(_plusAircraftCarrier);
+
+        rightPanelContent.add(lineAircraftCarrier);
+
+        // ligne du croiseur
+        JPanel lineCruiser = new JPanel();
+        lineCruiser.setLayout(new BoxLayout(lineCruiser, BoxLayout.X_AXIS));
+        lineCruiser.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+
+        JLabel labelCruiser = new JLabel("Croiseur (4 cases)");
+        labelCruiser.setFont(_theme.normalFont());
+        labelCruiser.setPreferredSize(new Dimension(160, 25));
+        lineCruiser.add(labelCruiser);
+        lineCruiser.add(Box.createHorizontalStrut(10));
+
+        JButton minusCruiser = new JButton("-");
+        _theme.buttonConfigMinusTheme(minusCruiser);
+        _labelNumCruiser = new JLabel("1");
+        _labelNumCruiser.setPreferredSize(new Dimension(30, 25));
+        _labelNumCruiser.setHorizontalAlignment(SwingConstants.CENTER);
+        _plusCruiser = new JButton("+");
+        _theme.buttonConfigPlusTheme(_plusCruiser);
+
+        minusCruiser.addActionListener(e -> {
+            int valueAircraftCarrier = Integer.parseInt(_labelNumCruiser.getText());
+            valueAircraftCarrier = decrementNumberOfShip(valueAircraftCarrier);
+            _labelNumCruiser.setText(String.valueOf(valueAircraftCarrier));
+            updateUsedCells();
+        });
+        _plusCruiser.addActionListener(e -> {
+            int valueAircraftCarrier = Integer.parseInt(_labelNumCruiser.getText());
+            valueAircraftCarrier = incrementNumberOfShip(valueAircraftCarrier);
+            _labelNumCruiser.setText(String.valueOf(valueAircraftCarrier));
+            updateUsedCells();
+        });
+
+        lineCruiser.add(minusCruiser);
+        lineCruiser.add(_labelNumCruiser);
+        lineCruiser.add(_plusCruiser);
+
+        rightPanelContent.add(lineCruiser);
+
+        // ligne du contre torpilleur
+        JPanel lineDestroyer = new JPanel();
+        lineDestroyer.setLayout(new BoxLayout(lineDestroyer, BoxLayout.X_AXIS));
+        lineDestroyer.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+
+
+        JLabel labelDestroyer = new JLabel("Contre-Torpilleur (3 cases)");
+        labelDestroyer.setFont(_theme.normalFont());
+        labelDestroyer.setPreferredSize(new Dimension(160, 25));
+        lineDestroyer.add(labelDestroyer);
+        lineDestroyer.add(Box.createHorizontalStrut(10));
+
+        JButton minusDestroyer = new JButton("-");
+        _theme.buttonConfigMinusTheme(minusDestroyer);
+        _labelNumDestroyer = new JLabel("1");
+        _labelNumDestroyer.setPreferredSize(new Dimension(30, 25));
+        _labelNumDestroyer.setHorizontalAlignment(SwingConstants.CENTER);
+        _plusDestroyer = new JButton("+");
+        _theme.buttonConfigPlusTheme(_plusDestroyer);
+
+        minusDestroyer.addActionListener(e -> {
+            int valueCruiser = Integer.parseInt(_labelNumDestroyer.getText());
+            valueCruiser = decrementNumberOfShip(valueCruiser);
+            _labelNumDestroyer.setText(String.valueOf(valueCruiser));
+            updateUsedCells();
+        });
+        _plusDestroyer.addActionListener(e -> {
+            int valueCruiser = Integer.parseInt(_labelNumDestroyer.getText());
+            valueCruiser = incrementNumberOfShip(valueCruiser);
+            _labelNumDestroyer.setText(String.valueOf(valueCruiser));
+            updateUsedCells();
+        });
+
+        lineDestroyer.add(minusDestroyer);
+        lineDestroyer.add(_labelNumDestroyer);
+        lineDestroyer.add(_plusDestroyer);
+
+        rightPanelContent.add(lineDestroyer);
+
+        // ligne du sous-marin
+        JPanel lineSubmarine = new JPanel();
+        lineSubmarine.setLayout(new BoxLayout(lineSubmarine, BoxLayout.X_AXIS));
+        lineSubmarine.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+
+        JLabel labelSubmarine = new JLabel("Sous-marin (3 cases)");
+        labelSubmarine.setFont(_theme.normalFont());
+        labelSubmarine.setPreferredSize(new Dimension(160, 25));
+        lineSubmarine.add(labelSubmarine);
+        lineSubmarine.add(Box.createHorizontalStrut(10));
+
+        JButton minusSubmarine = new JButton("-");
+        _theme.buttonConfigMinusTheme(minusSubmarine);
+        _labelNumSubmarine = new JLabel("1");
+        _labelNumSubmarine.setPreferredSize(new Dimension(30, 25));
+        _labelNumSubmarine.setHorizontalAlignment(SwingConstants.CENTER);
+        _plusSubmarine = new JButton("+");
+        _theme.buttonConfigPlusTheme(_plusSubmarine);
+
+        minusSubmarine.addActionListener(e -> {
+            int valueSubmarine = Integer.parseInt(_labelNumSubmarine.getText());
+            valueSubmarine = decrementNumberOfShip(valueSubmarine);
+            _labelNumSubmarine.setText(String.valueOf(valueSubmarine));
+            updateUsedCells();
+        });
+        _plusSubmarine.addActionListener(e -> {
+            int valueSubmarine = Integer.parseInt(_labelNumSubmarine.getText());
+            valueSubmarine = incrementNumberOfShip(valueSubmarine);
+            _labelNumSubmarine.setText(String.valueOf(valueSubmarine));
+            updateUsedCells();
+        });
+
+        lineSubmarine.add(minusSubmarine);
+        lineSubmarine.add(_labelNumSubmarine);
+        lineSubmarine.add(_plusSubmarine);
+
+        rightPanelContent.add(lineSubmarine);
+
+        //ligne du torpilleur
+        JPanel lineTorpedo = new JPanel();
+        lineTorpedo.setLayout(new BoxLayout(lineTorpedo, BoxLayout.X_AXIS));
+        lineTorpedo.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+
+        JLabel labelTorpedo = new JLabel("Torpilleur (2 cases)");
+        labelTorpedo.setFont(_theme.normalFont());
+        labelTorpedo.setPreferredSize(new Dimension(160, 25));
+        lineTorpedo.add(labelTorpedo);
+        lineTorpedo.add(Box.createHorizontalStrut(10));
+
+        JButton minusTorpedo = new JButton("-");
+        _theme.buttonConfigMinusTheme(minusTorpedo);
+        _labelNumTorpedo = new JLabel("1");
+        _labelNumTorpedo.setPreferredSize(new Dimension(30, 25));
+        _labelNumTorpedo.setHorizontalAlignment(SwingConstants.CENTER);
+        _plusTorpedo = new JButton("+");
+        _theme.buttonConfigPlusTheme(_plusTorpedo);
+
+        minusTorpedo.addActionListener(e -> {
+            int valueTorpedo = Integer.parseInt(_labelNumTorpedo.getText());
+            valueTorpedo = decrementNumberOfShip(valueTorpedo);
+            _labelNumTorpedo.setText(String.valueOf(valueTorpedo));
+            updateUsedCells();
+        });
+        _plusTorpedo.addActionListener(e -> {
+            int valueTorpedo = Integer.parseInt(_labelNumTorpedo.getText());
+            valueTorpedo = incrementNumberOfShip(valueTorpedo);
+            _labelNumTorpedo.setText(String.valueOf(valueTorpedo));
+            updateUsedCells();
+        });
+
+        lineTorpedo.add(minusTorpedo);
+        lineTorpedo.add(_labelNumTorpedo);
+        lineTorpedo.add(_plusTorpedo);
+
+        rightPanelContent.add(lineTorpedo);
 
         //Panel du bouton suivant du panel droit
         JPanel rightButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -153,7 +365,7 @@ public class ConfigScreen extends JPanel {
         // Bouton suivant du panel droit
         _btnSuivant = new JButton("Suivant");
         _theme.buttonTheme(_btnSuivant);
-        _btnSuivant.addActionListener(e -> suivant());
+        _btnSuivant.addActionListener(e -> next());
         rightButtonPanel.add(_btnSuivant);
     }
 
@@ -169,7 +381,7 @@ public class ConfigScreen extends JPanel {
         }
     }
 
-    private void accepter() {
+    private void accept() {
         String pseudo = _pseudoField.getText();
 
         // taille de la grille
@@ -199,18 +411,51 @@ public class ConfigScreen extends JPanel {
 
         _controller.setPlayerName(pseudo);
         _controller.setGrid(gridSize,isIslandMode);
+        _maxShipsCells = _model.getMaxShipsCellsPossible();
+        _labelMaxCellsShip.setText("Nombre maximum de cases pour les bateaux : "+ _maxShipsCells);
+        _labelUsedCells.setText("Cases utilisées : "+ "17 / " +_maxShipsCells);
 
         setEnabledPanel(_leftPanel,false);
         setEnabledPanel(_rightPanel,true);
     }
 
-    private void suivant() {
+    private void next() {
         Map<ShipTypes,Integer> map = new HashMap<>();
-        for (ShipTypes type : ShipTypes.values()) {
-            map.put(type,1);
-        }
+        map.put(ShipTypes.AircraftCarrier,Integer.parseInt(_labelNumAircraftCarrier.getText()));
+        map.put(ShipTypes.Cruiser,Integer.parseInt(_labelNumCruiser.getText()));
+        map.put(ShipTypes.Destroyer,Integer.parseInt(_labelNumDestroyer.getText()));
+        map.put(ShipTypes.Submarine,Integer.parseInt(_labelNumSubmarine.getText()));
+        map.put(ShipTypes.Torpedo,Integer.parseInt(_labelNumTorpedo.getText()));
         if (_controller.setNumberPerShip(map)) {
             _navigationController.showPlacement();
         }
+    }
+    private int decrementNumberOfShip(int nombre){
+        if(nombre>1) {
+            return nombre - 1;
+        }
+        return nombre;
+    }
+    private int incrementNumberOfShip(int nombre){
+        return nombre+1;
+    }
+    private void updateUsedCells() {
+        int aircraft = Integer.parseInt(_labelNumAircraftCarrier.getText()) * 5;
+        int cruiser = Integer.parseInt(_labelNumCruiser.getText()) * 4;
+        int destroyer = Integer.parseInt(_labelNumDestroyer.getText()) * 3;
+        int submarine = Integer.parseInt(_labelNumSubmarine.getText()) * 3;
+        int torpedo = Integer.parseInt(_labelNumTorpedo.getText()) * 2;
+
+        int total = aircraft + cruiser + destroyer + submarine + torpedo;
+        int remaining = _maxShipsCells - total;
+
+        _labelUsedCells.setText("Cases utilisées : " + total + " / " + _maxShipsCells);
+
+        // Désactiver tous les boutons +
+        _plusAircraftCarrier.setEnabled(remaining >= 5);
+        _plusCruiser.setEnabled(remaining >= 4);
+        _plusDestroyer.setEnabled(remaining >= 3);
+        _plusSubmarine.setEnabled(remaining >= 3);
+        _plusTorpedo.setEnabled(remaining >= 2);
     }
 }

@@ -193,6 +193,7 @@ package model #eeaaff{
         class Bomb extends Weapon {
             +<<create>>Bomb()
             + execShoot(grid : Grid, cell : Cell) : Boolean
+            - applyImpact(grid : Grid, cell : Cell) : Integer
         }
         class Sonar extends Weapon {
             +<<create>>Sonar()

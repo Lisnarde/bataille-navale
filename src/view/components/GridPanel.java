@@ -167,4 +167,7 @@ public class GridPanel extends JPanel implements GridObserver {
             button.setBackground(new Color(200, 0, 0));
         }
     }
+
+    @Override
+    public void updateNoMoreShips(int joueur){}
 }

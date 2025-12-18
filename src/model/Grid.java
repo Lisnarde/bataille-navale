@@ -73,10 +73,14 @@ public class Grid {
             observer.updateTrapPlaced(_joueur, posx, posy, trapType);
         }
     }
-
     public void notifyObserversShipCellDrowned(int posx, int posy){
         for (GridObserver obs : _observers) {
             obs.updateShipCellDrowned(_joueur, posx, posy);
+        }
+    }
+    public void notifyObserversNoMoreShip() {
+        for (GridObserver obs : _observers) {
+            obs.updateNoMoreShips(_joueur);
         }
     }
 
@@ -169,6 +173,9 @@ public class Grid {
                     for (int i = 0; i < ship.getSize(); i++) {
                         Cell c = ship.getCell(i);
                         notifyObserversShipCellDrowned(c.getX(), c.getY());
+                    }
+                    if (allShipsDead()) {
+                        notifyObserversNoMoreShip();
                     }
                 }
             }

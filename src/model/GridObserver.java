@@ -14,4 +14,6 @@ public interface GridObserver {
     void updateTrapPlaced(int joueur, int posx, int posy, TrapTypes trapType);
 
     void updateShipCellDrowned(int joueur, int posx, int posy);
+
+    void updateNoMoreShips(int joueur);
 }

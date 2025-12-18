@@ -46,4 +46,9 @@ public class TerminalView implements GridObserver {
         System.out.println("Une cellule d’un bateau du joueur " + joueur +
                 " a été coulée en (" + posx + "," + posy + ")");
     }
+
+    @Override
+    public void updateNoMoreShips(int joueur) {
+        System.out.println("Le joueur "+joueur+" n'a plus de bateaux !");
+    }
 }

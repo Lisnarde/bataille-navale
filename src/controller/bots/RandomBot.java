@@ -19,7 +19,9 @@ public class RandomBot implements Bot {
         int gridSize = model.getGridSize();
 
         for (Map.Entry<ShipTypes, Integer> entry : numberPerShip.entrySet()) {
-            while (!controller.placeShipOnGrid(player, entry.getKey(), _random.nextInt(gridSize), _random.nextInt(gridSize), Axis.values()[_random.nextInt(2)]));
+            for (int i=0; i < entry.getValue(); i++) {
+                while (!controller.placeShipOnGrid(player, entry.getKey(), _random.nextInt(gridSize), _random.nextInt(gridSize), Axis.values()[_random.nextInt(2)]));
+            }
         }
 
         for (int t=0; t<model.getTrapInventorySize(); t++) {

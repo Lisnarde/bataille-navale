@@ -2,8 +2,6 @@ package view;
 
 import controller.GameController;
 import controller.NavigationController;
-import controller.bots.Bot;
-import controller.bots.RandomBot;
 import model.*;
 import model.traps.TrapTypes;
 import model.weapons.WeaponTypes;

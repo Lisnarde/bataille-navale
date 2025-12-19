@@ -136,6 +136,10 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
         return lbl;
     }
 
+    private void addWeapon(int indexWeapon, WeaponTypes weaponType) {
+
+    }
+
 
     @Override
     public void updateNoMoreShips(int player) {

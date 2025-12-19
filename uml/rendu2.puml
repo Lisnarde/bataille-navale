@@ -70,21 +70,26 @@ package model #eeaaff{
 
     class Player {
         - _name : String
-        +<<create>>Player(name : String, grid : Grid)
+        - _grid : Grid
+        - _equippedWeapon :  Weapon
+        - _weaponInventory : List<Weapon>
+        +<<create>>Player(name : String)
         + getName() : String
-        + getGrid() : Grid
         + setGrid(grid : Grid)
         + addGridObserver(observer : GridObserver)
         + setMaxShipsCells(maxShipsCells : Integer)
         + getObjectByPosition(cell : Cell) : Placeable
-        + placeTrap(trap : Trap) : Boolean
+        + getNumberOfShipByType(shipType : ShipTypes) : Integer
         + placeShip(ship : Ship) : Boolean
-        + placeWeaponOnIsland(joueur : Integer, weapon : Weapon, cell : Cell) : Boolean
+        + placeTrap(trap : Trap) : Boolean
+        + placeWeaponOnIsland(weapon : Weapon, cell : Cell) : Boolean
         + shoot(otherPlayer : Player, cell : Cell) : Boolean
         + addWeaponInInventory(weapon : Weapon)
+        + setEquippedWeapon(weaponIndex : Integer) : Boolean
         + getEquippedWeapon() : Weapon
         + getWeaponInventorySize() : Integer
         + getWeaponInInventory(weaponIndex : Integer) : Weapon
+        + washGrid()
         + hasNoMoreShips() : Boolean
     }
 
@@ -127,12 +132,14 @@ package model #eeaaff{
         + allShipsDead() : Boolean
     }
     interface GridObserver <<interface>> {
-        + updateShoot(joueur : Integer, posx : Integer, posy : Integer, hit : Boolean)
-        + updateTrapActivated(joueur : Integer, pox : Integer, posy : Integer)
-        + updateSearch(joueur : Integer, posx : Integer, posy : Integer, objectFound : PlaceableTypes)
-        + updateShipCellPlaced(joueur : Integer, posx : Integer, posy : Integer)
-        + updateTrapPlaced(joueur : Integer, posx : Integer, posy : Integer, trapType : TrapTypes)
-        + updateShipCellDrowned(joueur : Integer, posx : Integer, posy : Integer)
+        + updateShoot(player : Integer, posx : Integer, posy : Integer, hit : Boolean)
+        + updateTrapActivated(player : Integer, pox : Integer, posy : Integer, trapType : TrapTypes)
+        + updateSearch(player : Integer, posx : Integer, posy : Integer, objectFound : WeaponTypes)
+        + updateShipCellPlaced(player : Integer, posx : Integer, posy : Integer)
+        + updateTrapPlaced(player : Integer, posx : Integer, posy : Integer, trapType : TrapTypes)
+        + updateWeaponPlacedOnIsland(player : Integer, posx : Integer, posy : Integer, weaponType : WeaponTypes)
+        + updateShipCellDrowned(player : Integer, posx : Integer, posy : Integer)
+        + updateNoMoreShips(player : Integer)
     }
 
     enum PlaceableTypes <<enum>>{
@@ -161,34 +168,36 @@ package model #eeaaff{
     }
 
     class Impact implements Placeable {
+        - _position : Cell
         +<<create>>Impact(cell : Cell)
         + getSize() : Integer
         + getCell(index : Integer) : Cell
         + hasThisPosition(cell : Cell) : Boolean
+        + getType() : PlaceableTypes
     }
 
     class IslandPart implements Placeable{
+        - _position : Cell
+        - _placedObjects : Placeable
         + <<create>>Island(cell : Cell)
         + getSize() : Integer
         + getCell(index : Integer) : Cell
         + hasThisPosition(cell : Cell) : Boolean
+        + getType() : PlaceableTypes
         + isThereAnObject() : Boolean
         + getPlacedObject() : Placeable
         + setPlacedObject(placeable : Placeable)
     }
 
     class Ship implements Placeable {
-        + <<create>>Ship(positions : Cell[])
+        -  _position : List<Cell>
+        - _shipType : ShipTypes
+        + <<create>>Ship(shipType : ShipTypes, cells : List<Cell>)
         + getSize() : Integer
         + getCell(index : Integer) : Cell
         + hasThisPosition(cell : Cell) : Boolean
-    }
-    class ShipFactory {
-        + createAircraftCarrier() : Ship
-        + createCruiser() : Ship
-        + createDestroyer() : Ship
-        + createSubmarine() : Ship
-        + createTorpedo() : Ship
+        + getType() : PlaceableTypes
+        + getShipType() : ShipTypes
     }
     enum ShipTypes <<enum>>{
         AircraftCarrier

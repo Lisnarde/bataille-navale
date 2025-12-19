@@ -178,8 +178,8 @@ public class Game implements GridObserver{
     public int getWeaponInventorySize(int player) {
         return _players[player].getWeaponInventorySize();
     }
-    public String getWeaponNameInInventory(int player, int weaponIndex) {
-        return _players[player].getWeaponInInventory(weaponIndex).getWeaponType().name();
+    public WeaponTypes getWeaponTypeInInventory(int player, int weaponIndex) {
+        return _players[player].getWeaponInInventory(weaponIndex).getWeaponType();
     }
     public boolean setWeapon(int player, int weaponIndex) {
         return _players[player].setEquippedWeapon(weaponIndex);

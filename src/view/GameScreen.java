@@ -116,14 +116,11 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
         add(_panelArmes,BorderLayout.SOUTH);
 
         for (int i=0; i<_model.getWeaponInventorySize(0); i++) {
-            String weaponName = _model.getWeaponNameInInventory(0,i);
-            JButton btn = new JButton(weaponName);
-            _theme.buttonTheme(btn);
-            btn.setPreferredSize(new Dimension(200,70));
-            btn.putClientProperty("index",i);
-            btn.addActionListener(actionEvent -> _controller.setWeapon(0,(int)btn.getClientProperty("index")));
-            _panelArmes.add(btn);
+            WeaponTypes weaponType = _model.getWeaponTypeInInventory(0,i);
+            addWeapon(i,weaponType);
         }
+        selectWeapon((JButton) _panelArmes.getComponent(0));
+
     }
 
     public void setPlayerShipsGrid(GridPanel gridPanel) {
@@ -137,7 +134,23 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
     }
 
     private void addWeapon(int indexWeapon, WeaponTypes weaponType) {
+        JButton btn = new JButton(weaponType.toString());
+        _theme.buttonTheme(btn);
+        btn.setPreferredSize(new Dimension(200,70));
+        btn.putClientProperty("index",indexWeapon);
+        btn.addActionListener(actionEvent -> selectWeapon(btn));
+        _panelArmes.add(btn);
+    }
 
+    private void selectWeapon(JButton selectedButton) {
+        _controller.setWeapon(0,(int)selectedButton.getClientProperty("index"));
+        for (Component c : _panelArmes.getComponents()) {
+            if (c instanceof JButton btn) {
+                _theme.buttonTheme(btn);
+            }
+        }
+        selectedButton.setBackground(new Color(0,0,255));
+        _panelArmes.repaint();
     }
 
 
@@ -154,12 +167,6 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
     @Override
     public void updateWeaponFound(int player, WeaponTypes weaponType) {
         int indexWeapon = _model.getWeaponInventorySize(0)-1;
-        String weaponName = _model.getWeaponNameInInventory(0, indexWeapon);
-        JButton btn = new JButton(weaponName);
-        _theme.buttonTheme(btn);
-        btn.setPreferredSize(new Dimension(200,70));
-        btn.putClientProperty("index",indexWeapon);
-        btn.addActionListener(actionEvent -> _controller.setWeapon(0,(int)btn.getClientProperty("index")));
-        _panelArmes.add(btn);
+        addWeapon(indexWeapon,weaponType);
     }
 }

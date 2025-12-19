@@ -503,6 +503,8 @@ package view #99ff99 {
         + onShow()
         + setPlayerShipsGrid(gridPanel : GridPanel)
         - createInfoLabel(text : String) : JLabel
+        - addWeapon(indexWeapon : Integer, weaponType : WeaponTypes)
+        - selectWeapon(selectedButton : JButton)
         + updateNoMoreShips(player : Integer)
         + updateTurnNum(turnNum : Integer)
         + updateWeaponFound(player : Integer, weaponType : WeaponTypes)

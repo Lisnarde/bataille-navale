@@ -298,18 +298,39 @@ package model #eeaaff{
 }
 
 package controller #6999ff {
-    package bots {
+    package bots #88bbff {
     interface Bot <<interface>>{
-    + placeShips(player : Integer, model : Game, controller : GameController, numberPerShip: Map<ShipTypes, Integer>)
-    + shoot(player : Integer, model : Game, controller : GameController)
+        + placeShips(player : Integer, model : Game, controller : GameController, numberPerShip: Map<ShipTypes, Integer>)
+        + shoot(player : Integer, model : Game, controller : GameController)
     }
 
     class RandomBot implements Bot{
-    - _random : Random
-    + <<create>>RandomBot()
-    + placeShips(player: int, model: Game, controller: GameController, numberPerShip: Map<ShipTypes, Integer>)
-    + shoot(player: int, model: Game, controller: GameController)
+        - _random : Random
+        + <<create>>RandomBot()
+        + placeShips(player: int, model: Game, controller: GameController, numberPerShip: Map<ShipTypes, Integer>)
+        + shoot(player: int, model: Game, controller: GameController)
     }
+
+    class SmartBot implements Bot, model.GridObserver {
+        - _random : Random
+        - _gridSize : Integer
+        - _hunting : Boolean
+        +<<create>>SmartBot()
+        + placeShips(player: int, model: Game, controller: GameController, numberPerShip: Map<ShipTypes, Integer>)
+        + shoot(player: int, model: Game, controller: GameController)
+        + updateShoot(player : Integer, posx : Integer, posy : Integer, hit : Boolean)
+        - addAdjacentTargets(x : Integer, y : Integer)
+        - addIfValid(x : Integer, y : Integer)
+        - randomCell() : Cell
+        + updateTrapActivated(player : Integer, pox : Integer, posy : Integer, trapType : TrapTypes)
+        + updateSearch(player : Integer, posx : Integer, posy : Integer, objectFound : WeaponTypes)
+        + updateShipCellPlaced(player : Integer, posx : Integer, posy : Integer)
+        + updateTrapPlaced(player : Integer, posx : Integer, posy : Integer, trapType : TrapTypes)
+        + updateWeaponPlacedOnIsland(player : Integer, posx : Integer, posy : Integer, weaponType : WeaponTypes)
+        + updateShipCellDrowned(player : Integer, posx : Integer, posy : Integer)
+        + updateNoMoreShips(player : Integer)
+    }
+
 
     }
     class GameController {
@@ -516,6 +537,9 @@ Player o--> "*\n- _weaponInventory" Weapon : "> can use theses weapons"
 Player o--> "1\n- _equippedWeapon" Weapon : "> has this strategy of attack"
 Game *--> "2\n- _players" Player : "> has 2 players"
 Game *--> "*\n' _traps" Trap : "> knows which traps can be placed"
+
+SmartBot o--> "*\n- _shotsDone" Cell : "> keeps shot already done"
+SmartBot o--> "*\n- _targets" Cell : "> keeps cells to shoot later in a stack"
 
 GameController o--> "1\n- _model" Game : "> Manipulate"
 GraphicalView o--> "1\n- _model" Game : "> Consult"

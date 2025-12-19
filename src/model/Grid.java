@@ -34,11 +34,10 @@ public class Grid {
     }
 
     private void constructIsland() {
-        if (_width == 10 && _height == 10) {
-            for (int y=3; y<7; y++) {
-                for (int x=3; x<7; x++) {
-                    _placedObjects.add(new IslandPart(new Cell(x,y)));
-                }
+        int startIsland = _width / 2 - 2;
+        for (int y=startIsland; y<startIsland+4; y++) {
+            for (int x=startIsland; x<startIsland+4; x++) {
+                _placedObjects.add(new IslandPart(new Cell(x,y)));
             }
         }
     }

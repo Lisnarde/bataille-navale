@@ -1,6 +1,7 @@
 package model;
 
 import model.traps.Trap;
+import model.traps.TrapTypes;
 import model.weapons.Missile;
 import model.weapons.Weapon;
 
@@ -56,6 +57,13 @@ public class Player {
     }
 
     public boolean shoot(Player otherPlayer, Cell cell) {
+        Placeable p = otherPlayer._grid.getObjectByPosition(cell);
+        if (p!=null && p.getType() == PlaceableTypes.TRAP) {
+            Trap trap = (Trap) p;
+            if (trap.getTrapType()== TrapTypes.BLACKHOLE){
+                return this._grid.shoot(cell, _equippedWeapon);
+            }
+        }
         return otherPlayer._grid.shoot(cell,_equippedWeapon);
     }
 

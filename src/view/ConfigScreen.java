@@ -124,7 +124,7 @@ public class ConfigScreen extends JPanel {
         islandPanel.setOpaque(false);
         islandPanel.setLayout(new FlowLayout());
 
-        JLabel islandLabel = new JLabel("Activer le mode île ?");
+        JLabel islandLabel = new JLabel("Activer le mode île ? (non accessible pour les grilles de tailles 6) ");
         islandLabel.setFont(_theme.normalFont());
         islandPanel.add(islandLabel);
 
@@ -450,6 +450,11 @@ public class ConfigScreen extends JPanel {
 
         // Vérification des champs
         if (pseudo.equals("") || gridSize<6) {return;}
+
+        if (gridSize == 6 && isIslandMode) {
+            JOptionPane.showMessageDialog(this, "Vous ne pouvez pas sélectionner le mode île et une grille de taille 6");
+            return;
+        }
 
         _controller.setPlayerName(pseudo);
         _controller.setGrid(gridSize,isIslandMode);

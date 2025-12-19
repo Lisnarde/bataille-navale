@@ -125,8 +125,8 @@ public class GridPanel extends JPanel implements GridObserver {
 
 
     @Override
-    public void updateShoot(int joueur, int posx, int posy, boolean hit) {
-        if ((_mode == GridMode.ATTACK && joueur==1) || _mode == GridMode.RECEIVE && joueur==0) {
+    public void updateShoot(int player, int posx, int posy, boolean hit) {
+        if ((_mode == GridMode.ATTACK && player==1) || _mode == GridMode.RECEIVE && player==0) {
             JButton buttonClicked = _grid.get(posy).get(posx);
             buttonClicked.setEnabled(false);
             if (hit) {
@@ -138,8 +138,8 @@ public class GridPanel extends JPanel implements GridObserver {
     }
 
     @Override
-    public void updateTrapActivated(int joueur, int posx, int posy, TrapTypes trapType) {
-        if ((_mode == GridMode.ATTACK && joueur==1) || _mode == GridMode.RECEIVE && joueur==0) {
+    public void updateTrapActivated(int player, int posx, int posy, TrapTypes trapType) {
+        if ((_mode == GridMode.ATTACK && player==1) || _mode == GridMode.RECEIVE && player==0) {
             JButton buttonClicked = _grid.get(posy).get(posx);
             buttonClicked.setEnabled(false);
             if (trapType == TrapTypes.BLACKHOLE) {
@@ -150,8 +150,8 @@ public class GridPanel extends JPanel implements GridObserver {
         }
     }
     @Override
-    public void updateSearch(int joueur, int posx, int posy, WeaponTypes objectFound){
-        if ((_mode == GridMode.ATTACK && joueur==1) || _mode == GridMode.RECEIVE && joueur==0) {
+    public void updateSearch(int player, int posx, int posy, WeaponTypes objectFound){
+        if ((_mode == GridMode.ATTACK && player==1) || _mode == GridMode.RECEIVE && player==0) {
             JButton buttonClicked = _grid.get(posy).get(posx);
             buttonClicked.setEnabled(false);
             if (objectFound == null) {
@@ -163,7 +163,7 @@ public class GridPanel extends JPanel implements GridObserver {
     }
 
     @Override
-    public void updateShipCellPlaced(int joueur, int posx, int posy) {
+    public void updateShipCellPlaced(int player, int posx, int posy) {
         if (_mode == GridMode.PLACEMENT) {
             JButton buttonClicked = _grid.get(posy).get(posx);
             buttonClicked.setEnabled(false);
@@ -172,7 +172,7 @@ public class GridPanel extends JPanel implements GridObserver {
     }
 
     @Override
-    public void updateTrapPlaced(int joueur, int posx, int posy, TrapTypes trapType) {
+    public void updateTrapPlaced(int player, int posx, int posy, TrapTypes trapType) {
         if (_mode == GridMode.PLACEMENT) {
             JButton buttonClicked = _grid.get(posy).get(posx);
             buttonClicked.setEnabled(false);
@@ -185,7 +185,7 @@ public class GridPanel extends JPanel implements GridObserver {
     }
 
     @Override
-    public void updateWeaponPlacedOnIsland(int joueur, int posx, int posy, WeaponTypes weaponType) {
+    public void updateWeaponPlacedOnIsland(int player, int posx, int posy, WeaponTypes weaponType) {
         if (_mode == GridMode.PLACEMENT) {
             JButton buttonClicked = _grid.get(posy).get(posx);
             buttonClicked.setEnabled(false);
@@ -194,8 +194,8 @@ public class GridPanel extends JPanel implements GridObserver {
     }
 
     @Override
-    public void updateShipCellDrowned(int joueur, int posx, int posy){
-        if ( _mode == GridMode.ATTACK && joueur == 1 || _mode == GridMode.RECEIVE && joueur == 0){
+    public void updateShipCellDrowned(int player, int posx, int posy){
+        if ( _mode == GridMode.ATTACK && player == 1 || _mode == GridMode.RECEIVE && player == 0){
             JButton button = _grid.get(posy).get(posx);
             button.setEnabled(false);
             button.setBackground(new Color(200, 0, 0));
@@ -203,5 +203,5 @@ public class GridPanel extends JPanel implements GridObserver {
     }
 
     @Override
-    public void updateNoMoreShips(int joueur){}
+    public void updateNoMoreShips(int player){}
 }

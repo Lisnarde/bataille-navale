@@ -207,7 +207,7 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
 
 
     @Override
-    public void updateNoMoreShips(int joueur) {
+    public void updateNoMoreShips(int player) {
         _navigationController.showEnd();
     }
 
@@ -217,7 +217,7 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
     }
 
     @Override
-    public void updateWeaponFound(int joueur, WeaponTypes weaponType) {
+    public void updateWeaponFound(int player, WeaponTypes weaponType) {
         int indexWeapon = _model.getWeaponInventorySize(0)-1;
         String weaponName = _model.getWeaponNameInInventory(0, indexWeapon);
         JButton btn = new JButton(weaponName);

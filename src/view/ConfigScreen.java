@@ -472,14 +472,14 @@ public class ConfigScreen extends JPanel {
             _navigationController.showPlacement();
         }
     }
-    private int decrementNumberOfShip(int nombre){
-        if(nombre>1) {
-            return nombre - 1;
+    private int decrementNumberOfShip(int number){
+        if(number>1) {
+            return number - 1;
         }
-        return nombre;
+        return number;
     }
-    private int incrementNumberOfShip(int nombre){
-        return nombre+1;
+    private int incrementNumberOfShip(int number){
+        return number+1;
     }
     private void updateUsedCells() {
         int aircraft = Integer.parseInt(_labelNumAircraftCarrier.getText()) * 5;

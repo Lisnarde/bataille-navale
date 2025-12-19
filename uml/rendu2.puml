@@ -336,7 +336,9 @@ package view #99ff99 {
             + normalFont() : Font
             + boldFont() : Font
             + titleFont() : Font
-            + button(text : String) : JButton
+            + button(button : AbstractButton)
+            + buttonConfigMinusTheme(button : AbstractButton)
+            + buttonConfigPlusTheme(button : AbstractButton)
         }
         class GlobalTheme implements Theme {
             - _normalFont : Font
@@ -346,16 +348,42 @@ package view #99ff99 {
             + normalFont() : Font
             + boldFont() : Font
             + titleFont() : Font
-            + button(text : String) : JButton
+            + button(button : AbstractButton)
+            + buttonConfigMinusTheme(button : AbstractButton)
+            + buttonConfigPlusTheme(button : AbstractButton)
         }
     }
     package components #44bb44 {
         class TitleBanner <<extends JPanel>> {
+            - _title
             +<<create>>TitleBanner()
+            +<<create>>TitleBanner(text : String)
+            + setText(text : String)
         }
         class GridPanel <<extends JPanel>> implements model.GridObserver {
+            - _model : Game
+            - _controller : GameController
+            - _mode : GridMode
             - _grid : JButton[][]
-            +<<create>>GridPanel(gridSize : Integer)
+            - _axis : Axis
+            - _shipType : ShipTypes
+            - _trapIndex : Integer
+            - _weaponIndex : Integer
+            +<<create>>GridPanel(model : Game, controller : GameController, mode : GridMode)
+            + setMode(mode : GridMode)
+            - draw()
+            + resetView()
+            + setTypePlacement(shipType : ShipTypes, trapIndex : Integer, weaponIndex : Integer)
+            + setAxisPlacement(axis : Axis)
+            - buttonClicked(button : JButton)
+            + updateShoot(player : Integer, posx : Integer, posy : Integer, hit : Boolean)
+            + updateTrapActivated(player : Integer, pox : Integer, posy : Integer, trapType : TrapTypes)
+            + updateSearch(player : Integer, posx : Integer, posy : Integer, objectFound : WeaponTypes)
+            + updateShipCellPlaced(player : Integer, posx : Integer, posy : Integer)
+            + updateTrapPlaced(player : Integer, posx : Integer, posy : Integer, trapType : TrapTypes)
+            + updateWeaponPlacedOnIsland(player : Integer, posx : Integer, posy : Integer, weaponType : WeaponTypes)
+            + updateShipCellDrowned(player : Integer, posx : Integer, posy : Integer)
+            + updateNoMoreShips(player : Integer)
         }
         enum GridMode {
             PLACEMENT
@@ -363,34 +391,90 @@ package view #99ff99 {
             RECEIVE
         }
         class InfosPanel <<extends JPanel>>{
-            +<<create>>InfosPanel()
+            +<<create>>InfosPanel(theme: Theme, shootNumber: int, shootInWater: int, shipsDrowned: int, weaponsUsed: List<WeaponTypes>, trapsActivated: List<TrapTypes>, weaponsFound: List<WeaponTypes>, weaponsNotFound: List<WeaponTypes>)
         }
     }
 
     class GraphicalView <<extends JFrame>>{
-        - _layout : CardLayout
+        - _controller : GameController
+        - _model : Game
+        - _navigationController : NavigationController
+        - _theme : Theme
+        - _cardLayout : CardLayout
         - _mainPanel : JPanel
-        +<<create>>GraphicalView(model : Game, controller : GameController)
+        +<<create>>GraphicalView(controller : GameController, model : Game)
     }
 
     class ConfigScreen <<extends JPanel>> {
-        +<<create>>ConfigScreen(controller : GameScreen, model : Game, navigationController : NavigationController, theme : Theme)
-        + validation()
+        - _controller : GameController
+        - _model : Game
+        - _navigationController : NavigationController
+        - _theme : Theme
+        - _leftPanel : JPanel
+        - _rightPanel : JPanel
+        - _pseudoField : JTextField
+        - _sizeGroup : ButtonGroup
+        - _islandGroup : ButtonGroup
+        - _maxShipsCells : Integer
+        - _labelMaxCellsShip : JLabel
+        - _labelUsedCells : JLabel
+        - _labelNumAircraftCarrier : JLabel
+        - _labelNumCruiser : JLabel
+        - _labelNumDestroyer : JLabel
+        - _labelNumSubmarine : JLabel
+        - _labelNumTorpedo : JLabel
+        - _plusAircraftCarrier : JButton
+        - _plusCruiser : JButton
+        - _plusDestroyer : JButton
+        - _plusSubmarine : JButton
+        - _plusTorpedo : JButton
+        - _btnAccepter : JButton
+        - _btnSuivant : JButton
+        +<<create>>ConfigScreen(controller : GameController, model : Game, navigationController : NavigationController, theme : Theme)
+        - draw()
+        - setEnabledPanel(panel : JComponent, enabled : Boolean)
+        - accept()
+        - next()
+        - decrementNumberOfShip(number : Integer) : Integer
+        - incrementNumberOfShip(number : Integer) : Integer
+        - updateUsedCelles()
     }
      class PlacementScreen <<extends JPanel>>{
-        +<<create>>PlacementScreen(controller : GameScreen, model : Game, navigationController : NavigationController, theme : Theme)
-        + validation()
+        - _controller : GameController
+        - _model : Game
+        - _navigationController : NavigationController
+        - _theme : Theme
+        - _gridPanel : GridPanel
+        +<<create>>PlacementScreen(controller : GameController, model : Game, navigationController : NavigationController, theme : Theme)
+        + onShow()
+        - randomGeneration()
+        - validation()
      }
     class GameScreen <<extends JPanel>>{
-        +<<create>>GameScreen(controller : GameScreen, model : Game, navigationController : NavigationController, theme : Theme)
+        - _controller : GameController
+        - _model : Game
+        - _navigationController : NavigationController
+        - _theme : Theme
+        - _gridPanelAttack : GridPanel
+        - _gridPanelReceive : GridPanel
+        - _title : TitleBanner
+        - _panelArmes : JPanel
+        +<<create>>GameScreen(controller : GameController, model : Game, navigationController : NavigationController, theme : Theme)
+        + onShow()
+        + setPlayerShipsGrid(gridPanel : GridPanel)
+        + updateNoMoreShips(player : Integer)
+        + updateTurnNum(turnNum : Integer)
+        + updateWeaponFound(player : Integer, weaponType : WeaponTypes)
     }
     class EndScreen <<extends JPanel>>{
-        +<<create>>EndScreen(controller : GameScreen, model : Game, navigationController : NavigationController, theme : Theme)
+        - _controller : GameController
+        - _model : Game
+        - _navigationController : NavigationController
+        - _theme : Theme
+        +<<create>>EndScreen(controller : GameController, model : Game, navigationController : NavigationController, theme : Theme)
+        + onShow()
     }
-
-
 }
-
 
 class Main {
 }

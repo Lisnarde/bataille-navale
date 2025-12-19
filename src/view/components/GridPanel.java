@@ -164,7 +164,7 @@ public class GridPanel extends JPanel implements GridObserver {
 
     @Override
     public void updateShipCellPlaced(int player, int posx, int posy) {
-        if (_mode == GridMode.PLACEMENT) {
+        if (_mode == GridMode.PLACEMENT && player == 0) {
             JButton buttonClicked = _grid.get(posy).get(posx);
             buttonClicked.setEnabled(false);
             buttonClicked.setBackground(new Color(100,100,100));
@@ -173,7 +173,7 @@ public class GridPanel extends JPanel implements GridObserver {
 
     @Override
     public void updateTrapPlaced(int player, int posx, int posy, TrapTypes trapType) {
-        if (_mode == GridMode.PLACEMENT) {
+        if (_mode == GridMode.PLACEMENT && player == 0) {
             JButton buttonClicked = _grid.get(posy).get(posx);
             buttonClicked.setEnabled(false);
             if (trapType == TrapTypes.BLACKHOLE) {
@@ -186,7 +186,7 @@ public class GridPanel extends JPanel implements GridObserver {
 
     @Override
     public void updateWeaponPlacedOnIsland(int player, int posx, int posy, WeaponTypes weaponType) {
-        if (_mode == GridMode.PLACEMENT) {
+        if (_mode == GridMode.PLACEMENT && player == 0) {
             JButton buttonClicked = _grid.get(posy).get(posx);
             buttonClicked.setEnabled(false);
             buttonClicked.setBackground(new Color(100, 80, 0));

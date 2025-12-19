@@ -44,6 +44,12 @@ public class Player {
     public int getNumberOfShipByType(ShipTypes shipTypes) {
         return _grid.getNumberOfShipByType(shipTypes);
     }
+    public int getNumberOfTrapsByType(TrapTypes trapType) {
+        return _grid.getNumberOfTrapByType(trapType);
+    }
+    public int getNumberOfWeaponOnIslandByType(WeaponTypes weaponType) {
+        return _grid.getNumberOfWeaponOnIslandByType(weaponType);
+    }
 
     public boolean placeShip(Ship ship) {
         return _grid.placeObject(ship);

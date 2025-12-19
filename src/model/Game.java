@@ -121,6 +121,27 @@ public class Game implements GridObserver{
         return _numberPerShip.get(shipTypes);
     }
 
+    public boolean isAllTheShipsAndTrapsPlaced(int player) {
+        for (Map.Entry<ShipTypes,Integer> entry : _numberPerShip.entrySet()) {
+            if (entry.getValue() != _players[player].getNumberOfShipByType(entry.getKey())) {
+                return false;
+            }
+        }
+        for (TrapTypes trapType : _traps) {
+            if (_players[player].getNumberOfTrapsByType(trapType) != 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean isAllTheWeaponsPlaced(int player) {
+        for (WeaponTypes weaponType : _globalWeaponInventory) {
+            if (_players[player].getNumberOfWeaponOnIslandByType(weaponType) != 1) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public boolean placeTrapOnGrid(int player, Trap trap) {
         return _players[player].placeTrap(trap);

@@ -58,123 +58,48 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
         JPanel panelInfos = new JPanel();
         panelInfos.setLayout(new BoxLayout(panelInfos,BoxLayout.Y_AXIS));
 
+        //infos du joueur
         JPanel panelInfosPlayer = new JPanel();
         panelInfosPlayer.setLayout(new BoxLayout(panelInfosPlayer,BoxLayout.Y_AXIS));
 
         JLabel player = new JLabel();
         player.setText(_model.getPlayerName(0));
+        player.setFont(_theme.titleFont());
         panelInfosPlayer.add(player);
 
-        JLabel lastActionPlayedPlayer = new JLabel(); //dernière action jouée
-        lastActionPlayedPlayer.setText("Dernière action jouée : ");
-        lastActionPlayedPlayer.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosPlayer.add(lastActionPlayedPlayer);
-
-        JLabel numShipIntactPlayer =new JLabel(); //nombre de bateaux du joueur intact
-        numShipIntactPlayer.setText("Votre nombre de bateaux intacts : ");
-        numShipIntactPlayer.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosPlayer.add(numShipIntactPlayer);
-
-        JLabel numShipHitPlayer =new JLabel();  //nombre de bateaux du joueur touchés (pas nombre de cases)
-        numShipHitPlayer.setText("Votre nombre de bateaux touchés : ");
-        numShipHitPlayer.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosPlayer.add(numShipHitPlayer);
-
-        JLabel numShipDrownedPlayer =new JLabel(); //nombre de bateaux du jouer coulés
-        numShipDrownedPlayer.setText("Votre nombre de bateaux coulés : ");
-        numShipDrownedPlayer.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosPlayer.add(numShipDrownedPlayer);
-
-        JLabel numShotInWaterPlayer =new JLabel();  //nombre de tirs dans l'eau du joueur
-        numShotInWaterPlayer.setText("Votre nombre de tirs dans l'eau : ");
-        numShotInWaterPlayer.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosPlayer.add(numShotInWaterPlayer);
-
-        JLabel numCellShipHitPlayer =new JLabel();  //nombre de cases bateau du bot touchées
-        numCellShipHitPlayer.setText("Nombre de cases bateaux que vous avez touchées : ");
-        numCellShipHitPlayer.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosPlayer.add(numCellShipHitPlayer);
-
-        JLabel numIntactCellShipPlayer =new JLabel();   //nombre de cases bateau du bot restantes à toucher
-        numIntactCellShipPlayer.setText("Nombre de cases bateaux qu'il vous reste à toucher : ");
-        numIntactCellShipPlayer.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosPlayer.add(numIntactCellShipPlayer);
-
-        JLabel listWeaponUsablePlayer =new JLabel();  //liste d'armes encore utilisables
-        listWeaponUsablePlayer.setText("Liste d'arme(s) à disposition : ");
-        listWeaponUsablePlayer.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosPlayer.add(listWeaponUsablePlayer);
-
-        JLabel listWeaponUsedPlayer =new JLabel(); //liste d'armes déjà utilisées
-        listWeaponUsedPlayer.setText("Liste d'arme(s) utilisée(s) : ");
-        listWeaponUsedPlayer.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosPlayer.add(listWeaponUsedPlayer);
-
-        JLabel numCellIslandNonSearchedPlayer =new JLabel();  //nombre de cases de l'île restantes à fouiller
-        numCellIslandNonSearchedPlayer.setText("Nombre de cases d'île restantes à fouiller : ");
-        numCellIslandNonSearchedPlayer.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosPlayer.add(numCellIslandNonSearchedPlayer);
+        panelInfosPlayer.add(createInfoLabel("Dernière action jouée : ")); //dernière action jouée
+        panelInfosPlayer.add(createInfoLabel("Bateaux intacts : " + _model.getPlayer(0).getIntactShipsCount())); //nombre de bateaux du joueur intact
+        panelInfosPlayer.add(createInfoLabel("Bateaux touchés : " + _model.getPlayer(0).getHitShipsCount())); //nombre de bateaux du joueur touchés (pas nombre de cases)
+        panelInfosPlayer.add(createInfoLabel("Bateaux coulés : " + _model.getPlayer(0).getDrownedShipsCount()));//nombre de bateaux du joueur coulés
+        panelInfosPlayer.add(createInfoLabel("Tirs dans l'eau : " + _model.getPlayer(0).getShotsInWater())); //nombre de tirs dans l'eau du joueur
+        panelInfosPlayer.add(createInfoLabel("Cases bateaux touchées : " + _model.getPlayer(0).getHitCellsCount())); //nombre de cases bateau du bot touchées
+        panelInfosPlayer.add(createInfoLabel("Cases restantes à toucher : " + _model.getPlayer(1).getRemainingShipCells())); //nombre de cases bateau du bot restantes à toucher
+        panelInfosPlayer.add(createInfoLabel("Armes disponibles : " + _model.getPlayer(0).getWeaponInventory())); //liste d'armes encore utilisables
+        panelInfosPlayer.add(createInfoLabel("Armes utilisées : " + _model.getPlayer(0).getUsedWeapons())); //liste d'armes déjà utilisées
+        panelInfosPlayer.add(createInfoLabel("Cases d'île restantes : " + _model.getPlayer(0).getRemainingIslandCells())); //nombre de cases de l'île restantes à fouiller
 
         panelInfos.add(panelInfosPlayer);
 
 
-
+        //infos du bot
         JPanel panelInfosBot = new JPanel();
         panelInfosBot.setLayout(new BoxLayout(panelInfosBot,BoxLayout.Y_AXIS));
 
         JLabel bot = new JLabel();
         bot.setText(_model.getPlayerName(1));
+        bot.setFont(_theme.titleFont());
         panelInfosBot.add(bot);
 
-        JLabel lastActionPlayedBot =new JLabel(); //dernière action jouée
-        lastActionPlayedBot.setText("Dernière action jouée : ");
-        lastActionPlayedBot.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosBot.add(lastActionPlayedBot);
-
-        JLabel numShipIntactBot =new JLabel(); //nombre de bateaux du bot intact
-        numShipIntactBot.setText("Nombre de bateaux intacts : ");
-        numShipIntactBot.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosBot.add(numShipIntactBot);
-
-        JLabel numShipHitBot =new JLabel();  //nombre de bateaux du bot touchés (pas nombre de cases)
-        numShipHitBot.setText("Nombre de bateaux touchés : ");
-        numShipHitBot.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosBot.add(numShipHitBot);
-
-        JLabel numShipDrownedBot =new JLabel(); //nombre de bateaux du bot coulés
-        numShipDrownedBot.setText("Nombre de bateaux coulés : ");
-        numShipDrownedBot.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosBot.add(numShipDrownedBot);
-
-        JLabel numShotInWaterBot =new JLabel();  //nombre de tirs dans l'eau du bot
-        numShotInWaterBot.setText("Nombre de tirs dans l'eau : ");
-        numShotInWaterBot.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosBot.add(numShotInWaterBot);
-
-        JLabel numCellShipHitBot =new JLabel();  //nombre de cases bateau du joueur touchées
-        numCellShipHitBot.setText("Nombre de cases bateaux touchées : ");
-        numCellShipHitBot.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosBot.add(numCellShipHitBot);
-
-        JLabel numIntactCellShipBot =new JLabel();   //nombre de cases bateau du joueur restantes à toucher
-        numIntactCellShipBot.setText("Nombre de cases bateaux restantes à toucher : ");
-        numIntactCellShipBot.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosBot.add(numIntactCellShipBot);
-
-        JLabel listWeaponUsableBot =new JLabel();  //liste d'armes encore utilisables
-        listWeaponUsableBot.setText("Liste d'arme(s) à disposition : ");
-        listWeaponUsableBot.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosBot.add(listWeaponUsableBot);
-
-        JLabel listWeaponUsedBot =new JLabel(); //liste d'armes déjà utilisées
-        listWeaponUsedBot.setText("Liste d'arme(s) utilisée(s) : ");
-        listWeaponUsedBot.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosBot.add(listWeaponUsedBot);
-
-        JLabel numCellIslandNonSearchedBot =new JLabel();  //nombre de cases de l'île restantes à fouiller
-        numCellIslandNonSearchedBot.setText("Nombre de cases d'île restantes à fouiller : ");
-        numCellIslandNonSearchedBot.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfosBot.add(numCellIslandNonSearchedBot);
+        panelInfosBot.add(createInfoLabel("Dernière action jouée : ")); //dernière action jouée
+        panelInfosBot.add(createInfoLabel("Bateaux intacts : " + _model.getPlayer(1).getIntactShipsCount())); //nombre de bateaux du bot intact
+        panelInfosBot.add(createInfoLabel("Bateaux touchés : " + _model.getPlayer(1).getHitShipsCount())); //nombre de bateaux du bot touchés (pas nombre de cases)
+        panelInfosBot.add(createInfoLabel("Bateaux coulés : " + _model.getPlayer(1).getDrownedShipsCount()));//nombre de bateaux du bot coulés
+        panelInfosBot.add(createInfoLabel("Tirs dans l'eau : " + _model.getPlayer(1).getShotsInWater())); //nombre de tirs dans l'eau du bot
+        panelInfosBot.add(createInfoLabel("Cases bateaux touchées : " + _model.getPlayer(1).getHitCellsCount())); //nombre de cases bateau du joueur touchées
+        panelInfosBot.add(createInfoLabel("Cases restantes à toucher : " + _model.getPlayer(0).getRemainingShipCells())); //nombre de cases bateau du joueur restantes à toucher
+        panelInfosBot.add(createInfoLabel("Armes disponibles : " + _model.getPlayer(1).getWeaponInventory())); //liste d'armes encore utilisables
+        panelInfosBot.add(createInfoLabel("Armes utilisées : " + _model.getPlayer(1).getUsedWeapons())); //liste d'armes déjà utilisées
+        panelInfosBot.add(createInfoLabel("Cases d'île restantes : " + _model.getPlayer(1).getRemainingIslandCells())); //nombre de cases de l'île restantes à fouiller
 
         panelInfos.add(panelInfosBot);
 
@@ -203,6 +128,12 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
 
     public void setPlayerShipsGrid(GridPanel gridPanel) {
         _gridPanelReceive = gridPanel;
+    }
+
+    private JLabel createInfoLabel(String text) {
+        JLabel lbl = new JLabel(text);
+        lbl.setFont(_theme.normalFont());
+        return lbl;
     }
 
 

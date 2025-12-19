@@ -4,6 +4,7 @@ import model.traps.Trap;
 import model.traps.TrapTypes;
 import model.weapons.Missile;
 import model.weapons.Weapon;
+import model.weapons.WeaponTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,4 +89,20 @@ public class Player {
     public boolean hasNoMoreShips() {
         return _grid.allShipsDead();
     }
+
+    public int getIntactShipsCount() { return _grid.getIntactShipsCount(); }
+    public int getHitShipsCount() { return _grid.getHitShipsCount(); }
+    public int getDrownedShipsCount() { return _grid.getDrownedShipsCount(); }
+    public int getShotsInWater() { return _grid.getShotsInWater(); }
+    public int getHitCellsCount() { return _grid.getHitCellsCount(); }
+    public int getRemainingShipCells() { return _grid.getRemainingShipCells(); }
+    public int getRemainingIslandCells() { return _grid.getRemainingIslandCells(); }
+    public List<WeaponTypes> getUsedWeapons() { return _grid.getUsedWeapons(); }
+
+    public List<WeaponTypes> getWeaponInventory() {
+        return _weaponInventory.stream()
+                .map(Weapon::getWeaponType)
+                .toList();
+    }
+
 }

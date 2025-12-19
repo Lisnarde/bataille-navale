@@ -177,6 +177,9 @@ public class Game implements GridObserver{
         }
         return -1;
     }
+    public Player getPlayer(int index) {
+        return _players[index];
+    }
 
 
     @Override public void updateShoot(int player, int posx, int posy, boolean hit) {}

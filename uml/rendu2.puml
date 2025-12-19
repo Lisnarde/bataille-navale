@@ -47,6 +47,7 @@ package model #eeaaff{
         + washGrid(player : Integer)
         + isTheGameFinished() : Boolean
         + whoWon() : Integer
+        + getPlayer(index : Integer) : Player
         + updateShoot(player : Integer, posx : Integer, posy : Integer, hit : Boolean)
         + updateTrapActivated(player : Integer, posx : Integer, posy : Integer, trapType : TrapTypes)
         + updateSearch(player : Integer, posx : Integer, posy : Integer, objectFound : WeaponTypes)
@@ -55,6 +56,16 @@ package model #eeaaff{
         + updateWeaponPlacedOnIsland(player : Integer, posx : Integer, posy : Integer, weaponType : WeaponTypes)
         + updateShipCellDrowned(player : Integer, posx : Integer, posy : Integer)
         + updateNoMoreShips(player : Integer)
+        - isShipHit(s : Ship) : Boolean
+        - isShipDrowned(s : Ship) : Boolean
+        + getIntactShipsCount() : Integer
+        + getHitShipsCount() : Integer
+        + getDrownedShipsCount() : Integer
+        + getShotsInWater() : Integer
+        + getHitCellsCount() : Integer
+        + getRemainingShipCells() : Integer
+        + getRemainingIslandCells() : Integer
+        + getUsedWeapons() : List<WeaponTypes>
     }
 
     interface GameObserver <<interface>>{
@@ -91,6 +102,15 @@ package model #eeaaff{
         + getWeaponInInventory(weaponIndex : Integer) : Weapon
         + washGrid()
         + hasNoMoreShips() : Boolean
+        + getIntactShipsCount() : Integer
+        + getHitShipsCount() : Integer
+        + getDrownedShipsCount() : Integer
+        + getShotsInWater() : Integer
+        + getHitCellsCount() : Integer
+        + getRemainingShipCells() : Integer
+        + getRemainingIslandCells() : Integer
+        + getUsedWeapons() : List<WeaponTypes>
+        + getWeaponInventory() : List<WeaponTypes>
     }
 
     class Grid {
@@ -190,7 +210,7 @@ package model #eeaaff{
     }
 
     class Ship implements Placeable {
-        -  _position : List<Cell>
+        - _positions : List<Cell>
         - _shipType : ShipTypes
         + <<create>>Ship(shipType : ShipTypes, cells : List<Cell>)
         + getSize() : Integer
@@ -462,6 +482,7 @@ package view #99ff99 {
         +<<create>>GameScreen(controller : GameController, model : Game, navigationController : NavigationController, theme : Theme)
         + onShow()
         + setPlayerShipsGrid(gridPanel : GridPanel)
+        - createInfoLabel(text : String) : JLabel
         + updateNoMoreShips(player : Integer)
         + updateTurnNum(turnNum : Integer)
         + updateWeaponFound(player : Integer, weaponType : WeaponTypes)

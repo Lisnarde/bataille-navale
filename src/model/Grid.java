@@ -254,4 +254,112 @@ public class Grid {
         }
         return true;
     }
+
+    private boolean isShipHit(Ship s) {
+        for (int i = 0; i < s.getSize(); i++) {
+            Cell c = s.getCell(i);
+            if (isOccupiedBy(c, PlaceableTypes.IMPACT)) return true;
+        }
+        return false;
+    }
+
+    private boolean isShipDrowned(Ship s) {
+        for (int i = 0; i < s.getSize(); i++) {
+            Cell c = s.getCell(i);
+            if (!isOccupiedBy(c, PlaceableTypes.IMPACT)) return false;
+        }
+        return true;
+    }
+
+    public int getIntactShipsCount() {
+        int count = 0;
+        for (Placeable p : _placedObjects) {
+            if (p.getType() == PlaceableTypes.SHIP) {
+                Ship s = (Ship) p;
+                if (!isShipHit(s)) count++;
+            }
+        }
+        return count;
+    }
+
+    public int getHitShipsCount() {
+        int count = 0;
+        for (Placeable p : _placedObjects) {
+            if (p.getType() == PlaceableTypes.SHIP) {
+                Ship s = (Ship) p;
+                if (isShipHit(s) && !isShipDrowned(s)) count++;
+            }
+        }
+        return count;
+    }
+
+    public int getDrownedShipsCount() {
+        int count = 0;
+        for (Placeable p : _placedObjects) {
+            if (p.getType() == PlaceableTypes.SHIP) {
+                Ship s = (Ship) p;
+                if (isShipDrowned(s)) count++;
+            }
+        }
+        return count;
+    }
+
+    public int getShotsInWater() {
+        int count = 0;
+        for (Placeable p : _placedObjects) {
+            if (p.getType() == PlaceableTypes.IMPACT) {
+                Cell c = p.getCell(0);
+                if (!isOccupiedBy(c, PlaceableTypes.SHIP)) count++;
+            }
+        }
+        return count;
+    }
+
+    public int getHitCellsCount() {
+        int count = 0;
+        for (Placeable p : _placedObjects) {
+            if (p.getType() == PlaceableTypes.IMPACT) {
+                Cell c = p.getCell(0);
+                if (isOccupiedBy(c, PlaceableTypes.SHIP)) count++;
+            }
+        }
+        return count;
+    }
+
+    public int getRemainingShipCells() {
+        int total = 0;
+        for (Placeable p : _placedObjects) {
+            if (p.getType() == PlaceableTypes.SHIP) {
+                Ship s = (Ship) p;
+                int size = s.getSize();
+                int hits = 0;
+
+                for (int i = 0; i < size; i++) {
+                    Cell c = s.getCell(i);
+                    if (isOccupiedBy(c, PlaceableTypes.IMPACT)) hits++;
+                }
+
+                total += (size - hits);
+            }
+        }
+        return total;
+    }
+
+    public int getRemainingIslandCells() {
+        int count = 0;
+        for (Placeable p : _placedObjects) {
+            if (p.getType() == PlaceableTypes.ISLANDPART) {
+                Cell c = p.getCell(0);
+                // une case d'île est fouillée si un impact ou une recherche a eu lieu dessus
+                boolean searched = isOccupiedBy(c, PlaceableTypes.IMPACT);
+                if (!searched) count++;
+            }
+        }
+        return count;
+    }
+
+    public List<WeaponTypes> getUsedWeapons() {
+        return new ArrayList<>();
+    }
+
 }

@@ -91,7 +91,7 @@ public class PlacementScreen extends JPanel implements ViewPanel {
         //Les bateaux
         ButtonGroup grpTypes = new ButtonGroup();
         for (ShipTypes shipType : ShipTypes.values()) {
-            JRadioButton btn = new JRadioButton(shipType.name());
+            JRadioButton btn = new JRadioButton(shipType.toString());
             _theme.buttonTheme(btn);
             btn.addActionListener(actionEvent -> _gridPanel.setTypePlacement(shipType,-1,-1));
             grpTypes.add(btn);
@@ -103,7 +103,7 @@ public class PlacementScreen extends JPanel implements ViewPanel {
 
         for (int i=0; i<_model.getTrapInventorySize(); i++) {
             TrapTypes trapType = _model.getTrapInInventory(i);
-            JRadioButton btn = new JRadioButton(trapType.name());
+            JRadioButton btn = new JRadioButton(trapType.toString());
             btn.putClientProperty("trapIndex",i);
             _theme.buttonTheme(btn);
             btn.addActionListener(actionEvent -> _gridPanel.setTypePlacement(null,(int)btn.getClientProperty("trapIndex"),-1));
@@ -118,7 +118,7 @@ public class PlacementScreen extends JPanel implements ViewPanel {
         if (_model.isIslandModeActivated()) {
             for (int w=0; w< _model.getGlobalWeaponInventorySize(); w++) {
                 WeaponTypes weaponType = _model.getWeaponInGlobalInventory(w);
-                JRadioButton btn = new JRadioButton(weaponType.name());
+                JRadioButton btn = new JRadioButton(weaponType.toString());
                 btn.putClientProperty("weaponIndex",w);
                 _theme.buttonTheme(btn);
                 btn.addActionListener(actionEvent -> _gridPanel.setTypePlacement(null,-1,(int)btn.getClientProperty("weaponIndex")));
@@ -169,6 +169,14 @@ public class PlacementScreen extends JPanel implements ViewPanel {
     }
 
     private void validation() {
+        if (!_model.isAllTheShipsAndTrapsPlaced(0)) {
+            JOptionPane.showMessageDialog(this, "Vous n'avez pas placé tous les bateaux et les pièges");
+            return;
+        }
+        if (_model.isIslandModeActivated() && !_model.isAllTheWeaponsPlaced(0)) {
+            JOptionPane.showMessageDialog(this, "Vous n'avez pas placé toutes les armes sur l'île");
+            return;
+        }
         _controller.botPlaceObjects(1);
         _navigationController.showGame(_gridPanel);
     }

@@ -175,17 +175,6 @@ package model #eeaaff{
         + hasThisPosition(cell : Cell) : Boolean
         + getType() : PlaceableTypes
     }
-    class PlaceableFactory {
-        +<<create>>PlaceableFactory()
-        + createShip(positions : Cell[])
-        + createImpact(cell : Cell)
-        + createIslandPart(cell : Cell)
-        + createWeaponBomb()
-        + createWeaponMissile()
-        + createWeaponSonar()
-        + createTrapTornado(cell : Cell)
-        + createTrapBlackHole(cell : Cell)
-    }
 
     class Impact implements Placeable {
         - _position : Cell
@@ -508,16 +497,6 @@ Trap ..> PlaceableTypes : "<<uses>>"
 Impact ..> PlaceableTypes : "<<uses>>"
 Ship ..> PlaceableTypes : "<<uses>>"
 IslandPart ..> PlaceableTypes : "<<uses>>"
-
-PlaceableFactory ..> Placeable : "<<uses>>"
-PlaceableFactory ..> Impact : "<<create>>"
-PlaceableFactory ..> IslandPart : "<<create>>"
-PlaceableFactory ..> Ship : "<<create>>"
-PlaceableFactory ..> Bomb : "<<create>>"
-PlaceableFactory ..> Missile : "<<create>>"
-PlaceableFactory ..> Sonar : "<<create>>"
-PlaceableFactory ..> Tornado : "<<create>>"
-PlaceableFactory ..> BlackHole : "<<create>>"
 
 ShipFactory ..> Ship : "<<create>>"
 Ship o--> "1\n- _type" ShipTypes : "> is this type of ship"

@@ -237,17 +237,20 @@ package model #eeaaff{
         + hasThisPosition(cell : Cell) : Boolean
         + getType() : PlaceableTypes
         {abstract} getTrapType() : TrapTypes
+        {abstract} execTrap(attackGrid : Grid, receiveGrid : Grid, cell : Cell, weapon : Weapon) : Boolean
         + setPosition(cell : Cell)
     }
     class Tornado extends Trap {
         +<<create>>Tornado(cell : Cell)
         + Tornado()
         + getTrapType() : TrapTypes
+        + execTrap(attackGrid : Grid, receiveGrid : Grid, cell : Cell, weapon : Weapon) : Boolean
     }
     class BlackHole extends Trap {
         +<<create>>BlackHole(cell : Cell)
         + BlackHole()
         + getTrapType() : TrapTypes
+        + execTrap(attackGrid : Grid, receiveGrid : Grid, cell : Cell, weapon : Weapon) : Boolean
     }
     enum TrapTypes <<enum>>{
         BLACKHOLE

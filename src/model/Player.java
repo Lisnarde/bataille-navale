@@ -61,9 +61,7 @@ public class Player {
         Placeable p = otherPlayer._grid.getObjectByPosition(cell);
         if (p!=null && p.getType() == PlaceableTypes.TRAP) {
             Trap trap = (Trap) p;
-            if (trap.getTrapType()== TrapTypes.BLACKHOLE){
-                return this._grid.shoot(cell, _equippedWeapon);
-            }
+            trap.execTrap(this._grid, otherPlayer._grid, cell, _equippedWeapon);
         }
         return otherPlayer._grid.shoot(cell,_equippedWeapon);
     }

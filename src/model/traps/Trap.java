@@ -1,7 +1,10 @@
 package model.traps;
 
 import model.Cell;
+import model.Grid;
 import model.PlaceableTypes;
+import model.Player;
+import model.weapons.Weapon;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +33,7 @@ public abstract class Trap implements model.Placeable{
     }
 
     public abstract TrapTypes getTrapType();
+    public abstract boolean execTrap(Grid attackGrid, Grid reveiveGrid, Cell cell, Weapon weapon);
 
     public void setPosition(Cell cell) {
         _position = new Cell(cell);

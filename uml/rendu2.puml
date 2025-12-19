@@ -18,23 +18,49 @@ package model #eeaaff{
         - _numberPerShip : Map<ShipTypes, Integer>
         - _players : Player[]
         +<<create>>Game()
+        - notifyObserversNoMoreShip(player : Integer)
+        - notifyObserversTurnNumber()
+        - notifyObserversWeaponFound(player : Integer, weaponType : WeaponTypes)
+        + isIslandModeActivated() : Boolean
         + getTurnNum() : Integer
+        + getPlayerName(player : Integer) : String
         + getTrapInventorySize() : Integer
         + getTrapInIventory(indexTrap : Integer) : Trap
         + setPlayerName(name : String)
-        + setGrid(width : Integer, height : Integer, islandMode : Boolean)
+        + setGrid(size : Integer, islandMode : Boolean)
+        + addGridObserver(observer : GridObserver)
+        + addGameObserver(observer : GameObserver)
         + getGridSize() : Integer
-        + otherPlayer(joueur : Integer) : Integer
+        + otherPlayer(player : Integer) : Integer
         + getMaxShipsPossible() : Integer
-        + setMaxShipsCells(maxShips : Integer) : Boolean
-        + setNumberPerShip(numberPerShip : Integer[*]) : Boolean
-        + placeTrapOnGrid(joueur : Integer, trap : Trap) : Boolean
-        + placeShipOnGrid(joueur : Integer, ship : Ship) : Boolean
-        + placeWeaponOnIsland(joueur : Integer, weapon : Weapon, cell : Cell) : Boolean
-        + shootOnGrid(joueur : Integer, cell : Cell) : Boolean
-        + setWeapon(joueur : Integer, weaponIndex : Integer) : Boolean
+        + setNumberPerShip(numberPerShip : Map<ShipTypes,Integer>) : Boolean
+        + getNumberPerShip() : Map<ShipTypes,Integer>
+        + getNumberMaxOfShip(shipType : ShipTypes) : Integer
+        + placeTrapOnGrid(player : Integer, trap : Trap) : Boolean
+        + placeShipOnGrid(player : Integer, ship : Ship) : Boolean
+        + placeWeaponOnIsland(player : Integer, weapon : Weapon, cell : Cell) : Boolean
+        + shootOnGrid(player : Integer, cell : Cell) : Boolean
+        + getObjectTypeByPosition(player : Integer, posx : Integer, posy : Integer) : PlaceableTypes
+        + getWeaponInventorySize(player : Integer) : Integer
+        + getWeaponNameInInventory(player : Integer, weaponIndex : Integer) : String
+        + setWeapon(player : Integer, weaponIndex : Integer) : Boolean
+        + washGrid(player : Integer)
         + isTheGameFinished() : Boolean
-        + whoWon() : Player
+        + whoWon() : Integer
+        + updateShoot(player : Integer, posx : Integer, posy : Integer, hit : Boolean)
+        + updateTrapActivated(player : Integer, posx : Integer, posy : Integer, trapType : TrapTypes)
+        + updateSearch(player : Integer, posx : Integer, posy : Integer, objectFound : WeaponTypes)
+        + updateShipCellPlaced(player : Integer, posx : Integer, posy : Integer)
+        + updateTrapPlaced(player : Integer, posx : Integer, posy : Integer, trapType : TrapTypes)
+        + updateWeaponPlacedOnIsland(player : Integer, posx : Integer, posy : Integer, weaponType : WeaponTypes)
+        + updateShipCellDrowned(player : Integer, posx : Integer, posy : Integer)
+        + updateNoMoreShips(player : Integer)
+    }
+
+    interface GameObserver <<interface>>{
+        + updateNoMoreShips(player : Integer)
+        + updateTurnNum(turnNum : Integer)
+        + updateWeaponFound(player : Integer, weaponType : WeaponTypes)
     }
 
     enum Axis <<enum>>{
@@ -65,20 +91,30 @@ package model #eeaaff{
     class Grid {
         - _width : Integer
         - _height : Integer
+        - _player : Integer
         - _islandMode : Boolean
         - _maxShipsCells : Integer
-        +<<create>>Grid(width : Integer, height : Integer)
-        +<<create>>Grid(width : Integer, height : Integer, islandMode : Boolean)
+        - _placedObjects : List<Placeable>
+        - _observers : List<GridObserver>
+        +<<create>>Grid(width : Integer, height : Integer, player : Integer)
+        +<<create>>Grid(width : Integer, height : Integer,player : Integer, islandMode : Boolean)
         - constructIsland()
         + addObserver(observer : GridObserver)
         + notifyObserversShoot(posx : Integer, posy : Integer, hit : Boolean)
-        + notifyObserversTrapActivated(posx : Integer, posy : Integer)
-        + notifyObserversSearch(posx : Integer, posy : Integer, objectFound : PlaceableTypes)
+        + notifyObserversTrapActivated(posx : Integer, posy : Integer, trapType : TrapTypes)
+        + notifyObserversSearch(posx : Integer, posy : Integer, objectFound : WeaponTypes)
+        + notifyObserversShipCellPlaced(posx : Integer, posy : Integer)
+        + notifyObserversTrapPlaced(posx : Integer, posy : Integer, trapType : TrapTypes)
+        + notifyObserversWeaponPlaced(posx : Integer, posy : Integer, weaponType : WeaponTypes)
         + notifyObserversShipCellDrowned(posx : Integer, posy : Integer)
+        + notifyObserversNoMoreShip()
         + setMaxShipsCells(maxShipsCells : Integer)
         + isOccupied(cell : Cell) : Boolean
         + isOccupiedBy(cell : Cell, PlaceableTypes type) : Boolean
         + getObjectByPosition(cell : Cell) : Placeable
+        + getNumberOfShipByType(shipType : ShipTypes) : Integer
+        + getNumberOfTrapByType(trapType : TrapTypes) : Integer
+        + getNumberOfWeaponOnIslandByType(weaponType : WeaponTypes) : Integer
         + isInGrid(cell : Cell) : Boolean
         + canPlaceObject(placeable : Placeable) : Boolean
         + placeObject(placeable : Placeable) : Boolean
@@ -86,6 +122,7 @@ package model #eeaaff{
         + shoot(cell : Cell, weapon : Weapon) : Boolean
         + isTheShipDrowned(ship : Ship) : Boolean
         + getIslandObject(cell : Cell) : Placeable
+        + washGrid()
         + placeWeaponOnIsland(weapon : Weapon, cell : Cell) : Boolean
         + allShipsDead() : Boolean
     }

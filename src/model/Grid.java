@@ -11,19 +11,19 @@ import java.util.List;
 public class Grid {
     private int _width;
     private int _height;
-    private int _joueur;
+    private int _player;
     private boolean _islandMode;
     private int _maxShipsCells;
     private List<Placeable> _placedObjects;
     private List<GridObserver> _observers;
 
-    public Grid(int width, int height, int joueur){
-        this(width,height,joueur,false);
+    public Grid(int width, int height, int player){
+        this(width,height,player,false);
     }
-    public Grid(int width, int height, int joueur, boolean islandMode) {
+    public Grid(int width, int height, int player, boolean islandMode) {
         _width = width;
         _height = height;
-        _joueur = joueur;
+        _player = player;
         _maxShipsCells = 0;
         _placedObjects = new ArrayList<>();
         _observers = new ArrayList<>();
@@ -48,42 +48,42 @@ public class Grid {
     }
     public void notifyObserversShoot(int posx, int posy, boolean hit) {
         for (GridObserver observer : _observers) {
-            observer.updateShoot(_joueur, posx, posy, hit);
+            observer.updateShoot(_player, posx, posy, hit);
         }
     }
     public void notifyObserversTrapActivated(int posx, int posy, TrapTypes trapType) {
         for (GridObserver observer : _observers) {
-            observer.updateTrapActivated(_joueur, posx, posy, trapType);
+            observer.updateTrapActivated(_player, posx, posy, trapType);
         }
     }
     public void notifyObserversSearch(int posx, int posy, WeaponTypes objectFound) {
         for (GridObserver observer : _observers) {
-            observer.updateSearch(_joueur, posx, posy, objectFound);
+            observer.updateSearch(_player, posx, posy, objectFound);
         }
     }
     public void notifyObserversShipCellPlaced(int posx, int posy) {
         for (GridObserver observer : _observers) {
-            observer.updateShipCellPlaced(_joueur, posx, posy);
+            observer.updateShipCellPlaced(_player, posx, posy);
         }
     }
     public void notifyObserversTrapPlaced(int posx, int posy, TrapTypes trapType) {
         for (GridObserver observer : _observers) {
-            observer.updateTrapPlaced(_joueur, posx, posy, trapType);
+            observer.updateTrapPlaced(_player, posx, posy, trapType);
         }
     }
     public void notifyObserversWeaponPlaced(int posx, int posy, WeaponTypes weaponType) {
         for (GridObserver observer : _observers) {
-            observer.updateWeaponPlacedOnIsland(_joueur, posx, posy, weaponType);
+            observer.updateWeaponPlacedOnIsland(_player, posx, posy, weaponType);
         }
     }
     public void notifyObserversShipCellDrowned(int posx, int posy){
         for (GridObserver obs : _observers) {
-            obs.updateShipCellDrowned(_joueur, posx, posy);
+            obs.updateShipCellDrowned(_player, posx, posy);
         }
     }
     public void notifyObserversNoMoreShip() {
         for (GridObserver obs : _observers) {
-            obs.updateNoMoreShips(_joueur);
+            obs.updateNoMoreShips(_player);
         }
     }
 

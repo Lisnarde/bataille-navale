@@ -21,9 +21,9 @@ public class Game implements GridObserver{
         _traps = new ArrayList<>( Arrays.asList(TrapTypes.TORNADO, TrapTypes.BLACKHOLE) );
         _globalWeaponInventory = new ArrayList<>();
     }
-    private void notifyObserversNoMoreShip(int joueur) {
+    private void notifyObserversNoMoreShip(int player) {
         for (GameObserver obs : _observers) {
-            obs.updateNoMoreShips(joueur);
+            obs.updateNoMoreShips(player);
         }
         System.out.println("TEST : plus de bateaux game");
     }
@@ -32,9 +32,9 @@ public class Game implements GridObserver{
             obs.updateTurnNumber(_turnNum);
         }
     }
-    private void notifyObserversWeaponFound(int joueur, WeaponTypes weaponType) {
+    private void notifyObserversWeaponFound(int player, WeaponTypes weaponType) {
         for (GameObserver obs : _observers) {
-            obs.updateWeaponFound(joueur, weaponType);
+            obs.updateWeaponFound(player, weaponType);
         }
     }
 
@@ -91,7 +91,7 @@ public class Game implements GridObserver{
     }
 
     public int getGridSize() {return _gridSize;}
-    public int otherPlayer(int joueur) {return (joueur+1)%2;}
+    public int otherPlayer(int player) {return (player+1)%2;}
 
     public int getMaxShipsCellsPossible() {
         int cellNumber = _gridSize*_gridSize;
@@ -122,50 +122,50 @@ public class Game implements GridObserver{
     }
 
 
-    public boolean placeTrapOnGrid(int joueur, Trap trap) {
-        return _players[joueur].placeTrap(trap);
+    public boolean placeTrapOnGrid(int player, Trap trap) {
+        return _players[player].placeTrap(trap);
     }
 
-    public boolean placeShipOnGrid(int joueur, Ship ship) {
-        if (_players[joueur].getNumberOfShipByType(ship.getShipType()) < getNumberMaxOfShip(ship.getShipType())) {
-            return _players[joueur].placeShip(ship);
+    public boolean placeShipOnGrid(int player, Ship ship) {
+        if (_players[player].getNumberOfShipByType(ship.getShipType()) < getNumberMaxOfShip(ship.getShipType())) {
+            return _players[player].placeShip(ship);
         }
         return false;
     }
 
-    public boolean placeWeaponOnIsland(int joueur, Weapon weapon, Cell cell) {
-        return _players[joueur].placeWeaponOnIsland(weapon,cell);
+    public boolean placeWeaponOnIsland(int player, Weapon weapon, Cell cell) {
+        return _players[player].placeWeaponOnIsland(weapon,cell);
     }
 
-    public boolean shootOnGrid(int joueur, Cell cell) {
-        boolean valide = _players[joueur].shoot(_players[otherPlayer(joueur)],cell);
-        if (valide && joueur == 1) {
+    public boolean shootOnGrid(int player, Cell cell) {
+        boolean valide = _players[player].shoot(_players[otherPlayer(player)],cell);
+        if (valide && player == 1) {
             _turnNum++;
             notifyObserversTurnNumber();
         }
         return valide;
     }
 
-    public PlaceableTypes getObjectTypeByPosition(int joueur, int posx, int posy) {
-        Placeable p = _players[joueur].getObjectByPosition(new Cell(posx, posy));
+    public PlaceableTypes getObjectTypeByPosition(int player, int posx, int posy) {
+        Placeable p = _players[player].getObjectByPosition(new Cell(posx, posy));
         if (p != null) {
             return p.getType();
         }
         return null;
     }
 
-    public int getWeaponInventorySize(int joueur) {
-        return _players[joueur].getWeaponInventorySize();
+    public int getWeaponInventorySize(int player) {
+        return _players[player].getWeaponInventorySize();
     }
-    public String getWeaponNameInInventory(int joueur, int weaponIndex) {
-        return _players[joueur].getWeaponInInventory(weaponIndex).getWeaponType().name();
+    public String getWeaponNameInInventory(int player, int weaponIndex) {
+        return _players[player].getWeaponInInventory(weaponIndex).getWeaponType().name();
     }
-    public boolean setWeapon(int joueur, int weaponIndex) {
-        return _players[joueur].setEquippedWeapon(weaponIndex);
+    public boolean setWeapon(int player, int weaponIndex) {
+        return _players[player].setEquippedWeapon(weaponIndex);
     }
 
-    public void washGrid(int joueur) {
-        _players[joueur].washGrid();
+    public void washGrid(int player) {
+        _players[player].washGrid();
     }
 
     public Boolean isTheGameFinished() {
@@ -179,20 +179,20 @@ public class Game implements GridObserver{
     }
 
 
-    @Override public void updateShoot(int joueur, int posx, int posy, boolean hit) {}
-    @Override public void updateTrapActivated(int joueur, int posx, int posy, TrapTypes trapType) {}
-    @Override public void updateSearch(int joueur, int posx, int posy, WeaponTypes objectFound) {
+    @Override public void updateShoot(int player, int posx, int posy, boolean hit) {}
+    @Override public void updateTrapActivated(int player, int posx, int posy, TrapTypes trapType) {}
+    @Override public void updateSearch(int player, int posx, int posy, WeaponTypes objectFound) {
         if (objectFound != null) {
-            notifyObserversWeaponFound(joueur, objectFound);
+            notifyObserversWeaponFound(player, objectFound);
         }
     }
-    @Override public void updateShipCellPlaced(int joueur, int posx, int posy) {}
-    @Override public void updateTrapPlaced(int joueur, int posx, int posy, TrapTypes trapType) {}
+    @Override public void updateShipCellPlaced(int player, int posx, int posy) {}
+    @Override public void updateTrapPlaced(int player, int posx, int posy, TrapTypes trapType) {}
     @Override
-    public void updateWeaponPlacedOnIsland(int joueur, int posx, int posy, WeaponTypes weaponType) {}
-    @Override public void updateShipCellDrowned(int joueur, int posx, int posy) {}
+    public void updateWeaponPlacedOnIsland(int player, int posx, int posy, WeaponTypes weaponType) {}
+    @Override public void updateShipCellDrowned(int player, int posx, int posy) {}
     @Override
-    public void updateNoMoreShips(int joueur) {
-        notifyObserversNoMoreShip(joueur);
+    public void updateNoMoreShips(int player) {
+        notifyObserversNoMoreShip(player);
     }
 }

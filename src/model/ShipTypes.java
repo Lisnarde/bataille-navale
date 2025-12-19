@@ -16,4 +16,14 @@ public enum ShipTypes {
             case Torpedo -> 2;
         };
     }
+    @Override
+    public String toString() {
+        return switch (this) {
+            case AircraftCarrier -> "Porte-avion";
+            case Cruiser -> "Croiseur";
+            case Destroyer -> "Contre-torpilleur";
+            case Submarine -> "Sous-marin";
+            case Torpedo -> "Torpilleur";
+        };
+    }
 }

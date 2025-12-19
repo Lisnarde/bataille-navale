@@ -9,11 +9,14 @@ hide enum methods
 package model #eeaaff{
 
     class Game {
-        - _turnNum : Integer
-        - _gridSize : Integer
-        - _joueur : Integer
-        - _islandMode : Boolean
-        - _numberPerShip : Integer[*]
+        - _observers : List<GameObserver>
+        - _turnNum : int
+        - _gridSize : int
+        - _islandMode : boolean
+        - _traps : List<TrapTypes>
+        - _globalWeaponInventory : List<WeaponTypes>
+        - _numberPerShip : Map<ShipTypes, Integer>
+        - _players : Player[]
         +<<create>>Game()
         + getTurnNum() : Integer
         + getTrapInventorySize() : Integer
@@ -226,10 +229,12 @@ package model #eeaaff{
         - _x : Integer
         - _y : Integer
         + <<create>>Cell(x : Integer, y : Integer)
+        + Cell(cell : Cell)
         + getX() : Integer
         + getY() : Integer
         + setX(x : Integer)
         + setY(y : Integer)
+        + equals(cell : Cell) : Boolean
     }
 
 }

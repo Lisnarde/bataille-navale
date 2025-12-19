@@ -3,7 +3,6 @@ package model;
 import model.traps.*;
 import model.weapons.*;
 
-import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.util.*;
 
 public class Game implements GridObserver{

@@ -26,7 +26,7 @@ public class Cell {
         this._y = y;
     }
 
-    public boolean equals(Cell other) {
-        return getX() == other.getX() && getY() == other.getY();
+    public boolean equals(Cell cell) {
+        return getX() == cell.getX() && getY() == cell.getY();
     }
 }

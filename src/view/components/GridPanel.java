@@ -37,7 +37,7 @@ public class GridPanel extends JPanel implements GridObserver {
 
     private void draw() {
         int gridSize = _model.getGridSize();
-        int maxHeight = 800/gridSize;
+        int maxHeight = 700/gridSize;
 
         // +1 pour ajouter la ligne et colonne des labels
         setLayout(new GridLayout(gridSize + 1, gridSize + 1));

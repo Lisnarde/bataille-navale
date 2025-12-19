@@ -36,6 +36,8 @@ package model #eeaaff{
         + setNumberPerShip(numberPerShip : Map<ShipTypes,Integer>) : Boolean
         + getNumberPerShip() : Map<ShipTypes,Integer>
         + getNumberMaxOfShip(shipType : ShipTypes) : Integer
+        + isAllTheShipsAndTrapsPlaced(player : Integer) : Boolean
+        + isAllTheWeaponsPLaced(player : Integer) : Boolean
         + placeTrapOnGrid(player : Integer, trap : Trap) : Boolean
         + placeShipOnGrid(player : Integer, ship : Ship) : Boolean
         + placeWeaponOnIsland(player : Integer, weapon : Weapon, cell : Cell) : Boolean
@@ -91,6 +93,8 @@ package model #eeaaff{
         + setMaxShipsCells(maxShipsCells : Integer)
         + getObjectByPosition(cell : Cell) : Placeable
         + getNumberOfShipByType(shipType : ShipTypes) : Integer
+        + getNumberOfTrapsByType(trapType : TrapTypes) : Integer
+        + getNumberOfWeaponsOnIslandByType(weaponType : WeaponTypes) : Integer
         + placeShip(ship : Ship) : Boolean
         + placeTrap(trap : Trap) : Boolean
         + placeWeaponOnIsland(weapon : Weapon, cell : Cell) : Boolean
@@ -215,6 +219,7 @@ package model #eeaaff{
         Submarine
         Torpedo
         + getSize() : Integer
+        + toString() : String
     }
 
     package traps #ff4040 {
@@ -244,6 +249,7 @@ package model #eeaaff{
     enum TrapTypes <<enum>>{
         BLACKHOLE
         TORNADO
+        + toString() : String
     }
     }
 
@@ -280,6 +286,7 @@ package model #eeaaff{
             ISLANDSEARCH
             BOMB
             SONAR
+            + toString() : String
         }
     }
 

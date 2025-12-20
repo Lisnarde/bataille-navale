@@ -16,6 +16,8 @@ public class Player {
 
     private List<Weapon> _weaponInventory;
     private List<WeaponTypes> _usedWeapons = new ArrayList<>();
+    private List<TrapTypes> _activatedTraps = new ArrayList<>();
+    private List<WeaponTypes> _foundWeapons = new ArrayList<>();
 
     public Player(String name) {
         _name = name;
@@ -115,4 +117,19 @@ public class Player {
                 .toList();
     }
 
+    public void addActivatedTrap(TrapTypes type) {
+        _activatedTraps.add(type);
+    }
+
+    public List<TrapTypes> getActivatedTraps() {
+        return _activatedTraps;
+    }
+
+    public void addFoundWeapon(WeaponTypes type) {
+        _foundWeapons.add(type);
+    }
+
+    public List<WeaponTypes> getFoundWeapons() {
+        return _foundWeapons;
+    }
 }

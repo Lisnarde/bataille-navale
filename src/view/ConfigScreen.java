@@ -497,22 +497,38 @@ public class ConfigScreen extends JPanel {
         {
             _minusAircraftCarrier.setEnabled(false);
         }
+        else{
+            _minusAircraftCarrier.setEnabled(true);
+        }
         if (Integer.parseInt(_labelNumCruiser.getText())==1)
         {
             _minusCruiser.setEnabled(false);
+        }
+        else{
+            _minusCruiser.setEnabled(true);
         }
         if (Integer.parseInt(_labelNumDestroyer.getText())==1)
         {
             _minusDestroyer.setEnabled(false);
         }
+        else{
+            _minusDestroyer.setEnabled(true);
+        }
         if (Integer.parseInt(_labelNumSubmarine.getText())==1)
         {
             _minusSubmarine.setEnabled(false);
+        }
+        else{
+            _minusSubmarine.setEnabled(true);
         }
         if (Integer.parseInt(_labelNumTorpedo.getText())==1)
         {
             _minusTorpedo.setEnabled(false);
         }
+        else{
+            _minusTorpedo.setEnabled(true);
+        }
+
         int aircraft = Integer.parseInt(_labelNumAircraftCarrier.getText()) * 5;
         int cruiser = Integer.parseInt(_labelNumCruiser.getText()) * 4;
         int destroyer = Integer.parseInt(_labelNumDestroyer.getText()) * 3;

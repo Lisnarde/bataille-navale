@@ -57,7 +57,6 @@ public class SmartBot implements Bot, GridObserver {
             if (hit) {
                 _hunting = true;
                 addAdjacentTargets(x, y);
-                System.out.println("BOT J'AI TIRÉ LA " + x + " " + y + " " + hit);
             }
         }
     }
@@ -89,7 +88,6 @@ public class SmartBot implements Bot, GridObserver {
                 && !_shotsDone.contains(c)
                 && !_targets.contains(c)) {
             _targets.add(c);
-            System.out.println("Je testerai "+x+" "+y);
         }
     }
 

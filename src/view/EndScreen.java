@@ -51,8 +51,14 @@ public class EndScreen extends JPanel implements ViewPanel{
             playerPanel.add(title,BorderLayout.NORTH);
 
             // Panel des infos
-            InfosPanel infosPanel = new InfosPanel(_theme, 0, 0,0,null,null,null,null);
+            InfosPanel infosPanel = new InfosPanel(_theme, player, _model);
             playerPanel.add(infosPanel,BorderLayout.CENTER);
+            if (player == winner){
+                infosPanel.setBackground(new Color(215, 220, 128));
+            }
+            else {
+                infosPanel.setBackground(new Color(195, 77, 77));
+            }
 
         }
 

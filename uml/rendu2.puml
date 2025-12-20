@@ -47,7 +47,19 @@ package model #eeaaff{
         + washGrid(player : Integer)
         + isTheGameFinished() : Boolean
         + whoWon() : Integer
-        + getPlayer(index : Integer) : Player
+        + getIntactShipsCount(player : Integer) : Integer
+        + getHitShipsCount(player : Integer) : Integer
+        + getDrownedShipsCount(player : Integer) : Integer
+        + getShotsInWater(player : Integer) : Integer
+        + getRemainingShipCells(player : Integer) : Integer
+        + getRemainingIslandCells(player : Integer) : Integer
+        + getUsedWeapons(player : Integer) : WeaponTypes[]
+        + getWeaponInventory(player : Integer) : WeaponTypes[]
+        + addFoundWeapon(type : WeaponTypes, player : Integer)
+        + getActivatedTraps(player : Integer) : TrapTypes[]
+        + addActivatedTrap(type : TrapTypes, player : Integer)
+        + getFoundWeapons(player : Integer) : WeaponTypes[]
+        + getWeaponNotFound(player : Integer) : WeaponTypes[]
         + updateShoot(player : Integer, posx : Integer, posy : Integer, hit : Boolean)
         + updateTrapActivated(player : Integer, posx : Integer, posy : Integer, trapType : TrapTypes)
         + updateSearch(player : Integer, posx : Integer, posy : Integer, objectFound : WeaponTypes)
@@ -102,6 +114,10 @@ package model #eeaaff{
         + getRemainingIslandCells() : Integer
         + getUsedWeapons() : WeaponTypes[]
         + getWeaponInventory() : WeaponTypes[]
+        + addActivatedTrap(type : TrapTypes)
+        + getActivatedTraps() : TrapTypes[]
+        + addFoundWeapon(type : TrapTypes)
+        + getFoundWeapons() : WeaponTypes[]
     }
 
     class Grid {
@@ -540,6 +556,10 @@ Player o-> "1\n- _grid" Grid : "> has for grid"
 Player *-> "*\n- _weaponInventory" Weapon : "> can use theses weapons"
 Player *-> "1\n- _equippedWeapon" Weapon : "> has this strategy of attack"
 Player *-> "*\n - _usedWeapons" WeaponTypes : "> used theses weapons"
+Player *-> "*\n - _activatedTraps" TrapTypes : "> activated those traps"
+Player *-> "*\n - _foundWeapons" WeaponTypes : "> found those weapons"
+
+
 
 Game o-> "*\n- _observers" GameObserver : "> is observable by"
 Game *-> "2\n- _players" Player : "> has 2 players"

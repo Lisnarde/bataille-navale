@@ -105,29 +105,29 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver, GridO
         _lblPlayerLastAction = createInfoLabel("Dernière action jouée : aucune");
         panelInfosPlayer.add(_lblPlayerLastAction);
 
-        _lblPlayerIntact = createInfoLabel("Bateaux intacts : " + _model.getPlayer(0).getIntactShipsCount());
+        _lblPlayerIntact = createInfoLabel("Bateaux intacts : " + _model.getIntactShipsCount(0));
         panelInfosPlayer.add(_lblPlayerIntact);
 
-        _lblPlayerHit = createInfoLabel("Bateaux touchés : " + _model.getPlayer(0).getHitShipsCount());
+        _lblPlayerHit = createInfoLabel("Bateaux touchés : " + _model.getHitShipsCount(0));
         panelInfosPlayer.add(_lblPlayerHit);
 
-        _lblPlayerDrowned = createInfoLabel("Bateaux coulés : " + _model.getPlayer(0).getDrownedShipsCount());
+        _lblPlayerDrowned = createInfoLabel("Bateaux coulés : " + _model.getDrownedShipsCount(0));
         panelInfosPlayer.add(_lblPlayerDrowned);
 
-        _lblPlayerShotsWater = createInfoLabel("Tirs dans l'eau : " + _model.getPlayer(1).getShotsInWater());
+        _lblPlayerShotsWater = createInfoLabel("Tirs dans l'eau : " + _model.getShotsInWater(1));
         panelInfosPlayer.add(_lblPlayerShotsWater);
 
-        _lblPlayerRemainingCells = createInfoLabel("Cases restantes à toucher : " + _model.getPlayer(1).getRemainingShipCells());
+        _lblPlayerRemainingCells = createInfoLabel("Cases restantes à toucher : " + _model.getRemainingShipCells(1));
         panelInfosPlayer.add(_lblPlayerRemainingCells);
 
-        _lblPlayerWeapons = createInfoLabel("Armes disponibles : " + _model.getPlayer(0).getWeaponInventory());
+        _lblPlayerWeapons = createInfoLabel("Armes disponibles : " + _model.getWeaponInventory(0));
         panelInfosPlayer.add(_lblPlayerWeapons);
 
-        _lblPlayerUsedWeapons = createInfoLabel("Armes utilisées : " + _model.getPlayer(0).getUsedWeapons());
+        _lblPlayerUsedWeapons = createInfoLabel("Armes utilisées : " + _model.getUsedWeapons(0));
         panelInfosPlayer.add(_lblPlayerUsedWeapons);
 
         if (_model.isIslandModeActivated()) {
-            _lblPlayerIslandCells = createInfoLabel("Cases d'île restantes : " + _model.getPlayer(0).getRemainingIslandCells());
+            _lblPlayerIslandCells = createInfoLabel("Cases d'île restantes : " + _model.getRemainingIslandCells(0));
             panelInfosPlayer.add(_lblPlayerIslandCells);
         }
 
@@ -149,29 +149,29 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver, GridO
         _lblBotLastAction = createInfoLabel("Dernière action jouée : aucune");
         panelInfosBot.add(_lblBotLastAction);
 
-        _lblBotIntact = createInfoLabel("Bateaux intacts : " + _model.getPlayer(1).getIntactShipsCount());
+        _lblBotIntact = createInfoLabel("Bateaux intacts : " + _model.getIntactShipsCount(1));
         panelInfosBot.add(_lblBotIntact);
 
-        _lblBotHit = createInfoLabel("Bateaux touchés : " + _model.getPlayer(1).getHitShipsCount());
+        _lblBotHit = createInfoLabel("Bateaux touchés : " + _model.getHitShipsCount(1));
         panelInfosBot.add(_lblBotHit);
 
-        _lblBotDrowned = createInfoLabel("Bateaux coulés : " + _model.getPlayer(1).getDrownedShipsCount());
+        _lblBotDrowned = createInfoLabel("Bateaux coulés : " + _model.getDrownedShipsCount(1));
         panelInfosBot.add(_lblBotDrowned);
 
-        _lblBotShotsWater = createInfoLabel("Tirs dans l'eau : " + _model.getPlayer(0).getShotsInWater());
+        _lblBotShotsWater = createInfoLabel("Tirs dans l'eau : " + _model.getShotsInWater(0));
         panelInfosBot.add(_lblBotShotsWater);
 
-        _lblBotRemainingCells = createInfoLabel("Cases restantes à toucher : " + _model.getPlayer(0).getRemainingShipCells());
+        _lblBotRemainingCells = createInfoLabel("Cases restantes à toucher : " + _model.getRemainingShipCells(0));
         panelInfosBot.add(_lblBotRemainingCells);
 
-        _lblBotWeapons = createInfoLabel("Armes disponibles : " + _model.getPlayer(1).getWeaponInventory());
+        _lblBotWeapons = createInfoLabel("Armes disponibles : " + _model.getWeaponInventory(1));
         panelInfosBot.add(_lblBotWeapons);
 
-        _lblBotUsedWeapons = createInfoLabel("Armes utilisées : " + _model.getPlayer(1).getUsedWeapons());
+        _lblBotUsedWeapons = createInfoLabel("Armes utilisées : " + _model.getUsedWeapons(1));
         panelInfosBot.add(_lblBotUsedWeapons);
 
         if (_model.isIslandModeActivated()) {
-            _lblBotIslandCells = createInfoLabel("Cases d'île restantes : " + _model.getPlayer(1).getRemainingIslandCells());
+            _lblBotIslandCells = createInfoLabel("Cases d'île restantes : " + _model.getRemainingIslandCells(1));
             panelInfosBot.add(_lblBotIslandCells);
         }
 
@@ -234,24 +234,24 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver, GridO
     }
 
     private void refreshInfos() {
-        _lblPlayerIntact.setText("Bateaux intacts : " + _model.getPlayer(0).getIntactShipsCount());
-        _lblPlayerHit.setText("Bateaux touchés : " + _model.getPlayer(0).getHitShipsCount());
-        _lblPlayerDrowned.setText("Bateaux coulés : " + _model.getPlayer(0).getDrownedShipsCount());
-        _lblPlayerShotsWater.setText("Tirs dans l'eau : " + _model.getPlayer(1).getShotsInWater());
-        _lblPlayerRemainingCells.setText("Cases restantes à toucher : " + _model.getPlayer(1).getRemainingShipCells());
-        _lblPlayerWeapons.setText("Armes disponibles : " + _model.getPlayer(0).getWeaponInventory());
-        _lblPlayerUsedWeapons.setText("Armes utilisées : " + _model.getPlayer(0).getUsedWeapons());
+        _lblPlayerIntact.setText("Bateaux intacts : " + _model.getIntactShipsCount(0));
+        _lblPlayerHit.setText("Bateaux touchés : " + _model.getHitShipsCount(0));
+        _lblPlayerDrowned.setText("Bateaux coulés : " + _model.getDrownedShipsCount(0));
+        _lblPlayerShotsWater.setText("Tirs dans l'eau : " + _model.getShotsInWater(1));
+        _lblPlayerRemainingCells.setText("Cases restantes à toucher : " + _model.getRemainingShipCells(1));
+        _lblPlayerWeapons.setText("Armes disponibles : " + _model.getWeaponInventory(0));
+        _lblPlayerUsedWeapons.setText("Armes utilisées : " + _model.getUsedWeapons(0));
 
-        _lblBotIntact.setText("Bateaux intacts : " + _model.getPlayer(1).getIntactShipsCount());
-        _lblBotHit.setText("Bateaux touchés : " + _model.getPlayer(1).getHitShipsCount());
-        _lblBotDrowned.setText("Bateaux coulés : " + _model.getPlayer(1).getDrownedShipsCount());
-        _lblBotShotsWater.setText("Tirs dans l'eau : " + _model.getPlayer(0).getShotsInWater());
-        _lblBotRemainingCells.setText("Cases restantes à toucher : " + _model.getPlayer(0).getRemainingShipCells());
-        _lblBotWeapons.setText("Armes disponibles : " + _model.getPlayer(1).getWeaponInventory());
-        _lblBotUsedWeapons.setText("Armes utilisées : " + _model.getPlayer(1).getUsedWeapons());
+        _lblBotIntact.setText("Bateaux intacts : " + _model.getIntactShipsCount(1));
+        _lblBotHit.setText("Bateaux touchés : " + _model.getHitShipsCount(1));
+        _lblBotDrowned.setText("Bateaux coulés : " + _model.getDrownedShipsCount(1));
+        _lblBotShotsWater.setText("Tirs dans l'eau : " + _model.getShotsInWater(0));
+        _lblBotRemainingCells.setText("Cases restantes à toucher : " + _model.getRemainingShipCells(0));
+        _lblBotWeapons.setText("Armes disponibles : " + _model.getWeaponInventory(1));
+        _lblBotUsedWeapons.setText("Armes utilisées : " + _model.getUsedWeapons(1));
         if (_model.isIslandModeActivated()) {
-            _lblPlayerIslandCells.setText("Cases d'île restantes à fouiller : " + _model.getPlayer(1).getRemainingIslandCells());
-            _lblBotIslandCells.setText("Cases d'île restantes à fouiller : " + _model.getPlayer(0).getRemainingIslandCells());
+            _lblPlayerIslandCells.setText("Cases d'île restantes à fouiller : " + _model.getRemainingIslandCells(1));
+            _lblBotIslandCells.setText("Cases d'île restantes à fouiller : " + _model.getRemainingIslandCells(0));
         }
 
     }
@@ -273,6 +273,8 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver, GridO
         else
             _lblBotLastAction.setText("Dernière action jouée : piège "+trapType+" activé");
         refreshInfos();
+        _model.addActivatedTrap(trapType, player);
+
     }
 
     @Override
@@ -282,6 +284,9 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver, GridO
         else
             _lblBotLastAction.setText("Dernière action jouée : recherche → " + objectFound);
         refreshInfos();
+        if (objectFound != null)
+            _model.addFoundWeapon(objectFound, player);
+
     }
 
     @Override

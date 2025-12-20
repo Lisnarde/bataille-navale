@@ -209,10 +209,37 @@ public class Game implements GridObserver{
         }
         return -1;
     }
-    public Player getPlayer(int index) {
-        return _players[index];
+
+    public int getIntactShipsCount(int player) { return _players[player].getIntactShipsCount(); }
+    public int getHitShipsCount(int player) { return _players[player].getHitShipsCount(); }
+    public int getDrownedShipsCount(int player) { return _players[player].getDrownedShipsCount(); }
+    public int getShotsInWater(int player) { return _players[player].getShotsInWater(); }
+    public int getRemainingShipCells(int player) { return _players[player].getRemainingShipCells(); }
+    public int getRemainingIslandCells(int player) { return _players[player].getRemainingIslandCells(); }
+    public List<WeaponTypes> getUsedWeapons(int player) {
+        return _players[player].getUsedWeapons();
+    }
+    public List<WeaponTypes> getWeaponInventory(int player) {
+        return _players[player].getWeaponInventory();
+    }
+    public void addFoundWeapon(WeaponTypes type, int player) {
+        _players[player].addFoundWeapon(type);
+    }
+    public List<TrapTypes> getActivatedTraps(int player) {
+        return _players[player].getActivatedTraps();
+    }
+    public void addActivatedTrap(TrapTypes type, int player) {
+        _players[player].addActivatedTrap(type);
+    }
+    public List<WeaponTypes> getFoundWeapons(int player) {
+        return _players[player].getFoundWeapons();
     }
 
+    public List<WeaponTypes> getWeaponNotFound(int player){
+        List<WeaponTypes> notFound = new ArrayList<>(_globalWeaponInventory);
+        notFound.removeAll(getFoundWeapons(player));
+        return notFound;
+    }
 
     @Override public void updateShoot(int player, int posx, int posy, boolean hit) {}
     @Override public void updateTrapActivated(int player, int posx, int posy, TrapTypes trapType) {}

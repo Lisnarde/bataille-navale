@@ -3,8 +3,9 @@ skinparam style strictuml
 skinparam classAttributeIconSize 0
 skinparam classFontStyle Bold
 skinparam linetype ortho
-hide enum methods
-
+skinparam backgroundColor white
+skinparam classBorderColor black
+skinparam classBackgroundColor #FFFFF0
 
 package model #eeaaff{
 
@@ -517,7 +518,6 @@ Impact .> PlaceableTypes : "<<uses>>"
 Ship .> PlaceableTypes : "<<uses>>"
 IslandPart .> PlaceableTypes : "<<uses>>"
 
-ShipFactory .> Ship : "<<create>>"
 Ship o-> "1\n- _type" ShipTypes : "> is this type of ship"
 
 Ship o-> "*\n- _positions" Cell : "> has for coordinates"

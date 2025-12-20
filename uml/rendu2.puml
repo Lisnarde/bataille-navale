@@ -9,7 +9,6 @@ hide enum methods
 package model #eeaaff{
 
     class Game {
-        - _observers : List<GameObserver>
         - _turnNum : int
         - _gridSize : int
         - _islandMode : boolean
@@ -73,7 +72,6 @@ package model #eeaaff{
 
     class Player {
         - _name : String
-        - _usedWeapons : WeaponTypes[*]
         +<<create>>Player(name : String)
         + getName() : String
         + setGrid(grid : Grid)
@@ -390,12 +388,7 @@ package view #99ff99 {
             + setText(text : String)
         }
         class GridPanel <<extends JPanel>> implements model.GridObserver {
-            - _model : Game
-            - _controller : GameController
-            - _mode : GridMode
             - _grid : JButton[][]
-            - _axis : Axis
-            - _shipType : ShipTypes
             - _trapIndex : Integer
             - _weaponIndex : Integer
             +<<create>>GridPanel(model : Game, controller : GameController, mode : GridMode)
@@ -421,25 +414,17 @@ package view #99ff99 {
             RECEIVE
         }
         class InfosPanel <<extends JPanel>>{
-            +<<create>>InfosPanel(theme: Theme, shootNumber: int, shootInWater: int, shipsDrowned: int, weaponsUsed: List<WeaponTypes>, trapsActivated: List<TrapTypes>, weaponsFound: List<WeaponTypes>, weaponsNotFound: List<WeaponTypes>)
+            +<<create>>InfosPanel(theme: Theme, shootNumber: int, shootInWater: int, shipsDrowned: int, weaponsUsed: WeaponTypes[], trapsActivated: TrapTypes[], weaponsFound: WeaponTypes[], weaponsNotFound: WeaponTypes[])
         }
     }
 
     class GraphicalView <<extends JFrame>>{
-        - _controller : GameController
-        - _model : Game
-        - _navigationController : NavigationController
-        - _theme : Theme
         - _cardLayout : CardLayout
         - _mainPanel : JPanel
         +<<create>>GraphicalView(controller : GameController, model : Game)
     }
 
     class ConfigScreen <<extends JPanel>> {
-        - _controller : GameController
-        - _model : Game
-        - _navigationController : NavigationController
-        - _theme : Theme
         - _leftPanel : JPanel
         - _rightPanel : JPanel
         - _pseudoField : JTextField
@@ -470,43 +455,31 @@ package view #99ff99 {
         - updateUsedCelles()
     }
      class PlacementScreen <<extends JPanel>>{
-        - _controller : GameController
-        - _model : Game
-        - _navigationController : NavigationController
-        - _theme : Theme
-        - _gridPanel : GridPanel
         +<<create>>PlacementScreen(controller : GameController, model : Game, navigationController : NavigationController, theme : Theme)
         + onShow()
         - randomGeneration()
         - validation()
      }
     class GameScreen <<extends JPanel>>{
-        - _controller : GameController
-        - _model : Game
-        - _navigationController : NavigationController
-        - _theme : Theme
-        - _gridPanelAttack : GridPanel
-        - _gridPanelReceive : GridPanel
-        - _title : TitleBanner
         - _panelArmes : JPanel
-        - _lblPlayerLastAction
-        - _lblPlayerIntact
-        - _lblPlayerHit
-        - _lblPlayerDrowned
-        - _lblPlayerShotsWater
-        - _lblPlayerRemainingCells
-        - _lblPlayerWeapons
-        - _lblPlayerUsedWeapons
-        - _lblPlayerIslandCells
-        - _lblBotLastAction
-        - _lblBotIntact
-        - _lblBotHit
-        - _lblBotDrowned
-        - _lblBotShotsWater
-        - _lblBotRemainingCells
-        - _lblBotWeapons
-        - _lblBotUsedWeapons
-        - _lblBotIslandCells
+        - _lblPlayerLastAction : JLabel
+        - _lblPlayerIntact : JLabel
+        - _lblPlayerHit : JLabel
+        - _lblPlayerDrowned : JLabel
+        - _lblPlayerShotsWater : JLabel
+        - _lblPlayerRemainingCells : JLabel
+        - _lblPlayerWeapons : JLabel
+        - _lblPlayerUsedWeapons : JLabel
+        - _lblPlayerIslandCells : JLabel
+        - _lblBotLastAction : JLabel
+        - _lblBotIntact : JLabel
+        - _lblBotHit : JLabel
+        - _lblBotDrowned : JLabel
+        - _lblBotShotsWater : JLabel
+        - _lblBotRemainingCells : JLabel
+        - _lblBotWeapons : JLabel
+        - _lblBotUsedWeapons : JLabel
+        - _lblBotIslandCells : JLabel
         +<<create>>GameScreen(controller : GameController, model : Game, navigationController : NavigationController, theme : Theme)
         + onShow()
         + setPlayerShipsGrid(gridPanel : GridPanel)
@@ -529,10 +502,6 @@ package view #99ff99 {
         + updateWeaponRemoved(player : Integer, weaponType : WeaponTypes)
     }
     class EndScreen <<extends JPanel>>{
-        - _controller : GameController
-        - _model : Game
-        - _navigationController : NavigationController
-        - _theme : Theme
         +<<create>>EndScreen(controller : GameController, model : Game, navigationController : NavigationController, theme : Theme)
         + onShow()
     }
@@ -562,9 +531,11 @@ Grid o--> "*\n- _placedObjects" Placeable : "> contains"
 Grid o--> "*\n- _observers" GridObserver : > notify
 
 Player o--> "1\n- _grid" Grid : "> has for grid"
-Player o--> "*\n- _weaponInventory" Weapon : "> can use theses weapons"
-Player o--> "1\n- _equippedWeapon" Weapon : "> has this strategy of attack"
+Player *--> "*\n- _weaponInventory" Weapon : "> can use theses weapons"
+Player *--> "1\n- _equippedWeapon" Weapon : "> has this strategy of attack"
+Player *--> "*\n - _usedWeapons" WeaponTypes : "> used theses weapons"
 
+Game o--> "*\n- _observers" GameObserver : "> is observable by"
 Game *--> "2\n- _players" Player : "> has 2 players"
 Game *--> "*\n- _traps" TrapTypes : "> knows which traps can be placed"
 Game *--> "*\n- _globalWeaponInventory" WeaponTypes : "> knows which weapons can be placed"
@@ -574,6 +545,12 @@ SmartBot o--> "*\n- _targets" Cell : "> keeps cells to shoot later in a stack"
 
 GameController o--> "1\n- _model" Game : "> Manipulate"
 GameController o--> "1\n- _bot" Bot : "> has for bot"
+
+GridPanel o--> "1\n- _model" Game : "> Consult"
+GridPanel o--> "1\n- _controller" GameController : "> Transmit user's demands"
+GridPanel o--> "1\n- _mode" GridMode : "> config as this mode"
+GridPanel o--> "1\n- _axis" Axis : "> will place objects with this axis"
+GridPanel o--> "1\n- _shipType" ShipTypes : "> will place this ship"
 
 GraphicalView o--> "1\n- _model" Game : "> Consult"
 GraphicalView o--> "1\n- _controller" GameController : "> Transmit user's demands"
@@ -585,14 +562,30 @@ GraphicalView ..> PlacementScreen : "<< create >>"
 GraphicalView ..> GameScreen : "<< create >>"
 GraphicalView ..> EndScreen : "<< create >>"
 
-ConfigScreen *--> "1\n- _titleBanner" TitleBanner : "<< create >>"
-GameScreen *--> "1\n- _titleBanner" TitleBanner : "<< create >>"
-EndScreen *--> "1\n- _titleBanner" TitleBanner : "<< create >>"
+ConfigScreen ..> "1\n- _titleBanner" TitleBanner : "<< create >>"
+PlacementScreen ..> "1\n- _titleBanner" TitleBanner : "<< create >>"
+GameScreen ..> "1\n- _titleBanner" TitleBanner : "<< create >>"
+EndScreen ..> TitleBanner : "<< create >>"
 
+PlacementScreen o--> "1\n- _model" Game : "> Consult"
+PlacementScreen o--> "1\n- _controller" GameController : "> Transmit user's demands"
+PlacementScreen *--> "1\n- _controller" NavigationController : "> can select the view with"
+PlacementScreen *--> "1\n- _theme" Theme : "> apply this theme"
 PlacementScreen *--> "1\n- _grid" GridPanel : "> display 1 grid"
 
-GameScreen *--> "2\n- _grids" GridPanel : "> display 2 grids"
-GameScreen *--> "1\n- _infos" InfosPanel : "> display infos"
+GameScreen o--> "1\n- _model" Game : "> Consult"
+GameScreen o--> "1\n- _controller" GameController : "> Transmit user's demands"
+GameScreen *--> "1\n- _controller" NavigationController : "> can select the view with"
+GameScreen *--> "1\n- _theme" Theme : "> apply this theme"
+GameScreen *--> "1\n- _gridPanelAttack" GridPanel : "> display attack grid"
+GameScreen *--> "1\n- _gridPanelReceive" GridPanel : "> display receive grid"
+GameScreen *--> "1\n- _title" TitleBanner : "> display a title"
+
+EndScreen o--> "1\n- _model" Game : "> Consult"
+EndScreen o--> "1\n- _controller" GameController : "> Transmit user's demands"
+EndScreen *--> "1\n- _controller" NavigationController : "> can select the view with"
+EndScreen *--> "1\n- _theme" Theme : "> apply this theme"
+EndScreen ..> InfosPanel : "<< create >>"
 
 
 Main ..> Game : "<<uses>>"

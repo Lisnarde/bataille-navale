@@ -13,10 +13,7 @@ package model #eeaaff{
         - _turnNum : int
         - _gridSize : int
         - _islandMode : boolean
-        - _traps : List<TrapTypes>
-        - _globalWeaponInventory : List<WeaponTypes>
-        - _numberPerShip : Map<ShipTypes, Integer>
-        - _players : Player[]
+        - _numberPerShip : Integer[]
         +<<create>>Game()
         - notifyObserversNoMoreShip(player : Integer)
         - notifyObserversTurnNumber()
@@ -34,8 +31,8 @@ package model #eeaaff{
         + getGridSize() : Integer
         + otherPlayer(player : Integer) : Integer
         + getMaxShipsPossible() : Integer
-        + setNumberPerShip(numberPerShip : Map<ShipTypes,Integer>) : Boolean
-        + getNumberPerShip() : Map<ShipTypes,Integer>
+        + setNumberPerShip(numberPerShip : Integer[]) : Boolean
+        + getNumberPerShip() : Integer[]
         + getNumberMaxOfShip(shipType : ShipTypes) : Integer
         + isAllTheShipsAndTrapsPlaced(player : Integer) : Boolean
         + isAllTheWeaponsPLaced(player : Integer) : Boolean
@@ -86,9 +83,6 @@ package model #eeaaff{
 
     class Player {
         - _name : String
-        - _grid : Grid
-        - _equippedWeapon :  Weapon
-        - _weaponInventory : List<Weapon>
         +<<create>>Player(name : String)
         + getName() : String
         + setGrid(grid : Grid)
@@ -117,8 +111,8 @@ package model #eeaaff{
         + getHitCellsCount() : Integer
         + getRemainingShipCells() : Integer
         + getRemainingIslandCells() : Integer
-        + getUsedWeapons() : List<WeaponTypes>
-        + getWeaponInventory() : List<WeaponTypes>
+        + getUsedWeapons() : WeaponTypes[]
+        + getWeaponInventory() : WeaponTypes[]
     }
 
     class Grid {
@@ -127,8 +121,6 @@ package model #eeaaff{
         - _player : Integer
         - _islandMode : Boolean
         - _maxShipsCells : Integer
-        - _placedObjects : List<Placeable>
-        - _observers : List<GridObserver>
         +<<create>>Grid(width : Integer, height : Integer, player : Integer)
         +<<create>>Grid(width : Integer, height : Integer,player : Integer, islandMode : Boolean)
         - constructIsland()
@@ -187,7 +179,6 @@ package model #eeaaff{
     }
 
     class Impact implements Placeable {
-        - _position : Cell
         +<<create>>Impact(cell : Cell)
         + getSize() : Integer
         + getCell(index : Integer) : Cell
@@ -196,8 +187,6 @@ package model #eeaaff{
     }
 
     class IslandPart implements Placeable{
-        - _position : Cell
-        - _placedObjects : Placeable
         + <<create>>Island(cell : Cell)
         + getSize() : Integer
         + getCell(index : Integer) : Cell
@@ -209,9 +198,7 @@ package model #eeaaff{
     }
 
     class Ship implements Placeable {
-        - _positions : List<Cell>
-        - _shipType : ShipTypes
-        + <<create>>Ship(shipType : ShipTypes, cells : List<Cell>)
+        + <<create>>Ship(shipType : ShipTypes, cells : Cell[])
         + getSize() : Integer
         + getCell(index : Integer) : Cell
         + hasThisPosition(cell : Cell) : Boolean
@@ -230,7 +217,6 @@ package model #eeaaff{
 
     package traps #ff4040 {
     abstract Trap <<abstract>> implements model.Placeable {
-        - _position : Cell
         +<<create>>Trap(cell : Cell)
         + getSize() : Integer
         + getCell(index : Integer) : Cell
@@ -313,14 +299,14 @@ package model #eeaaff{
 package controller #6999ff {
     package bots #88bbff {
     interface Bot <<interface>>{
-        + placeShips(player : Integer, model : Game, controller : GameController, numberPerShip: Map<ShipTypes, Integer>)
+        + placeShips(player : Integer, model : Game, controller : GameController, numberPerShip: Integer[])
         + shoot(player : Integer, model : Game, controller : GameController)
     }
 
     class RandomBot implements Bot{
         - _random : Random
         + <<create>>RandomBot()
-        + placeShips(player: int, model: Game, controller: GameController, numberPerShip: Map<ShipTypes, Integer>)
+        + placeShips(player: int, model: Game, controller: GameController, numberPerShip: Integer[])
         + shoot(player: int, model: Game, controller: GameController)
     }
 
@@ -329,7 +315,7 @@ package controller #6999ff {
         - _gridSize : Integer
         - _hunting : Boolean
         +<<create>>SmartBot()
-        + placeShips(player: int, model: Game, controller: GameController, numberPerShip: Map<ShipTypes, Integer>)
+        + placeShips(player: int, model: Game, controller: GameController, numberPerShip: Integer[])
         + shoot(player: int, model: Game, controller: GameController)
         + updateShoot(player : Integer, posx : Integer, posy : Integer, hit : Boolean)
         - addAdjacentTargets(x : Integer, y : Integer)
@@ -349,12 +335,10 @@ package controller #6999ff {
 
     }
     class GameController {
-        - _model : Game
-        - _bot : Bot
         + <<create>>GameController(model : Game, bot : Bot)
         + setPlayerName(name : String)
         + setGrid(size : Integer, islandMode : Boolean)
-        + setNumberPerShip(numberPerShip : Map<ShipTypes, Integer>) : Boolean
+        + setNumberPerShip(numberPerShip : Integer[]) : Boolean
         + botPlaceObjects(player: Integer)
         + placeTrapOnGrid(player : Integer, indexTrap : Integer, posx : Integer, posy : Integer) : Boolean
         + placeShipOnGrid(player : Integer, type : ShipTypes, posx : Integer, posy : Integer, axis : Axis) : Boolean
@@ -367,7 +351,7 @@ package controller #6999ff {
     class NavigationController {
         - _layout : CardLayout
         - _container : JPanel
-        - _views : Map<String, JPanel>
+        - _views : JPanel[]
         +<<create>>NavigationController(layout : CardLayout, container : JPanel)
         + saveCard(name : String, view : JPanel)
         + show(name : String)
@@ -551,17 +535,22 @@ IslandPart o--> "1\n- _placedObject" Placeable : "> stock a placeable"
 
 
 Grid o--> "*\n- _placedObjects" Placeable : "> contains"
-Grid o--> "*\n_observers" GridObserver : > notify
+Grid o--> "*\n- _observers" GridObserver : > notify
+
 Player o--> "1\n- _grid" Grid : "> has for grid"
 Player o--> "*\n- _weaponInventory" Weapon : "> can use theses weapons"
 Player o--> "1\n- _equippedWeapon" Weapon : "> has this strategy of attack"
+
 Game *--> "2\n- _players" Player : "> has 2 players"
-Game *--> "*\n' _traps" Trap : "> knows which traps can be placed"
+Game *--> "*\n- _traps" TrapTypes : "> knows which traps can be placed"
+Game *--> "*\n- _globalWeaponInventory" WeaponTypes : "> knows which weapons can be placed"
 
 SmartBot o--> "*\n- _shotsDone" Cell : "> keeps shot already done"
 SmartBot o--> "*\n- _targets" Cell : "> keeps cells to shoot later in a stack"
 
 GameController o--> "1\n- _model" Game : "> Manipulate"
+GameController o--> "1\n- _bot" Bot : "> has for bot"
+
 GraphicalView o--> "1\n- _model" Game : "> Consult"
 GraphicalView o--> "1\n- _controller" GameController : "> Transmit user's demands"
 GraphicalView *--> "1\n- _controller" NavigationController : "> view is selected by"

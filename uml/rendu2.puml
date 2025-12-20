@@ -508,90 +508,91 @@ package view #99ff99 {
 }
 
 class Main {
+    + {static} main(args : String[])
 }
 
-Weapon ..> PlaceableTypes : "<<uses>>"
-Trap ..> PlaceableTypes : "<<uses>>"
-Impact ..> PlaceableTypes : "<<uses>>"
-Ship ..> PlaceableTypes : "<<uses>>"
-IslandPart ..> PlaceableTypes : "<<uses>>"
+Weapon .> PlaceableTypes : "<<uses>>"
+Trap .> PlaceableTypes : "<<uses>>"
+Impact .> PlaceableTypes : "<<uses>>"
+Ship .> PlaceableTypes : "<<uses>>"
+IslandPart .> PlaceableTypes : "<<uses>>"
 
-ShipFactory ..> Ship : "<<create>>"
-Ship o--> "1\n- _type" ShipTypes : "> is this type of ship"
+ShipFactory .> Ship : "<<create>>"
+Ship o-> "1\n- _type" ShipTypes : "> is this type of ship"
 
-Ship o--> "*\n- _positions" Cell : "> has for coordinates"
-Impact o--> "1\n- _position" Cell : "> has for coordinates"
-Trap o--> "1\n# _position" Cell : "> has for coordinates"
-IslandPart o--> "1\n- _position" Cell : "> has for coordinates"
+Ship o-> "*\n- _positions" Cell : "> has for coordinates"
+Impact o-> "1\n- _position" Cell : "> has for coordinates"
+Trap o-> "1\n# _position" Cell : "> has for coordinates"
+IslandPart o-> "1\n- _position" Cell : "> has for coordinates"
 
-IslandPart o--> "1\n- _placedObject" Placeable : "> stock a placeable"
-
-
-Grid o--> "*\n- _placedObjects" Placeable : "> contains"
-Grid o--> "*\n- _observers" GridObserver : > notify
-
-Player o--> "1\n- _grid" Grid : "> has for grid"
-Player *--> "*\n- _weaponInventory" Weapon : "> can use theses weapons"
-Player *--> "1\n- _equippedWeapon" Weapon : "> has this strategy of attack"
-Player *--> "*\n - _usedWeapons" WeaponTypes : "> used theses weapons"
-
-Game o--> "*\n- _observers" GameObserver : "> is observable by"
-Game *--> "2\n- _players" Player : "> has 2 players"
-Game *--> "*\n- _traps" TrapTypes : "> knows which traps can be placed"
-Game *--> "*\n- _globalWeaponInventory" WeaponTypes : "> knows which weapons can be placed"
-
-SmartBot o--> "*\n- _shotsDone" Cell : "> keeps shot already done"
-SmartBot o--> "*\n- _targets" Cell : "> keeps cells to shoot later in a stack"
-
-GameController o--> "1\n- _model" Game : "> Manipulate"
-GameController o--> "1\n- _bot" Bot : "> has for bot"
-
-GridPanel o--> "1\n- _model" Game : "> Consult"
-GridPanel o--> "1\n- _controller" GameController : "> Transmit user's demands"
-GridPanel o--> "1\n- _mode" GridMode : "> config as this mode"
-GridPanel o--> "1\n- _axis" Axis : "> will place objects with this axis"
-GridPanel o--> "1\n- _shipType" ShipTypes : "> will place this ship"
-
-GraphicalView o--> "1\n- _model" Game : "> Consult"
-GraphicalView o--> "1\n- _controller" GameController : "> Transmit user's demands"
-GraphicalView *--> "1\n- _controller" NavigationController : "> view is selected by"
-GraphicalView *--> "1\n- _theme" Theme : "> apply this theme"
-
-GraphicalView ..> ConfigScreen : "<< create >>"
-GraphicalView ..> PlacementScreen : "<< create >>"
-GraphicalView ..> GameScreen : "<< create >>"
-GraphicalView ..> EndScreen : "<< create >>"
-
-ConfigScreen ..> "1\n- _titleBanner" TitleBanner : "<< create >>"
-PlacementScreen ..> "1\n- _titleBanner" TitleBanner : "<< create >>"
-GameScreen ..> "1\n- _titleBanner" TitleBanner : "<< create >>"
-EndScreen ..> TitleBanner : "<< create >>"
-
-PlacementScreen o--> "1\n- _model" Game : "> Consult"
-PlacementScreen o--> "1\n- _controller" GameController : "> Transmit user's demands"
-PlacementScreen *--> "1\n- _controller" NavigationController : "> can select the view with"
-PlacementScreen *--> "1\n- _theme" Theme : "> apply this theme"
-PlacementScreen *--> "1\n- _grid" GridPanel : "> display 1 grid"
-
-GameScreen o--> "1\n- _model" Game : "> Consult"
-GameScreen o--> "1\n- _controller" GameController : "> Transmit user's demands"
-GameScreen *--> "1\n- _controller" NavigationController : "> can select the view with"
-GameScreen *--> "1\n- _theme" Theme : "> apply this theme"
-GameScreen *--> "1\n- _gridPanelAttack" GridPanel : "> display attack grid"
-GameScreen *--> "1\n- _gridPanelReceive" GridPanel : "> display receive grid"
-GameScreen *--> "1\n- _title" TitleBanner : "> display a title"
-
-EndScreen o--> "1\n- _model" Game : "> Consult"
-EndScreen o--> "1\n- _controller" GameController : "> Transmit user's demands"
-EndScreen *--> "1\n- _controller" NavigationController : "> can select the view with"
-EndScreen *--> "1\n- _theme" Theme : "> apply this theme"
-EndScreen ..> InfosPanel : "<< create >>"
+IslandPart o-> "1\n- _placedObject" Placeable : "> stock a placeable"
 
 
-Main ..> Game : "<<uses>>"
-Main ..> GameController : "<<uses>>"
-Main ..> GraphicalView : "<<uses>>"
+Grid o-> "*\n- _placedObjects" Placeable : "> contains"
+Grid o-> "*\n- _observers" GridObserver : > notify
 
+Player o-> "1\n- _grid" Grid : "> has for grid"
+Player *-> "*\n- _weaponInventory" Weapon : "> can use theses weapons"
+Player *-> "1\n- _equippedWeapon" Weapon : "> has this strategy of attack"
+Player *-> "*\n - _usedWeapons" WeaponTypes : "> used theses weapons"
+
+Game o-> "*\n- _observers" GameObserver : "> is observable by"
+Game *-> "2\n- _players" Player : "> has 2 players"
+Game *-> "*\n- _traps" TrapTypes : "> knows which traps can be placed"
+Game *-> "*\n- _globalWeaponInventory" WeaponTypes : "> knows which weapons can be placed"
+
+SmartBot o-> "*\n- _shotsDone" Cell : "> keeps shot already done"
+SmartBot o-> "*\n- _targets" Cell : "> keeps cells to shoot later in a stack"
+
+GameController o-> "1\n- _model" Game : "> Manipulate"
+GameController o-> "1\n- _bot" Bot : "> has for bot"
+
+GridPanel o-> "1\n- _model" Game : "> Consult"
+GridPanel o-> "1\n- _controller" GameController : "> Transmit user's demands"
+GridPanel o-> "1\n- _mode" GridMode : "> config as this mode"
+GridPanel o-> "1\n- _axis" Axis : "> will place objects with this axis"
+GridPanel o-> "1\n- _shipType" ShipTypes : "> will place this ship"
+
+GraphicalView o-> "1\n- _model" Game : "> Consult"
+GraphicalView o-> "1\n- _controller" GameController : "> Transmit user's demands"
+GraphicalView *-> "1\n- _controller" NavigationController : "> view is selected by"
+GraphicalView *-> "1\n- _theme" Theme : "> apply this theme"
+
+GraphicalView .> ConfigScreen : "<< create >>"
+GraphicalView .> PlacementScreen : "<< create >>"
+GraphicalView .> GameScreen : "<< create >>"
+GraphicalView .> EndScreen : "<< create >>"
+
+ConfigScreen .> "1\n- _titleBanner" TitleBanner : "<< create >>"
+PlacementScreen .> "1\n- _titleBanner" TitleBanner : "<< create >>"
+GameScreen .> "1\n- _titleBanner" TitleBanner : "<< create >>"
+EndScreen .> TitleBanner : "<< create >>"
+
+PlacementScreen o-> "1\n- _model" Game : "> Consult"
+PlacementScreen o-> "1\n- _controller" GameController : "> Transmit user's demands"
+PlacementScreen *-> "1\n- _controller" NavigationController : "> can select the view with"
+PlacementScreen *-> "1\n- _theme" Theme : "> apply this theme"
+PlacementScreen *-> "1\n- _grid" GridPanel : "> display 1 grid"
+
+GameScreen o-> "1\n- _model" Game : "> Consult"
+GameScreen o-> "1\n- _controller" GameController : "> Transmit user's demands"
+GameScreen *-> "1\n- _controller" NavigationController : "> can select the view with"
+GameScreen *-> "1\n- _theme" Theme : "> apply this theme"
+GameScreen *-> "1\n- _gridPanelAttack" GridPanel : "> display attack grid"
+GameScreen *-> "1\n- _gridPanelReceive" GridPanel : "> display receive grid"
+GameScreen *-> "1\n- _title" TitleBanner : "> display a title"
+
+EndScreen o-> "1\n- _model" Game : "> Consult"
+EndScreen o-> "1\n- _controller" GameController : "> Transmit user's demands"
+EndScreen *-> "1\n- _controller" NavigationController : "> can select the view with"
+EndScreen *-> "1\n- _theme" Theme : "> apply this theme"
+EndScreen .> InfosPanel : "<< create >>"
+
+
+Main .> Game : "<<uses>>"
+Main .> GameController : "<<uses>>"
+Main .> GraphicalView : "<<uses>>"
+Main .> SmartBot : "<<uses>>"
 
 
 

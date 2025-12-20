@@ -115,12 +115,7 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
         _panelArmes.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
         add(_panelArmes,BorderLayout.SOUTH);
 
-        for (int i=0; i<_model.getWeaponInventorySize(0); i++) {
-            WeaponTypes weaponType = _model.getWeaponTypeInInventory(0,i);
-            addWeapon(i,weaponType);
-        }
-        selectWeapon((JButton) _panelArmes.getComponent(0));
-
+        drawAllWeapons();
     }
 
     public void setPlayerShipsGrid(GridPanel gridPanel) {
@@ -131,6 +126,15 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
         JLabel lbl = new JLabel(text);
         lbl.setFont(_theme.normalFont());
         return lbl;
+    }
+
+    private void drawAllWeapons() {
+        _panelArmes.removeAll();
+        for (int i=0; i<_model.getWeaponInventorySize(0); i++) {
+            WeaponTypes weaponType = _model.getWeaponTypeInInventory(0,i);
+            addWeapon(i,weaponType);
+        }
+        selectWeapon((JButton) _panelArmes.getComponent(0));
     }
 
     private void addWeapon(int indexWeapon, WeaponTypes weaponType) {
@@ -166,7 +170,14 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
 
     @Override
     public void updateWeaponFound(int player, WeaponTypes weaponType) {
-        int indexWeapon = _model.getWeaponInventorySize(0)-1;
-        addWeapon(indexWeapon,weaponType);
+        if (player == 1) {
+            int indexWeapon = _model.getWeaponInventorySize(0) - 1;
+            addWeapon(indexWeapon, weaponType);
+        }
+    }
+
+    @Override
+    public void updateWeaponRemoved(int player, WeaponTypes weaponType) {
+        if (player == 0) drawAllWeapons();
     }
 }

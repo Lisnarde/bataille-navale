@@ -19,9 +19,9 @@ public class Player {
     public Player(String name) {
         _name = name;
         _grid = null;
-        _equippedWeapon = new Missile();
         _weaponInventory = new ArrayList<>();
         _weaponInventory.add(new Missile());
+        setEquippedWeapon(0);
     }
 
     public String getName() {
@@ -73,6 +73,7 @@ public class Player {
     }
 
     public void addWeaponInInventory(Weapon weapon) {_weaponInventory.add(weapon);}
+    public void removeWeaponInInventory(Weapon weapon) {_weaponInventory.remove(weapon);}
     public boolean setEquippedWeapon(int weaponIndex) {
         if (0 <= weaponIndex && weaponIndex < _weaponInventory.size()) {
             _equippedWeapon = _weaponInventory.get(weaponIndex);

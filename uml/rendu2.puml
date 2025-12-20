@@ -21,6 +21,7 @@ package model #eeaaff{
         - notifyObserversNoMoreShip(player : Integer)
         - notifyObserversTurnNumber()
         - notifyObserversWeaponFound(player : Integer, weaponType : WeaponTypes)
+        - notifyObserversWeaponRemoved(player : Integer, weaponType : WeaponTypes)
         + isIslandModeActivated() : Boolean
         + getTurnNum() : Integer
         + getPlayerName(player : Integer) : String
@@ -74,6 +75,7 @@ package model #eeaaff{
         + updateNoMoreShips(player : Integer)
         + updateTurnNum(turnNum : Integer)
         + updateWeaponFound(player : Integer, weaponType : WeaponTypes)
+        + updateWeaponRemoved(player : Integer, weaponType : WeaponTypes)
     }
 
     enum Axis <<enum>>{
@@ -100,6 +102,7 @@ package model #eeaaff{
         + placeWeaponOnIsland(weapon : Weapon, cell : Cell) : Boolean
         + shoot(otherPlayer : Player, cell : Cell) : Boolean
         + addWeaponInInventory(weapon : Weapon)
+        + removeWeaponInInventory(weapon : Weapon)
         + setEquippedWeapon(weaponIndex : Integer) : Boolean
         + getEquippedWeapon() : Weapon
         + getWeaponInventorySize() : Integer
@@ -503,11 +506,13 @@ package view #99ff99 {
         + onShow()
         + setPlayerShipsGrid(gridPanel : GridPanel)
         - createInfoLabel(text : String) : JLabel
+        - drawAllWeapons()
         - addWeapon(indexWeapon : Integer, weaponType : WeaponTypes)
         - selectWeapon(selectedButton : JButton)
         + updateNoMoreShips(player : Integer)
         + updateTurnNum(turnNum : Integer)
         + updateWeaponFound(player : Integer, weaponType : WeaponTypes)
+        + updateWeaponRemoved(player : Integer, weaponType : WeaponTypes)
     }
     class EndScreen <<extends JPanel>>{
         - _controller : GameController

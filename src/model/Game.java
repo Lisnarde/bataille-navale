@@ -37,6 +37,11 @@ public class Game implements GridObserver{
             obs.updateWeaponFound(player, weaponType);
         }
     }
+    private void notifyObserversWeaponRemoved(int player, WeaponTypes weaponType) {
+        for (GameObserver obs : _observers) {
+            obs.updateWeaponRemoved(player, weaponType);
+        }
+    }
 
     public boolean isIslandModeActivated() {
         return _islandMode;
@@ -163,6 +168,12 @@ public class Game implements GridObserver{
         if (valide && player == 1) {
             _turnNum++;
             notifyObserversTurnNumber();
+        }
+        Weapon weaponUsed = _players[player].getEquippedWeapon();
+        if (valide && weaponUsed.getWeaponType() != WeaponTypes.MISSILE && weaponUsed.getWeaponType() != WeaponTypes.ISLANDSEARCH) {
+            _players[player].removeWeaponInInventory(weaponUsed);
+            _players[player].setEquippedWeapon(0);
+            notifyObserversWeaponRemoved(player,weaponUsed.getWeaponType());
         }
         return valide;
     }

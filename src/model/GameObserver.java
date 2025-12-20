@@ -8,4 +8,6 @@ public interface GameObserver {
     void updateTurnNumber(int turnNum);
 
     void updateWeaponFound(int player, WeaponTypes weaponType);
+
+    void updateWeaponRemoved(int player, WeaponTypes weaponType);
 }

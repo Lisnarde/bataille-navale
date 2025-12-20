@@ -305,7 +305,9 @@ public class Grid {
         for (Placeable p : _placedObjects) {
             if (p.getType() == PlaceableTypes.IMPACT) {
                 Cell c = p.getCell(0);
-                if (!isOccupiedBy(c, PlaceableTypes.SHIP)) count++;
+                if (!isOccupiedBy(c, PlaceableTypes.SHIP) && !isOccupiedBy(c, PlaceableTypes.ISLANDPART)){
+                    count++;
+                }
             }
         }
         return count;

@@ -44,15 +44,26 @@ public class EndScreen extends JPanel implements ViewPanel{
             // Panel conteneur
             JPanel playerPanel = new JPanel(new BorderLayout());
             contentPanel.add(playerPanel);
+            contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+            contentPanel.add(Box.createRigidArea(new Dimension(40, 0)));
 
             // Titre du panel avec pseudo
             JLabel title = new JLabel((player == winner ? "Vainqueur : " : "Perdant : ") + _model.getPlayerName(player), SwingConstants.CENTER);
-            title.setFont(new Font("Arial",Font.PLAIN,30));
+            title.setFont(_theme.titleFont());
+            title.setForeground(Color.BLACK);
+            title.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
             playerPanel.add(title,BorderLayout.NORTH);
 
             // Panel des infos
             InfosPanel infosPanel = new InfosPanel(_theme, player, _model);
             playerPanel.add(infosPanel,BorderLayout.CENTER);
+            playerPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+            playerPanel.setPreferredSize(new Dimension(400, 500));
+            playerPanel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Color.DARK_GRAY, 2),
+                    BorderFactory.createEmptyBorder(15, 15, 15, 15)
+            ));
+
             if (player == winner){
                 infosPanel.setBackground(new Color(215, 220, 128));
             }

@@ -435,6 +435,23 @@ package view #99ff99 {
         }
     }
 
+    interface ViewPanel <<interface>> {
+        + onShow()
+    }
+
+    class TerminalView implements model.GridObserver {
+        +<<create>>TerminalView(model : Game, controller : Controller)
+        + updateShoot(player : Integer, posx : Integer, posy : Integer, hit : Boolean)
+        + updateTrapActivated(player : Integer, pox : Integer, posy : Integer, trapType : TrapTypes)
+        + updateSearch(player : Integer, posx : Integer, posy : Integer, objectFound : WeaponTypes)
+        + updateShipCellPlaced(player : Integer, posx : Integer, posy : Integer)
+        + updateTrapPlaced(player : Integer, posx : Integer, posy : Integer, trapType : TrapTypes)
+        + updateWeaponPlacedOnIsland(player : Integer, posx : Integer, posy : Integer, weaponType : WeaponTypes)
+        + updateShipCellDrowned(player : Integer, posx : Integer, posy : Integer)
+        + updateNoMoreShips(player : Integer)
+        + updateSonarUsed(player : Player, posx : Integer, posy : Integer, value : Integer)
+    }
+
     class GraphicalView <<extends JFrame>>{
         - _cardLayout : CardLayout
         - _mainPanel : JPanel
@@ -476,13 +493,13 @@ package view #99ff99 {
         - incrementNumberOfShip(number : Integer) : Integer
         - updateUsedCelles()
     }
-     class PlacementScreen <<extends JPanel>>{
+     class PlacementScreen <<extends JPanel>> implements ViewPanel{
         +<<create>>PlacementScreen(controller : GameController, model : Game, navigationController : NavigationController, theme : Theme)
         + onShow()
         - randomGeneration()
         - validation()
      }
-    class GameScreen <<extends JPanel>>{
+    class GameScreen <<extends JPanel>> implements ViewPanel, model.GameObserver, model.GridObserver{
         - _panelArmes : JPanel
         - _lblPlayerLastAction : JLabel
         - _lblPlayerIntact : JLabel
@@ -523,7 +540,7 @@ package view #99ff99 {
         + updateWeaponFound(player : Integer, weaponType : WeaponTypes)
         + updateWeaponRemoved(player : Integer, weaponType : WeaponTypes)
     }
-    class EndScreen <<extends JPanel>>{
+    class EndScreen <<extends JPanel>> implements ViewPanel {
         +<<create>>EndScreen(controller : GameController, model : Game, navigationController : NavigationController, theme : Theme)
         + onShow()
     }
@@ -580,7 +597,7 @@ GridPanel o-> "1\n- _shipType" ShipTypes : "> will place this ship"
 
 GraphicalView o-> "1\n- _model" Game : "> Consult"
 GraphicalView o-> "1\n- _controller" GameController : "> Transmit user's demands"
-GraphicalView *-> "1\n- _controller" NavigationController : "> view is selected by"
+GraphicalView *-> "1\n- _navigationController" NavigationController : "> view is selected by"
 GraphicalView *-> "1\n- _theme" Theme : "> apply this theme"
 
 GraphicalView .> ConfigScreen : "<< create >>"
@@ -595,13 +612,13 @@ EndScreen .> TitleBanner : "<< create >>"
 
 PlacementScreen o-> "1\n- _model" Game : "> Consult"
 PlacementScreen o-> "1\n- _controller" GameController : "> Transmit user's demands"
-PlacementScreen *-> "1\n- _controller" NavigationController : "> can select the view with"
+PlacementScreen *-> "1\n- _navigationController" NavigationController : "> can select the view with"
 PlacementScreen *-> "1\n- _theme" Theme : "> apply this theme"
 PlacementScreen *-> "1\n- _grid" GridPanel : "> display 1 grid"
 
 GameScreen o-> "1\n- _model" Game : "> Consult"
 GameScreen o-> "1\n- _controller" GameController : "> Transmit user's demands"
-GameScreen *-> "1\n- _controller" NavigationController : "> can select the view with"
+GameScreen *-> "1\n- _navigationController" NavigationController : "> can select the view with"
 GameScreen *-> "1\n- _theme" Theme : "> apply this theme"
 GameScreen *-> "1\n- _gridPanelAttack" GridPanel : "> display attack grid"
 GameScreen *-> "1\n- _gridPanelReceive" GridPanel : "> display receive grid"
@@ -609,16 +626,18 @@ GameScreen *-> "1\n- _title" TitleBanner : "> display a title"
 
 EndScreen o-> "1\n- _model" Game : "> Consult"
 EndScreen o-> "1\n- _controller" GameController : "> Transmit user's demands"
-EndScreen *-> "1\n- _controller" NavigationController : "> can select the view with"
+EndScreen *-> "1\n- _navigationController" NavigationController : "> can select the view with"
 EndScreen *-> "1\n- _theme" Theme : "> apply this theme"
 EndScreen .> InfosPanel : "<< create >>"
+
+TerminalView o-> "1\n- _model" Game : "> Consult"
+TerminalView o-> "1\n- _controller" GameController : "> Transmit user's demands"
 
 
 Main .> Game : "<<uses>>"
 Main .> GameController : "<<uses>>"
 Main .> GraphicalView : "<<uses>>"
 Main .> SmartBot : "<<uses>>"
-
 
 
 @enduml

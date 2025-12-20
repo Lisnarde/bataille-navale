@@ -4,6 +4,8 @@ import controller.GameController;
 import controller.NavigationController;
 import model.Game;
 import model.GameObserver;
+import model.GridObserver;
+import model.traps.TrapTypes;
 import model.weapons.Weapon;
 import model.weapons.WeaponTypes;
 import view.components.GridMode;
@@ -14,7 +16,7 @@ import view.themes.Theme;
 import javax.swing.*;
 import java.awt.*;
 
-public class GameScreen extends JPanel implements ViewPanel, GameObserver {
+public class GameScreen extends JPanel implements ViewPanel, GameObserver, GridObserver {
     private GameController _controller;
     private Game _model;
     private NavigationController _navigationController;
@@ -26,6 +28,26 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
     private TitleBanner _title;
     private JPanel _panelArmes;
 
+    private JLabel _lblPlayerLastAction;
+    private JLabel _lblPlayerIntact;
+    private JLabel _lblPlayerHit;
+    private JLabel _lblPlayerDrowned;
+    private JLabel _lblPlayerShotsWater;
+    private JLabel _lblPlayerRemainingCells;
+    private JLabel _lblPlayerWeapons;
+    private JLabel _lblPlayerUsedWeapons;
+    private JLabel _lblPlayerIslandCells;
+
+    private JLabel _lblBotLastAction;
+    private JLabel _lblBotIntact;
+    private JLabel _lblBotHit;
+    private JLabel _lblBotDrowned;
+    private JLabel _lblBotShotsWater;
+    private JLabel _lblBotRemainingCells;
+    private JLabel _lblBotWeapons;
+    private JLabel _lblBotUsedWeapons;
+    private JLabel _lblBotIslandCells;
+
     public GameScreen(GameController controller, Game model, NavigationController navigationController, Theme theme) {
         _controller = controller;
         _model = model;
@@ -36,6 +58,7 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
     @Override
     public void onShow() {
         _model.addGameObserver(this);
+        _model.addGridObserver(this);
 
         setLayout(new BorderLayout());
 
@@ -57,51 +80,106 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
         //infos
         JPanel panelInfos = new JPanel();
         panelInfos.setLayout(new BoxLayout(panelInfos,BoxLayout.Y_AXIS));
+        panelInfos.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelInfos.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+
+        JLabel lblInfosTitle = new JLabel("Statistiques de la partie", SwingConstants.CENTER);
+        lblInfosTitle.setFont(_theme.titleFont());
+        lblInfosTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelInfos.add(lblInfosTitle);
+        panelInfos.add(Box.createRigidArea(new Dimension(0, 10)));
+
 
         //infos du joueur
         JPanel panelInfosPlayer = new JPanel();
         panelInfosPlayer.setLayout(new BoxLayout(panelInfosPlayer,BoxLayout.Y_AXIS));
 
-        JLabel player = new JLabel();
-        player.setText(_model.getPlayerName(0));
+        JLabel player = new JLabel(_model.getPlayerName(0),SwingConstants.CENTER);
         player.setFont(_theme.titleFont());
+        player.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelInfosPlayer.add(player);
+        panelInfosPlayer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panelInfosPlayer.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelInfosPlayer.setBackground(new Color(172, 130, 211));
 
-        panelInfosPlayer.add(createInfoLabel("Dernière action jouée : ")); //dernière action jouée
-        panelInfosPlayer.add(createInfoLabel("Bateaux intacts : " + _model.getPlayer(0).getIntactShipsCount())); //nombre de bateaux du joueur intact
-        panelInfosPlayer.add(createInfoLabel("Bateaux touchés : " + _model.getPlayer(0).getHitShipsCount())); //nombre de bateaux du joueur touchés (pas nombre de cases)
-        panelInfosPlayer.add(createInfoLabel("Bateaux coulés : " + _model.getPlayer(0).getDrownedShipsCount()));//nombre de bateaux du joueur coulés
-        panelInfosPlayer.add(createInfoLabel("Tirs dans l'eau : " + _model.getPlayer(0).getShotsInWater())); //nombre de tirs dans l'eau du joueur
-        panelInfosPlayer.add(createInfoLabel("Cases bateaux touchées : " + _model.getPlayer(0).getHitCellsCount())); //nombre de cases bateau du bot touchées
-        panelInfosPlayer.add(createInfoLabel("Cases restantes à toucher : " + _model.getPlayer(1).getRemainingShipCells())); //nombre de cases bateau du bot restantes à toucher
-        panelInfosPlayer.add(createInfoLabel("Armes disponibles : " + _model.getPlayer(0).getWeaponInventory())); //liste d'armes encore utilisables
-        panelInfosPlayer.add(createInfoLabel("Armes utilisées : " + _model.getPlayer(0).getUsedWeapons())); //liste d'armes déjà utilisées
-        panelInfosPlayer.add(createInfoLabel("Cases d'île restantes : " + _model.getPlayer(0).getRemainingIslandCells())); //nombre de cases de l'île restantes à fouiller
+
+        _lblPlayerLastAction = createInfoLabel("Dernière action jouée : aucune");
+        panelInfosPlayer.add(_lblPlayerLastAction);
+
+        _lblPlayerIntact = createInfoLabel("Bateaux intacts : " + _model.getPlayer(0).getIntactShipsCount());
+        panelInfosPlayer.add(_lblPlayerIntact);
+
+        _lblPlayerHit = createInfoLabel("Bateaux touchés : " + _model.getPlayer(0).getHitShipsCount());
+        panelInfosPlayer.add(_lblPlayerHit);
+
+        _lblPlayerDrowned = createInfoLabel("Bateaux coulés : " + _model.getPlayer(0).getDrownedShipsCount());
+        panelInfosPlayer.add(_lblPlayerDrowned);
+
+        _lblPlayerShotsWater = createInfoLabel("Tirs dans l'eau : " + _model.getPlayer(1).getShotsInWater());
+        panelInfosPlayer.add(_lblPlayerShotsWater);
+
+        _lblPlayerRemainingCells = createInfoLabel("Cases restantes à toucher : " + _model.getPlayer(1).getRemainingShipCells());
+        panelInfosPlayer.add(_lblPlayerRemainingCells);
+
+        _lblPlayerWeapons = createInfoLabel("Armes disponibles : " + _model.getPlayer(0).getWeaponInventory());
+        panelInfosPlayer.add(_lblPlayerWeapons);
+
+        _lblPlayerUsedWeapons = createInfoLabel("Armes utilisées : " + _model.getPlayer(0).getUsedWeapons());
+        panelInfosPlayer.add(_lblPlayerUsedWeapons);
+
+        if (_model.isIslandModeActivated()) {
+            _lblPlayerIslandCells = createInfoLabel("Cases d'île restantes : " + _model.getPlayer(0).getRemainingIslandCells());
+            panelInfosPlayer.add(_lblPlayerIslandCells);
+        }
 
         panelInfos.add(panelInfosPlayer);
-
+        panelInfos.add(Box.createRigidArea(new Dimension(0, 20)));
 
         //infos du bot
         JPanel panelInfosBot = new JPanel();
         panelInfosBot.setLayout(new BoxLayout(panelInfosBot,BoxLayout.Y_AXIS));
 
-        JLabel bot = new JLabel();
-        bot.setText(_model.getPlayerName(1));
+        JLabel bot = new JLabel(_model.getPlayerName(1),SwingConstants.CENTER);
         bot.setFont(_theme.titleFont());
+        bot.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelInfosBot.add(bot);
+        panelInfosBot.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panelInfosBot.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelInfosBot.setBackground(new Color(147, 184, 115));
 
-        panelInfosBot.add(createInfoLabel("Dernière action jouée : ")); //dernière action jouée
-        panelInfosBot.add(createInfoLabel("Bateaux intacts : " + _model.getPlayer(1).getIntactShipsCount())); //nombre de bateaux du bot intact
-        panelInfosBot.add(createInfoLabel("Bateaux touchés : " + _model.getPlayer(1).getHitShipsCount())); //nombre de bateaux du bot touchés (pas nombre de cases)
-        panelInfosBot.add(createInfoLabel("Bateaux coulés : " + _model.getPlayer(1).getDrownedShipsCount()));//nombre de bateaux du bot coulés
-        panelInfosBot.add(createInfoLabel("Tirs dans l'eau : " + _model.getPlayer(1).getShotsInWater())); //nombre de tirs dans l'eau du bot
-        panelInfosBot.add(createInfoLabel("Cases bateaux touchées : " + _model.getPlayer(1).getHitCellsCount())); //nombre de cases bateau du joueur touchées
-        panelInfosBot.add(createInfoLabel("Cases restantes à toucher : " + _model.getPlayer(0).getRemainingShipCells())); //nombre de cases bateau du joueur restantes à toucher
-        panelInfosBot.add(createInfoLabel("Armes disponibles : " + _model.getPlayer(1).getWeaponInventory())); //liste d'armes encore utilisables
-        panelInfosBot.add(createInfoLabel("Armes utilisées : " + _model.getPlayer(1).getUsedWeapons())); //liste d'armes déjà utilisées
-        panelInfosBot.add(createInfoLabel("Cases d'île restantes : " + _model.getPlayer(1).getRemainingIslandCells())); //nombre de cases de l'île restantes à fouiller
+
+
+        _lblBotLastAction = createInfoLabel("Dernière action jouée : aucune");
+        panelInfosBot.add(_lblBotLastAction);
+
+        _lblBotIntact = createInfoLabel("Bateaux intacts : " + _model.getPlayer(1).getIntactShipsCount());
+        panelInfosBot.add(_lblBotIntact);
+
+        _lblBotHit = createInfoLabel("Bateaux touchés : " + _model.getPlayer(1).getHitShipsCount());
+        panelInfosBot.add(_lblBotHit);
+
+        _lblBotDrowned = createInfoLabel("Bateaux coulés : " + _model.getPlayer(1).getDrownedShipsCount());
+        panelInfosBot.add(_lblBotDrowned);
+
+        _lblBotShotsWater = createInfoLabel("Tirs dans l'eau : " + _model.getPlayer(0).getShotsInWater());
+        panelInfosBot.add(_lblBotShotsWater);
+
+        _lblBotRemainingCells = createInfoLabel("Cases restantes à toucher : " + _model.getPlayer(0).getRemainingShipCells());
+        panelInfosBot.add(_lblBotRemainingCells);
+
+        _lblBotWeapons = createInfoLabel("Armes disponibles : " + _model.getPlayer(1).getWeaponInventory());
+        panelInfosBot.add(_lblBotWeapons);
+
+        _lblBotUsedWeapons = createInfoLabel("Armes utilisées : " + _model.getPlayer(1).getUsedWeapons());
+        panelInfosBot.add(_lblBotUsedWeapons);
+
+        if (_model.isIslandModeActivated()) {
+            _lblBotIslandCells = createInfoLabel("Cases d'île restantes : " + _model.getPlayer(1).getRemainingIslandCells());
+            panelInfosBot.add(_lblBotIslandCells);
+        }
 
         panelInfos.add(panelInfosBot);
+
 
         panelContent.add(panelInfos);
 
@@ -123,8 +201,9 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
     }
 
     private JLabel createInfoLabel(String text) {
-        JLabel lbl = new JLabel(text);
+        JLabel lbl = new JLabel(text, SwingConstants.CENTER);
         lbl.setFont(_theme.normalFont());
+        lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
         return lbl;
     }
 
@@ -157,10 +236,83 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver {
         _panelArmes.repaint();
     }
 
+    private void refreshInfos() {
+        _lblPlayerIntact.setText("Bateaux intacts : " + _model.getPlayer(0).getIntactShipsCount());
+        _lblPlayerHit.setText("Bateaux touchés : " + _model.getPlayer(0).getHitShipsCount());
+        _lblPlayerDrowned.setText("Bateaux coulés : " + _model.getPlayer(0).getDrownedShipsCount());
+        _lblPlayerShotsWater.setText("Tirs dans l'eau : " + _model.getPlayer(1).getShotsInWater());
+        _lblPlayerRemainingCells.setText("Cases restantes à toucher : " + _model.getPlayer(1).getRemainingShipCells());
+        _lblPlayerWeapons.setText("Armes disponibles : " + _model.getPlayer(0).getWeaponInventory());
+        _lblPlayerUsedWeapons.setText("Armes utilisées : " + _model.getPlayer(0).getUsedWeapons());
+
+        _lblBotIntact.setText("Bateaux intacts : " + _model.getPlayer(1).getIntactShipsCount());
+        _lblBotHit.setText("Bateaux touchés : " + _model.getPlayer(1).getHitShipsCount());
+        _lblBotDrowned.setText("Bateaux coulés : " + _model.getPlayer(1).getDrownedShipsCount());
+        _lblBotShotsWater.setText("Tirs dans l'eau : " + _model.getPlayer(0).getShotsInWater());
+        _lblBotRemainingCells.setText("Cases restantes à toucher : " + _model.getPlayer(0).getRemainingShipCells());
+        _lblBotWeapons.setText("Armes disponibles : " + _model.getPlayer(1).getWeaponInventory());
+        _lblBotUsedWeapons.setText("Armes utilisées : " + _model.getPlayer(1).getUsedWeapons());
+        if (_model.isIslandModeActivated()) {
+            _lblPlayerIslandCells.setText("Cases d'île restantes à fouiller : " + _model.getPlayer(1).getRemainingIslandCells());
+            _lblBotIslandCells.setText("Cases d'île restantes à fouiller : " + _model.getPlayer(0).getRemainingIslandCells());
+        }
+
+    }
+
+
+    @Override
+    public void updateShoot(int player, int posx, int posy, boolean hit) {
+        if (player == 1)
+            _lblPlayerLastAction.setText("Dernière action jouée : tir en ("+posx+","+posy+") → " + (hit ? "touché" : "dans l'eau"));
+        else
+            _lblBotLastAction.setText("Dernière action jouée : tir en ("+posx+","+posy+") → " + (hit ? "touché" : "dans l'eau"));
+        refreshInfos();
+    }
+
+    @Override
+    public void updateTrapActivated(int player, int posx, int posy, TrapTypes trapType) {
+        if (player == 1)
+            _lblPlayerLastAction.setText("Dernière action jouée : piège "+trapType+" activé");
+        else
+            _lblBotLastAction.setText("Dernière action jouée : piège "+trapType+" activé");
+        refreshInfos();
+    }
+
+    @Override
+    public void updateSearch(int player, int posx, int posy, WeaponTypes objectFound) {
+        if (player == 1)
+            _lblPlayerLastAction.setText("Dernière action jouée : recherche → " + objectFound);
+        else
+            _lblBotLastAction.setText("Dernière action jouée : recherche → " + objectFound);
+        refreshInfos();
+    }
+
+    @Override
+    public void updateShipCellPlaced(int player, int posx, int posy) {}
+
+    @Override
+    public void updateTrapPlaced(int player, int posx, int posy, TrapTypes trapType) {}
+
+    @Override
+    public void updateWeaponPlacedOnIsland(int player, int posx, int posy, WeaponTypes weaponType) {}
+
+    @Override
+    public void updateShipCellDrowned(int player, int posx, int posy) {
+        if (player == 1)
+            _lblPlayerLastAction.setText("Dernière action jouée : bateau coulé");
+        else
+            _lblBotLastAction.setText("Dernière action jouée : bateau coulé");
+        refreshInfos();
+    }
 
     @Override
     public void updateNoMoreShips(int player) {
         _navigationController.showEnd();
+    }
+
+    @Override
+    public void updateSonarUsed(int player, int posx, int posy, int value) {
+
     }
 
     @Override

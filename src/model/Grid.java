@@ -267,14 +267,6 @@ public class Grid {
         return false;
     }
 
-    private boolean isShipDrowned(Ship s) {
-        for (int i = 0; i < s.getSize(); i++) {
-            Cell c = s.getCell(i);
-            if (!isOccupiedBy(c, PlaceableTypes.IMPACT)) return false;
-        }
-        return true;
-    }
-
     public int getIntactShipsCount() {
         int count = 0;
         for (Placeable p : _placedObjects) {
@@ -291,7 +283,7 @@ public class Grid {
         for (Placeable p : _placedObjects) {
             if (p.getType() == PlaceableTypes.SHIP) {
                 Ship s = (Ship) p;
-                if (isShipHit(s) && !isShipDrowned(s)) count++;
+                if (isShipHit(s) && !isTheShipDrowned(s)) count++;
             }
         }
         return count;
@@ -302,7 +294,7 @@ public class Grid {
         for (Placeable p : _placedObjects) {
             if (p.getType() == PlaceableTypes.SHIP) {
                 Ship s = (Ship) p;
-                if (isShipDrowned(s)) count++;
+                if (isTheShipDrowned(s)) count++;
             }
         }
         return count;
@@ -314,17 +306,6 @@ public class Grid {
             if (p.getType() == PlaceableTypes.IMPACT) {
                 Cell c = p.getCell(0);
                 if (!isOccupiedBy(c, PlaceableTypes.SHIP)) count++;
-            }
-        }
-        return count;
-    }
-
-    public int getHitCellsCount() {
-        int count = 0;
-        for (Placeable p : _placedObjects) {
-            if (p.getType() == PlaceableTypes.IMPACT) {
-                Cell c = p.getCell(0);
-                if (isOccupiedBy(c, PlaceableTypes.SHIP)) count++;
             }
         }
         return count;
@@ -361,9 +342,4 @@ public class Grid {
         }
         return count;
     }
-
-    public List<WeaponTypes> getUsedWeapons() {
-        return new ArrayList<>();
-    }
-
 }

@@ -57,16 +57,6 @@ package model #eeaaff{
         + updateShipCellDrowned(player : Integer, posx : Integer, posy : Integer)
         + updateNoMoreShips(player : Integer)
         + updateSonarUsed(player : Player, posx : Integer, posy : Integer, value : Integer)
-        - isShipHit(s : Ship) : Boolean
-        - isShipDrowned(s : Ship) : Boolean
-        + getIntactShipsCount() : Integer
-        + getHitShipsCount() : Integer
-        + getDrownedShipsCount() : Integer
-        + getShotsInWater() : Integer
-        + getHitCellsCount() : Integer
-        + getRemainingShipCells() : Integer
-        + getRemainingIslandCells() : Integer
-        + getUsedWeapons() : List<WeaponTypes>
     }
 
     interface GameObserver <<interface>>{
@@ -83,6 +73,7 @@ package model #eeaaff{
 
     class Player {
         - _name : String
+        - _usedWeapons : WeaponTypes[*]
         +<<create>>Player(name : String)
         + getName() : String
         + setGrid(grid : Grid)
@@ -108,7 +99,6 @@ package model #eeaaff{
         + getHitShipsCount() : Integer
         + getDrownedShipsCount() : Integer
         + getShotsInWater() : Integer
-        + getHitCellsCount() : Integer
         + getRemainingShipCells() : Integer
         + getRemainingIslandCells() : Integer
         + getUsedWeapons() : WeaponTypes[]
@@ -151,6 +141,13 @@ package model #eeaaff{
         + washGrid()
         + placeWeaponOnIsland(weapon : Weapon, cell : Cell) : Boolean
         + allShipsDead() : Boolean
+        - isShipHit(s : Ship) : Boolean
+        + getIntactShipsCount() : Integer
+        + getHitShipsCount() : Integer
+        + getDrownedShipsCount() : Integer
+        + getShotsInWater() : Integer
+        + getRemainingShipCells() : Integer
+        + getRemainingIslandCells() : Integer
     }
     interface GridObserver <<interface>> {
         + updateShoot(player : Integer, posx : Integer, posy : Integer, hit : Boolean)
@@ -492,6 +489,24 @@ package view #99ff99 {
         - _gridPanelReceive : GridPanel
         - _title : TitleBanner
         - _panelArmes : JPanel
+        - _lblPlayerLastAction
+        - _lblPlayerIntact
+        - _lblPlayerHit
+        - _lblPlayerDrowned
+        - _lblPlayerShotsWater
+        - _lblPlayerRemainingCells
+        - _lblPlayerWeapons
+        - _lblPlayerUsedWeapons
+        - _lblPlayerIslandCells
+        - _lblBotLastAction
+        - _lblBotIntact
+        - _lblBotHit
+        - _lblBotDrowned
+        - _lblBotShotsWater
+        - _lblBotRemainingCells
+        - _lblBotWeapons
+        - _lblBotUsedWeapons
+        - _lblBotIslandCells
         +<<create>>GameScreen(controller : GameController, model : Game, navigationController : NavigationController, theme : Theme)
         + onShow()
         + setPlayerShipsGrid(gridPanel : GridPanel)
@@ -499,7 +514,16 @@ package view #99ff99 {
         - drawAllWeapons()
         - addWeapon(indexWeapon : Integer, weaponType : WeaponTypes)
         - selectWeapon(selectedButton : JButton)
+        - refreshInfos()
+        + updateShoot(player : Integer, posx : Integer, posy : Integer, hit : Boolean)
+        + updateTrapActivated(player : Integer, pox : Integer, posy : Integer, trapType : TrapTypes)
+        + updateSearch(player : Integer, posx : Integer, posy : Integer, objectFound : WeaponTypes)
+        + updateShipCellPlaced(player : Integer, posx : Integer, posy : Integer)
+        + updateTrapPlaced(player : Integer, posx : Integer, posy : Integer, trapType : TrapTypes)
+        + updateWeaponPlacedOnIsland(player : Integer, posx : Integer, posy : Integer, weaponType : WeaponTypes)
+        + updateShipCellDrowned(player : Integer, posx : Integer, posy : Integer)
         + updateNoMoreShips(player : Integer)
+        + updateSonarUsed(player : Player, posx : Integer, posy : Integer, value : Integer)
         + updateTurnNum(turnNum : Integer)
         + updateWeaponFound(player : Integer, weaponType : WeaponTypes)
         + updateWeaponRemoved(player : Integer, weaponType : WeaponTypes)

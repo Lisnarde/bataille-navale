@@ -15,6 +15,7 @@ public class Player {
     private Weapon _equippedWeapon;
 
     private List<Weapon> _weaponInventory;
+    private List<WeaponTypes> _usedWeapons = new ArrayList<>();
 
     public Player(String name) {
         _name = name;
@@ -69,6 +70,9 @@ public class Player {
             Trap trap = (Trap) p;
             trap.execTrap(this._grid, otherPlayer._grid, cell, _equippedWeapon);
         }
+        if (!_usedWeapons.contains(_equippedWeapon.getWeaponType())) {
+            _usedWeapons.add(_equippedWeapon.getWeaponType());
+        }
         return otherPlayer._grid.shoot(cell,_equippedWeapon);
     }
 
@@ -99,10 +103,11 @@ public class Player {
     public int getHitShipsCount() { return _grid.getHitShipsCount(); }
     public int getDrownedShipsCount() { return _grid.getDrownedShipsCount(); }
     public int getShotsInWater() { return _grid.getShotsInWater(); }
-    public int getHitCellsCount() { return _grid.getHitCellsCount(); }
     public int getRemainingShipCells() { return _grid.getRemainingShipCells(); }
     public int getRemainingIslandCells() { return _grid.getRemainingIslandCells(); }
-    public List<WeaponTypes> getUsedWeapons() { return _grid.getUsedWeapons(); }
+    public List<WeaponTypes> getUsedWeapons() {
+        return _usedWeapons;
+    }
 
     public List<WeaponTypes> getWeaponInventory() {
         return _weaponInventory.stream()

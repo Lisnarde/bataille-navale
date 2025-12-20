@@ -19,4 +19,6 @@ public interface GridObserver {
     void updateShipCellDrowned(int player, int posx, int posy);
 
     void updateNoMoreShips(int player);
+
+    void updateSonarUsed(int player, int posx, int posy, int value);
 }

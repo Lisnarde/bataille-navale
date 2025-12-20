@@ -100,4 +100,5 @@ public class SmartBot implements Bot, GridObserver {
     @Override public void updateShipCellPlaced(int p, int x, int y) {}
     @Override public void updateTrapPlaced(int p, int x, int y, TrapTypes t) {}
     @Override public void updateWeaponPlacedOnIsland(int p, int x, int y, WeaponTypes w) {}
+    @Override public void updateSonarUsed(int player, int posx, int posy, int value) {}
 }

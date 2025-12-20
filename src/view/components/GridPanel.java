@@ -204,4 +204,13 @@ public class GridPanel extends JPanel implements GridObserver {
 
     @Override
     public void updateNoMoreShips(int player){}
+
+    @Override
+    public void updateSonarUsed(int player, int posx, int posy, int value) {
+        if ( _mode == GridMode.ATTACK && player == 1 || _mode == GridMode.RECEIVE && player == 0){
+            JButton button = _grid.get(posy).get(posx);
+            button.setText(value+"");
+            button.setFont(new Font("Arial",Font.PLAIN,28));
+        }
+    }
 }

@@ -230,4 +230,5 @@ public class Game implements GridObserver{
     public void updateNoMoreShips(int player) {
         notifyObserversNoMoreShip(player);
     }
+    @Override public void updateSonarUsed(int player, int posx, int posy, int value) {}
 }

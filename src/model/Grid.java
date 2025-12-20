@@ -85,6 +85,11 @@ public class Grid {
             obs.updateNoMoreShips(_player);
         }
     }
+    public void notifyObserversSonarUsed(int posx, int posy, int value) {
+        for (GridObserver obs : _observers) {
+            obs.updateSonarUsed(_player, posx, posy, value);
+        }
+    }
 
     public void setMaxShipsCells(int maxShipsCells) {
         _maxShipsCells = maxShipsCells;

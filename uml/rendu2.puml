@@ -59,6 +59,7 @@ package model #eeaaff{
         + updateWeaponPlacedOnIsland(player : Integer, posx : Integer, posy : Integer, weaponType : WeaponTypes)
         + updateShipCellDrowned(player : Integer, posx : Integer, posy : Integer)
         + updateNoMoreShips(player : Integer)
+        + updateSonarUsed(player : Player, posx : Integer, posy : Integer, value : Integer)
         - isShipHit(s : Ship) : Boolean
         - isShipDrowned(s : Ship) : Boolean
         + getIntactShipsCount() : Integer
@@ -139,6 +140,7 @@ package model #eeaaff{
         + notifyObserversTrapPlaced(posx : Integer, posy : Integer, trapType : TrapTypes)
         + notifyObserversWeaponPlaced(posx : Integer, posy : Integer, weaponType : WeaponTypes)
         + notifyObserversShipCellDrowned(posx : Integer, posy : Integer)
+        + notifyObserversSonarUsed(posx : Integer, posy : Integer, value : Integer)
         + notifyObserversNoMoreShip()
         + setMaxShipsCells(maxShipsCells : Integer)
         + isOccupied(cell : Cell) : Boolean
@@ -167,6 +169,7 @@ package model #eeaaff{
         + updateWeaponPlacedOnIsland(player : Integer, posx : Integer, posy : Integer, weaponType : WeaponTypes)
         + updateShipCellDrowned(player : Integer, posx : Integer, posy : Integer)
         + updateNoMoreShips(player : Integer)
+        + updateSonarUsed(player : Player, posx : Integer, posy : Integer, value : Integer)
     }
 
     enum PlaceableTypes <<enum>>{
@@ -339,6 +342,8 @@ package controller #6999ff {
         + updateWeaponPlacedOnIsland(player : Integer, posx : Integer, posy : Integer, weaponType : WeaponTypes)
         + updateShipCellDrowned(player : Integer, posx : Integer, posy : Integer)
         + updateNoMoreShips(player : Integer)
+        + updateSonarUsed(player : Player, posx : Integer, posy : Integer, value : Integer)
+
     }
 
 
@@ -427,6 +432,7 @@ package view #99ff99 {
             + updateWeaponPlacedOnIsland(player : Integer, posx : Integer, posy : Integer, weaponType : WeaponTypes)
             + updateShipCellDrowned(player : Integer, posx : Integer, posy : Integer)
             + updateNoMoreShips(player : Integer)
+            + updateSonarUsed(player : Player, posx : Integer, posy : Integer, value : Integer)
         }
         enum GridMode {
             PLACEMENT

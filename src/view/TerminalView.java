@@ -57,4 +57,9 @@ public class TerminalView implements GridObserver {
     public void updateNoMoreShips(int joueur) {
         System.out.println("Le joueur "+joueur+" n'a plus de bateaux !");
     }
+
+    @Override
+    public void updateSonarUsed(int player, int posx, int posy, int value) {
+
+    }
 }

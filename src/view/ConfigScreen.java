@@ -38,6 +38,11 @@ public class ConfigScreen extends JPanel {
     private JButton _plusDestroyer;
     private JButton _plusSubmarine;
     private JButton _plusTorpedo;
+    private JButton _minusAircraftCarrier;
+    private JButton _minusCruiser;
+    private JButton _minusDestroyer;
+    private JButton _minusSubmarine;
+    private JButton _minusTorpedo;
 
     private JButton _btnAccepter;
     private JButton _btnSuivant;
@@ -200,8 +205,8 @@ public class ConfigScreen extends JPanel {
         lineAircraftCarrier.add(labelAircraftCarrier);
         lineAircraftCarrier.add(Box.createHorizontalStrut(10));
 
-        JButton minusAircraftCarrier = new JButton("-");
-        _theme.buttonConfigMinusTheme(minusAircraftCarrier);
+        _minusAircraftCarrier = new JButton("-");
+        _theme.buttonConfigMinusTheme(_minusAircraftCarrier);
         _labelNumAircraftCarrier =new JLabel("1");
         _labelNumAircraftCarrier.setFont(_theme.normalFont());
         _labelNumAircraftCarrier.setPreferredSize(new Dimension(30, 25));
@@ -209,7 +214,7 @@ public class ConfigScreen extends JPanel {
         _plusAircraftCarrier = new JButton("+");
         _theme.buttonConfigPlusTheme(_plusAircraftCarrier);
 
-        minusAircraftCarrier.addActionListener(e -> {
+        _minusAircraftCarrier.addActionListener(e -> {
             int value = Integer.parseInt(_labelNumAircraftCarrier.getText());
             value = decrementNumberOfShip(value);
             _labelNumAircraftCarrier.setText(String.valueOf(value));
@@ -222,7 +227,7 @@ public class ConfigScreen extends JPanel {
             updateUsedCells();
         });
 
-        lineAircraftCarrier.add(minusAircraftCarrier);
+        lineAircraftCarrier.add(_minusAircraftCarrier);
         lineAircraftCarrier.add(Box.createHorizontalStrut(20));
         lineAircraftCarrier.add(_labelNumAircraftCarrier);
         lineAircraftCarrier.add(Box.createHorizontalStrut(20));
@@ -242,8 +247,8 @@ public class ConfigScreen extends JPanel {
         lineCruiser.add(labelCruiser);
         lineCruiser.add(Box.createHorizontalStrut(10));
 
-        JButton minusCruiser = new JButton("-");
-        _theme.buttonConfigMinusTheme(minusCruiser);
+        _minusCruiser = new JButton("-");
+        _theme.buttonConfigMinusTheme(_minusCruiser);
         _labelNumCruiser = new JLabel("1");
         _labelNumCruiser.setFont(_theme.normalFont());
         _labelNumCruiser.setPreferredSize(new Dimension(30, 25));
@@ -251,7 +256,7 @@ public class ConfigScreen extends JPanel {
         _plusCruiser = new JButton("+");
         _theme.buttonConfigPlusTheme(_plusCruiser);
 
-        minusCruiser.addActionListener(e -> {
+        _minusCruiser.addActionListener(e -> {
             int valueAircraftCarrier = Integer.parseInt(_labelNumCruiser.getText());
             valueAircraftCarrier = decrementNumberOfShip(valueAircraftCarrier);
             _labelNumCruiser.setText(String.valueOf(valueAircraftCarrier));
@@ -264,7 +269,7 @@ public class ConfigScreen extends JPanel {
             updateUsedCells();
         });
 
-        lineCruiser.add(minusCruiser);
+        lineCruiser.add(_minusCruiser);
         lineCruiser.add(Box.createHorizontalStrut(20));
         lineCruiser.add(_labelNumCruiser);
         lineCruiser.add(Box.createHorizontalStrut(20));
@@ -285,8 +290,8 @@ public class ConfigScreen extends JPanel {
         lineDestroyer.add(labelDestroyer);
         lineDestroyer.add(Box.createHorizontalStrut(10));
 
-        JButton minusDestroyer = new JButton("-");
-        _theme.buttonConfigMinusTheme(minusDestroyer);
+        _minusDestroyer = new JButton("-");
+        _theme.buttonConfigMinusTheme(_minusDestroyer);
         _labelNumDestroyer = new JLabel("1");
         _labelNumDestroyer.setFont(_theme.normalFont());
         _labelNumDestroyer.setPreferredSize(new Dimension(30, 25));
@@ -294,7 +299,7 @@ public class ConfigScreen extends JPanel {
         _plusDestroyer = new JButton("+");
         _theme.buttonConfigPlusTheme(_plusDestroyer);
 
-        minusDestroyer.addActionListener(e -> {
+        _minusDestroyer.addActionListener(e -> {
             int valueCruiser = Integer.parseInt(_labelNumDestroyer.getText());
             valueCruiser = decrementNumberOfShip(valueCruiser);
             _labelNumDestroyer.setText(String.valueOf(valueCruiser));
@@ -307,7 +312,7 @@ public class ConfigScreen extends JPanel {
             updateUsedCells();
         });
 
-        lineDestroyer.add(minusDestroyer);
+        lineDestroyer.add(_minusDestroyer);
         lineDestroyer.add(Box.createHorizontalStrut(20));
         lineDestroyer.add(_labelNumDestroyer);
         lineDestroyer.add(Box.createHorizontalStrut(20));
@@ -327,8 +332,8 @@ public class ConfigScreen extends JPanel {
         lineSubmarine.add(labelSubmarine);
         lineSubmarine.add(Box.createHorizontalStrut(10));
 
-        JButton minusSubmarine = new JButton("-");
-        _theme.buttonConfigMinusTheme(minusSubmarine);
+        _minusSubmarine = new JButton("-");
+        _theme.buttonConfigMinusTheme(_minusSubmarine);
         _labelNumSubmarine = new JLabel("1");
         _labelNumSubmarine.setFont(_theme.normalFont());
         _labelNumSubmarine.setPreferredSize(new Dimension(30, 25));
@@ -336,7 +341,7 @@ public class ConfigScreen extends JPanel {
         _plusSubmarine = new JButton("+");
         _theme.buttonConfigPlusTheme(_plusSubmarine);
 
-        minusSubmarine.addActionListener(e -> {
+        _minusSubmarine.addActionListener(e -> {
             int valueSubmarine = Integer.parseInt(_labelNumSubmarine.getText());
             valueSubmarine = decrementNumberOfShip(valueSubmarine);
             _labelNumSubmarine.setText(String.valueOf(valueSubmarine));
@@ -349,7 +354,7 @@ public class ConfigScreen extends JPanel {
             updateUsedCells();
         });
 
-        lineSubmarine.add(minusSubmarine);
+        lineSubmarine.add(_minusSubmarine);
         lineSubmarine.add(Box.createHorizontalStrut(20));
         lineSubmarine.add(_labelNumSubmarine);
         lineSubmarine.add(Box.createHorizontalStrut(20));
@@ -369,8 +374,8 @@ public class ConfigScreen extends JPanel {
         lineTorpedo.add(labelTorpedo);
         lineTorpedo.add(Box.createHorizontalStrut(10));
 
-        JButton minusTorpedo = new JButton("-");
-        _theme.buttonConfigMinusTheme(minusTorpedo);
+        _minusTorpedo = new JButton("-");
+        _theme.buttonConfigMinusTheme(_minusTorpedo);
         _labelNumTorpedo = new JLabel("1");
         _labelNumTorpedo.setFont(_theme.normalFont());
         _labelNumTorpedo.setPreferredSize(new Dimension(30, 25));
@@ -378,7 +383,7 @@ public class ConfigScreen extends JPanel {
         _plusTorpedo = new JButton("+");
         _theme.buttonConfigPlusTheme(_plusTorpedo);
 
-        minusTorpedo.addActionListener(e -> {
+        _minusTorpedo.addActionListener(e -> {
             int valueTorpedo = Integer.parseInt(_labelNumTorpedo.getText());
             valueTorpedo = decrementNumberOfShip(valueTorpedo);
             _labelNumTorpedo.setText(String.valueOf(valueTorpedo));
@@ -391,7 +396,7 @@ public class ConfigScreen extends JPanel {
             updateUsedCells();
         });
 
-        lineTorpedo.add(minusTorpedo);
+        lineTorpedo.add(_minusTorpedo);
         lineTorpedo.add(Box.createHorizontalStrut(20));
         lineTorpedo.add(_labelNumTorpedo);
         lineTorpedo.add(Box.createHorizontalStrut(20));
@@ -464,6 +469,7 @@ public class ConfigScreen extends JPanel {
 
         setEnabledPanel(_leftPanel,false);
         setEnabledPanel(_rightPanel,true);
+        updateUsedCells();
     }
 
     private void next() {
@@ -487,6 +493,26 @@ public class ConfigScreen extends JPanel {
         return number+1;
     }
     private void updateUsedCells() {
+        if (Integer.parseInt(_labelNumAircraftCarrier.getText())==1)
+        {
+            _minusAircraftCarrier.setEnabled(false);
+        }
+        if (Integer.parseInt(_labelNumCruiser.getText())==1)
+        {
+            _minusCruiser.setEnabled(false);
+        }
+        if (Integer.parseInt(_labelNumDestroyer.getText())==1)
+        {
+            _minusDestroyer.setEnabled(false);
+        }
+        if (Integer.parseInt(_labelNumSubmarine.getText())==1)
+        {
+            _minusSubmarine.setEnabled(false);
+        }
+        if (Integer.parseInt(_labelNumTorpedo.getText())==1)
+        {
+            _minusTorpedo.setEnabled(false);
+        }
         int aircraft = Integer.parseInt(_labelNumAircraftCarrier.getText()) * 5;
         int cruiser = Integer.parseInt(_labelNumCruiser.getText()) * 4;
         int destroyer = Integer.parseInt(_labelNumDestroyer.getText()) * 3;

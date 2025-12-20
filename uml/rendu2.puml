@@ -446,6 +446,11 @@ package view #99ff99 {
         - _plusTorpedo : JButton
         - _btnAccepter : JButton
         - _btnSuivant : JButton
+        - _minusAircraftCarrier : JButton
+        - _minusCruiser : JButton
+        - _minusDestroyer : JButton
+        - _minusSubmarine : JButton
+        - _minusTorpedo : JButton
         +<<create>>ConfigScreen(controller : GameController, model : Game, navigationController : NavigationController, theme : Theme)
         - draw()
         - setEnabledPanel(panel : JComponent, enabled : Boolean)

@@ -89,7 +89,6 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver, GridO
         panelInfos.add(lblInfosTitle);
         panelInfos.add(Box.createRigidArea(new Dimension(0, 10)));
 
-
         //infos du joueur
         JPanel panelInfosPlayer = new JPanel();
         panelInfosPlayer.setLayout(new BoxLayout(panelInfosPlayer,BoxLayout.Y_AXIS));
@@ -146,8 +145,6 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver, GridO
         panelInfosBot.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelInfosBot.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelInfosBot.setBackground(new Color(147, 184, 115));
-
-
 
         _lblBotLastAction = createInfoLabel("Dernière action jouée : aucune");
         panelInfosBot.add(_lblBotLastAction);

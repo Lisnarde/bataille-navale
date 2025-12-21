@@ -1,14 +1,14 @@
 # Rapport : Nos choix de conception
 
 Notre application respectant strictement l'architecture MVC, 
-elle est alors composée de trois packages principaux : models, views, controllers.
+elle est alors composée de trois packages principaux : model, view, controller.
 
 Nous avons tenté de séparer les responsabilités et garder une extensibilité du jeu 
 pour permettre l'ajout de nouveaux objets, vues et types d'adversaires simplement.
 
 # 1. Le modèle
 
-Le modèle représente la logique du jeu lui-même, il est totalement indépendant de l'interface du jeu.
+Le modèle représente la logique du jeu lui-même, il est totalement indépendant de l'interface vue par l'utilisateur.
 
 ## 1.1 La classe Game
 
@@ -79,7 +79,7 @@ de pouvoir tirer dessus plusieurs fois.
 
 # 2. Le Controller
 
-Les controllers servent à la gestion des actions et la navigation entre les vues
+Les controllers servent à la gestion des actions et la navigation entre les vues.
 
 ## 2.1 GameController
 
@@ -108,6 +108,9 @@ Il y a aussi un SmartBot qui joue aléatoirement jusqu'à toucher un bateau, apr
 
 # 3. Les vues
 
+Les vues sont représentées par les interfaces présentées aux utilisateurs. Ce sont elles qui affichent l'état de la partie, les actions jouées
+et transmettent les demandes de l'utilisateur au controller. Elles peuvent également consulter le model pour afficher la partie.
+
 ## 3.1 GraphicalView
 
 C'est la fenêtre principale : elle initialise toutes les vues, applique le **Theme**, puis délègue la navigation au **NavigationController**.
@@ -118,7 +121,7 @@ L'application est découpée en plusieurs écrans : ConfigScreen, PlacementScree
 
 Chaque écran est indépendant des autres, il applique sa propre logique d'affichage. La majorité sont mis à jour via Observers.
 
-Chacun peut utiliser des Panel réutilisables définits dans **components**.
+Chacun peut utiliser des Panel réutilisables qui sont définis dans **components**.
 
 ## 3.3 GridPanel
 

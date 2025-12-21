@@ -429,7 +429,7 @@ public class ConfigScreen extends JPanel {
     }
 
     private void accept() {
-        int maxLength = Math.min(_pseudoField.getText().length()-1, 15);
+        int maxLength = Math.min(_pseudoField.getText().length(), 16);
         String pseudo = _pseudoField.getText().trim().substring(0,maxLength);
 
         // taille de la grille

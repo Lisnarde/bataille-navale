@@ -151,13 +151,15 @@ Le theme est ainsi transmit de GraphicalView, jusqu'à absolument toutes les vue
 Les évolutions depuis le premier rendu ont permis une meilleure architecture et une meilleure extensibilité 
 (armes, pièges, IA, vues...)
 
+Nous avons également pû compléter la partie sur les vues qui était incomplète, car nous nous concentrions d'abord sur le modèle
+avant de réfléchir aux vues.
+
+## Manques de fonctionnalités
+
 Par manque de temps, nous n'avons pas pu implémenter le fonctionnement de **Tornado**, même s'il reste plaçable et utilisable.
 
 Il manque également un bouton pour recommencer une nouvelle partie de zéro, mais il se serait résumer à appeler une méthode de 
 réinitialisation de **Game**, notamment en appelant washGrid() qui est déjà implémenté dans **Grid**. 
 Ensuite, il aurait fallu appeler la méthode showConfig() de NavigationController. La vraie difficulté aurait été 
 la réinitialisation du modèle, car cela nécessite de penser à beaucoup de choses (toutes les informations stockées dans 
-les attributs, ainsi que toutes les sous-classes -> pouvait mener à de nombreux bugs lors d'une seconde partie)
-
-Nous avons également pû compléter la partie sur les vues qui était incomplète, car nous nous concentrions d'abord sur le modèle 
-avant de réfléchir aux vues
+les attributs, ainsi que toutes les sous-classes -> pouvait mener à de nombreux bugs lors d'une seconde partie).

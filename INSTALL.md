@@ -22,12 +22,7 @@ cd a31-bataille-navale
 
 ## Compiler
 
-#### Créer le dossier de sortie
-```bash
-mkdir out
-```
-
-#### Compiler récursivement le projet
+Compilation récursive dans le dossier out :
 
 - Linux :
 ```bash

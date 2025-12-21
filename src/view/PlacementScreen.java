@@ -102,6 +102,19 @@ public class PlacementScreen extends JPanel implements ViewPanel {
         shipPanel.setBackground(new Color(223, 167, 57));
         content.add(shipPanel);
 
+        // Les axis
+        ButtonGroup grpAxis = new ButtonGroup();
+        for (Axis axis : Axis.values()) {
+            JRadioButton btn = new JRadioButton(axis.name());
+            _theme.radioButtonTheme(btn);
+            btn.addActionListener(actionEvent -> _gridPanel.setAxisPlacement(axis));
+            grpAxis.add(btn);
+            shipPanel.add(btn);
+            if (axis == Axis.HORIZONTAL) {btn.setSelected(true);}
+        }
+
+        shipPanel.add(Box.createRigidArea(new Dimension(10,40)));
+
         //Les bateaux
         ButtonGroup grpTypes = new ButtonGroup();
         for (ShipTypes shipType : ShipTypes.values()) {
@@ -113,7 +126,7 @@ public class PlacementScreen extends JPanel implements ViewPanel {
             if (shipType == ShipTypes.AircraftCarrier) {btn.setSelected(true);}
         }
 
-        shipPanel.add(Box.createRigidArea(new Dimension(10,10)));
+        shipPanel.add(Box.createRigidArea(new Dimension(10,20)));
 
         for (int i=0; i<_model.getTrapInventorySize(); i++) {
             TrapTypes trapType = _model.getTrapInInventory(i);
@@ -139,20 +152,6 @@ public class PlacementScreen extends JPanel implements ViewPanel {
                 grpTypes.add(btn);
                 shipPanel.add(btn);
             }
-        }
-
-        shipPanel.add(Box.createRigidArea(new Dimension(10,20)));
-
-
-        // Les axis
-        ButtonGroup grpAxis = new ButtonGroup();
-        for (Axis axis : Axis.values()) {
-            JRadioButton btn = new JRadioButton(axis.name());
-            _theme.radioButtonTheme(btn);
-            btn.addActionListener(actionEvent -> _gridPanel.setAxisPlacement(axis));
-            grpAxis.add(btn);
-            shipPanel.add(btn);
-            if (axis == Axis.HORIZONTAL) {btn.setSelected(true);}
         }
 
         shipPanel.add(Box.createRigidArea(new Dimension(10,40)));

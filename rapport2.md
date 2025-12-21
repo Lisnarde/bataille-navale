@@ -121,7 +121,7 @@ L'application est découpée en plusieurs écrans : ConfigScreen, PlacementScree
 
 Chaque écran est indépendant des autres, il applique sa propre logique d'affichage. La majorité sont mis à jour via Observers.
 
-Chacun peut utiliser des Panel réutilisables définits dans **components**.
+Chacun peut utiliser des Panel réutilisables qui sont définis dans **components**.
 
 ## 3.3 GridPanel
 

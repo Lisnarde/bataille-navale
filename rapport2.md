@@ -6,6 +6,8 @@ elle est alors composée de trois packages principaux : model, view, controller.
 Nous avons tenté de séparer les responsabilités et garder une extensibilité du jeu 
 pour permettre l'ajout de nouveaux objets, vues et types d'adversaires simplement.
 
+
+
 # 1. Le modèle
 
 Le modèle représente la logique du jeu lui-même, il est totalement indépendant de l'interface vue par l'utilisateur.
@@ -59,11 +61,15 @@ une taille ou un axe de placement.
 Tous les pièges héritent de la classe abstraite **Trap**, chacun possède son comportement spécifique avec la méthode execTrap.
 Son activation est automatique lors d'un tir. C'est un design qui simplifie l'ajout de nouveaux pièges.
 
+Ainsi, **BlackHole** et **Tornado** héritent de **Trap**, ces deux sont alors plaçables sur la grille et activables. 
+**BlackHole** est le seul qui fonctionne réellement, **Tornado** est utilisable mais n'a pas d'effet à son activation (par manque de temps).
+
 ### 1.5.c Weapons
 
 Toutes les armes héritent de la calsse abstraite **Weapon**, chacun possède son comportement spécifique avec la méthode execShoot.
 Ce **Pattern Strategy** simplifie l'ajout de nouvelles armes, tout comme les pièges.
 
+**Bomb** et **Sonar** héritent de **Weapon** et son totalement utilisables et fonctionnels.
 Certaines armes comme le Sonar peuvent interagir avec les observers pour donner des informations aux vues.
 
 ### 1.5.d IslandPart
@@ -75,6 +81,7 @@ Une partie peut stocker au maximum un objet **Placeable**.
 
 Un impact sert uniquement à marquer une case, de telle sorte qu'on sache qu'on a déjà "interagit" avec cette case, pour éviter 
 de pouvoir tirer dessus plusieurs fois.
+
 
 
 # 2. Le Controller
@@ -105,6 +112,8 @@ Il définit le comportement du placement des objets et du tir. On peut très fac
 
 Pour l'instant, il y a deux implémentations de bot. Un RandomBot qui joue totalement aléatoirement.
 Il y a aussi un SmartBot qui joue aléatoirement jusqu'à toucher un bateau, après, il cherchera à le couler.
+
+
 
 # 3. Les vues
 
@@ -139,7 +148,16 @@ Le theme est ainsi transmit de GraphicalView, jusqu'à absolument toutes les vue
 
 # Conclusion
 
-Les évolutions depuis le premier rendu ont permis une meilleure architecture et une meilleure extensibilité (armes, pièges, IA, vues...)
+Les évolutions depuis le premier rendu ont permis une meilleure architecture et une meilleure extensibilité 
+(armes, pièges, IA, vues...)
+
+Par manque de temps, nous n'avons pas pu implémenter le fonctionnement de **Tornado**, même s'il reste plaçable et utilisable.
+
+Il manque également un bouton pour recommencer une nouvelle partie de zéro, mais il se serait résumer à appeler une méthode de 
+réinitialisation de **Game**, notamment en appelant washGrid() qui est déjà implémenté dans **Grid**. 
+Ensuite, il aurait fallu appeler la méthode showConfig() de NavigationController. La vraie difficulté aurait été 
+la réinitialisation du modèle, car cela nécessite de penser à beaucoup de choses (toutes les informations stockées dans 
+les attributs, ainsi que toutes les sous-classes -> pouvait mener à de nombreux bugs lors d'une seconde partie)
 
 Nous avons également pû compléter la partie sur les vues qui était incomplète, car nous nous concentrions d'abord sur le modèle 
 avant de réfléchir aux vues

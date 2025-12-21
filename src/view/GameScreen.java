@@ -226,10 +226,10 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver, GridO
         _controller.setWeapon(0,(int)selectedButton.getClientProperty("index"));
         for (Component c : _panelArmes.getComponents()) {
             if (c instanceof JButton btn) {
-                _theme.buttonTheme(btn);
+                _theme.buttonConfigMinusTheme(btn);
             }
         }
-        selectedButton.setBackground(new Color(0,0,255));
+        selectedButton.setBackground(new Color(255, 35, 0));
         _panelArmes.repaint();
     }
 
@@ -260,9 +260,9 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver, GridO
     @Override
     public void updateShoot(int player, int posx, int posy, boolean hit) {
         if (player == 1)
-            _lblPlayerLastAction.setText("Dernière action jouée : tir en ("+posx+","+posy+") → " + (hit ? "touché" : "dans l'eau"));
+            _lblPlayerLastAction.setText("Dernière action jouée : tir en "+convertPosition(posx,posy)+" → " + (hit ? "touché" : "dans l'eau"));
         else
-            _lblBotLastAction.setText("Dernière action jouée : tir en ("+posx+","+posy+") → " + (hit ? "touché" : "dans l'eau"));
+            _lblBotLastAction.setText("Dernière action jouée : tir en "+ convertPosition(posx,posy)+" → " + (hit ? "touché" : "dans l'eau"));
         refreshInfos();
     }
 
@@ -333,5 +333,9 @@ public class GameScreen extends JPanel implements ViewPanel, GameObserver, GridO
     @Override
     public void updateWeaponRemoved(int player, WeaponTypes weaponType) {
         if (player == 0) drawAllWeapons();
+    }
+
+    private String convertPosition(int x, int y) {
+        return ""+(char)('A'+y)+""+(x+1);
     }
 }

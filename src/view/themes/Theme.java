@@ -11,4 +11,5 @@ public interface Theme {
     void buttonTheme(AbstractButton button);
     void buttonConfigMinusTheme(AbstractButton button);
     void buttonConfigPlusTheme(AbstractButton button);
+    void radioButtonTheme(AbstractButton button);
 }

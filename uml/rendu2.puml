@@ -383,6 +383,7 @@ package view #99ff99 {
             + button(button : AbstractButton)
             + buttonConfigMinusTheme(button : AbstractButton)
             + buttonConfigPlusTheme(button : AbstractButton)
+            + radioButtonTheme(button : AbstractButton)
         }
         class GlobalTheme implements Theme {
             - _normalFont : Font
@@ -395,6 +396,7 @@ package view #99ff99 {
             + button(button : AbstractButton)
             + buttonConfigMinusTheme(button : AbstractButton)
             + buttonConfigPlusTheme(button : AbstractButton)
+            + radioButtonTheme(button : AbstractButton)
         }
     }
     package components #44bb44 {
@@ -539,6 +541,7 @@ package view #99ff99 {
         + updateTurnNum(turnNum : Integer)
         + updateWeaponFound(player : Integer, weaponType : WeaponTypes)
         + updateWeaponRemoved(player : Integer, weaponType : WeaponTypes)
+        + convertPosition(x : Integer, y : Integer) : String
     }
     class EndScreen <<extends JPanel>> implements ViewPanel {
         +<<create>>EndScreen(controller : GameController, model : Game, navigationController : NavigationController, theme : Theme)

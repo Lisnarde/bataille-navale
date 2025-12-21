@@ -48,30 +48,40 @@ public class PlacementScreen extends JPanel implements ViewPanel {
         //panel quantité de bateaux
         JPanel shipQuantity = new JPanel();
         shipQuantity.setLayout(new BoxLayout(shipQuantity, BoxLayout.Y_AXIS));
+        shipQuantity.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        shipQuantity.setAlignmentX(Component.CENTER_ALIGNMENT);
+        shipQuantity.setBackground(new Color(101, 220, 163));
+
         JLabel titleShipQuantity = new JLabel("Quantité de bateaux");
         titleShipQuantity.setFont(_theme.titleFont());
+        titleShipQuantity.setAlignmentX(Component.CENTER_ALIGNMENT);
         shipQuantity.add(titleShipQuantity);
 
         Map<ShipTypes, Integer> ships = _model.getNumberPerShip();
 
         JLabel aircraftCarrierLabel = new JLabel("Porte-avion : "+ ships.get(ShipTypes.AircraftCarrier));
         aircraftCarrierLabel.setFont(_theme.normalFont());
+        aircraftCarrierLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         shipQuantity.add(aircraftCarrierLabel);
 
         JLabel cruiserLabel = new JLabel("Croiseur : "+ ships.get(ShipTypes.Cruiser));
         cruiserLabel.setFont(_theme.normalFont());
+        cruiserLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         shipQuantity.add(cruiserLabel);
 
         JLabel destroyerLabel = new JLabel("Contre-torpilleur : "+ ships.get(ShipTypes.Destroyer));
         destroyerLabel.setFont(_theme.normalFont());
+        destroyerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         shipQuantity.add(destroyerLabel);
 
         JLabel submarineLabel = new JLabel("Sous-marin : "+ ships.get(ShipTypes.Submarine));
         submarineLabel.setFont(_theme.normalFont());
+        submarineLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         shipQuantity.add(submarineLabel);
 
         JLabel torpedoLabel = new JLabel("Torpilleur : "+ ships.get(ShipTypes.Torpedo));
         torpedoLabel.setFont(_theme.normalFont());
+        torpedoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         shipQuantity.add(torpedoLabel);
 
         content.add(shipQuantity);
@@ -80,19 +90,23 @@ public class PlacementScreen extends JPanel implements ViewPanel {
         _gridPanel = new GridPanel(_model, _controller, GridMode.PLACEMENT);
         _gridPanel.setTypePlacement(ShipTypes.AircraftCarrier,-1,-1);
         _gridPanel.setAxisPlacement(Axis.HORIZONTAL);
+        _gridPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 30));
         content.add(_gridPanel);
 
 
         //panel des bateaux à placer avec axis et pièges
         JPanel shipPanel = new JPanel();
         shipPanel.setLayout(new BoxLayout(shipPanel, BoxLayout.Y_AXIS));
+        shipPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        shipPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        shipPanel.setBackground(new Color(223, 167, 57));
         content.add(shipPanel);
 
         //Les bateaux
         ButtonGroup grpTypes = new ButtonGroup();
         for (ShipTypes shipType : ShipTypes.values()) {
             JRadioButton btn = new JRadioButton(shipType.toString());
-            _theme.buttonTheme(btn);
+            _theme.radioButtonTheme(btn);
             btn.addActionListener(actionEvent -> _gridPanel.setTypePlacement(shipType,-1,-1));
             grpTypes.add(btn);
             shipPanel.add(btn);
@@ -105,7 +119,7 @@ public class PlacementScreen extends JPanel implements ViewPanel {
             TrapTypes trapType = _model.getTrapInInventory(i);
             JRadioButton btn = new JRadioButton(trapType.toString());
             btn.putClientProperty("trapIndex",i);
-            _theme.buttonTheme(btn);
+            _theme.radioButtonTheme(btn);
             btn.addActionListener(actionEvent -> _gridPanel.setTypePlacement(null,(int)btn.getClientProperty("trapIndex"),-1));
             grpTypes.add(btn);
             shipPanel.add(btn);
@@ -120,7 +134,7 @@ public class PlacementScreen extends JPanel implements ViewPanel {
                 WeaponTypes weaponType = _model.getWeaponInGlobalInventory(w);
                 JRadioButton btn = new JRadioButton(weaponType.toString());
                 btn.putClientProperty("weaponIndex",w);
-                _theme.buttonTheme(btn);
+                _theme.radioButtonTheme(btn);
                 btn.addActionListener(actionEvent -> _gridPanel.setTypePlacement(null,-1,(int)btn.getClientProperty("weaponIndex")));
                 grpTypes.add(btn);
                 shipPanel.add(btn);
@@ -134,7 +148,7 @@ public class PlacementScreen extends JPanel implements ViewPanel {
         ButtonGroup grpAxis = new ButtonGroup();
         for (Axis axis : Axis.values()) {
             JRadioButton btn = new JRadioButton(axis.name());
-            _theme.buttonTheme(btn);
+            _theme.radioButtonTheme(btn);
             btn.addActionListener(actionEvent -> _gridPanel.setAxisPlacement(axis));
             grpAxis.add(btn);
             shipPanel.add(btn);

@@ -30,12 +30,16 @@ public class GlobalTheme implements Theme {
 
     public void buttonConfigMinusTheme(AbstractButton button) {
         button.setFont(boldFont());
-        button.setBackground(new Color(234, 60, 60));
+        button.setBackground(new Color(239, 90, 90));
         button.setForeground(Color.WHITE);
     }
     public void buttonConfigPlusTheme(AbstractButton button) {
         button.setFont(boldFont());
         button.setBackground(new Color(56, 221, 53));
         button.setForeground(Color.WHITE);
+    }
+    public void radioButtonTheme(AbstractButton button){
+        button.setFont(boldFont());
+        button.setBackground(new Color(223, 167, 57));
     }
 }

@@ -216,7 +216,7 @@ N'hésitez pas à regarder comment installer notre jeu de bataille navale en sui
 
 ## Collaboration
 
-Réalisation du projet de bataille navale dans le cadre d'un projet de 2ème année de BUT Informatique en binôme (avec [Lisnarde](https://github.com/Lisnarde)).
+Réalisation du projet de bataille navale dans le cadre d'un projet de 2ème année de BUT Informatique en binôme (avec [Lisnarde](https://github.com/noahdumangin)).
 
 ## Images
 **Ecran de configuration :** <br>
